@@ -1,5 +1,6 @@
 <!-- resources/views/components/sidebar.blade.php -->
-<aside class="w-64 h-screen bg-white border-r flex flex-col">
+<aside class="w-full md:w-64 bg-white border-r flex flex-col h-auto md:h-screen sticky top-0">
+
     <!-- Sidebar Header -->
     <div class="px-6 py-4 border-b">
         <button 
@@ -18,7 +19,7 @@
         <!-- Example Project Folder 1 -->
         <details class="mb-2">
             <summary class="cursor-pointer flex items-center justify-between px-3 py-2 rounded hover:bg-gray-100">
-                <span>Project Alpha</span>
+                <span>TL Marisa-GSM</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none"
                      viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,9 +27,13 @@
                 </svg>
             </summary>
             <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
-                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Overview</a></li>
-                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Tasks</a></li>
-                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Files</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Dashboard</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Perizinan</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Tahapan</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Musyawarah</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Pembayaran</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Dokumen Hasil</a></li>
+                <li><a href="#" class="block px-2 py-1 rounded hover:bg-gray-200">Sertifikat</a></li>
             </ul>
         </details>
 
