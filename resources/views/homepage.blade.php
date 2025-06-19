@@ -8,8 +8,6 @@
 
     {{-- Wrapper Sidebar + Konten --}}
     <div class="flex min-h-screen">
-        {{-- Sidebar --}}
-        <x-sidebar />
 
         {{-- Konten Utama --}}
         <main class="flex-1 p-6 bg-gray-100">

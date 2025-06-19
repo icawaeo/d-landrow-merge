@@ -7,30 +7,39 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <div class="flex h-screen bg-gray-100">
+            
+            {{-- KOLOM 1: SIDEBAR --}}
+            {{-- Komponen sidebar Anda akan dipanggil di sini --}}
+            <x-sidebar />
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+            {{-- KOLOM 2: KONTEN UTAMA --}}
+            {{-- Kontainer ini akan mengisi sisa ruang dan mengatur scroll --}}
+            <div class="flex-1 flex flex-col overflow-hidden">
+                
+                {{-- Navigasi atas yang sudah ada sebelumnya --}}
+                @include('layouts.navigation')
+
+                @if (isset($header))
+                    <header class="bg-white shadow-sm">
+                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endif
+
+                <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                    <div class="py-6 px-4 sm:px-6 lg:px-8">
+                         {{ $slot }}
                     </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                </main>
+            </div>
         </div>
     </body>
 </html>
