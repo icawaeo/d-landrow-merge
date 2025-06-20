@@ -10,8 +10,12 @@
                     </button>
                 </x-slot>
                 <x-slot name="content">
-                    <x-dropdown-link href="#">{{ __('Pengadaan Tanah') }}</x-dropdown-link>
-                    <x-dropdown-link href="#">{{ __('ROW') }}</x-dropdown-link>
+                <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'pengadaan-tanah']) }}">
+                {{ __('Pengadaan Tanah') }}
+                </x-dropdown-link>
+                <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'row']) }}">
+                {{ __('ROW') }}
+                </x-dropdown-link>
                 </x-slot>
             </x-dropdown>
         </div>
@@ -19,7 +23,6 @@
         <div class="flex-1 overflow-y-auto px-4 py-4">
             
             @php
-                // Definisikan daftar proyek dan menu di sini agar mudah diubah
                 $projects = ['TL Otam - Molibagu', 'TL Marisa - GSM', 'TL Anggrek - Tolinggula'];
                 $tahapanSubMenus = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
                 
