@@ -12,10 +12,7 @@ class PengadaanTanahController extends Controller
      */
     public function create($kategori)
     {
-        // Mengubah slug kategori (contoh: 'pengadaan-tanah') menjadi judul (Contoh: 'Pengadaan Tanah')
         $judul = ucwords(str_replace('-', ' ', $kategori));
-        
-        // Mengarahkan ke view 'create.blade.php' di dalam folder 'pengadaan_tanah'
         return view('pengadaan_tanah.create', [
             'judul' => $judul,
             'kategori' => $kategori
@@ -27,18 +24,50 @@ class PengadaanTanahController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input dari form
         $request->validate([
             'nama_proyek' => 'required|string|max:255',
             'kategori' => 'required|string',
             'jumlah_tower' => 'nullable|integer',
-            // Tambahkan validasi lain di sini jika perlu
         ]);
 
-        // Membuat data baru menggunakan Model PengadaanTanah
         PengadaanTanah::create($request->all());
 
-        // Kembali ke halaman utama dengan pesan sukses
         return redirect()->route('homepage')->with('success', 'Data pengadaan tanah berhasil dibuat!');
+    }
+
+    /**
+     * Menampilkan form untuk mengedit data yang sudah ada.
+     */
+    public function edit(PengadaanTanah $pengadaanTanah)
+    {
+        return view('pengadaan_tanah.edit', [
+            'proyek' => $pengadaanTanah,
+            'judul' => 'Edit Data: ' . $pengadaanTanah->nama_proyek
+        ]);
+    }
+
+    /**
+     * Memperbarui data yang sudah ada di dalam database.
+     */
+    public function update(Request $request, PengadaanTanah $pengadaanTanah)
+    {
+        $request->validate([
+            'nama_proyek' => 'required|string|max:255',
+            'jumlah_tower' => 'nullable|integer',
+        ]);
+
+        $pengadaanTanah->update($request->all());
+
+        return redirect()->route('homepage')->with('success', 'Data berhasil diperbarui!');
+    }
+
+    /**
+     * Menghapus data dari database.
+     */
+    public function destroy(PengadaanTanah $pengadaanTanah)
+    {
+        $pengadaanTanah->delete();
+
+        return redirect()->route('homepage')->with('success', 'Data berhasil dihapus!');
     }
 }

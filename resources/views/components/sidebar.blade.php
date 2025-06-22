@@ -10,12 +10,11 @@
                     </button>
                 </x-slot>
                 <x-slot name="content">
-                <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'pengadaan-tanah']) }}">
-                {{ __('Pengadaan Tanah') }}
-                </x-dropdown-link>
-                <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'row']) }}">
-                {{ __('ROW') }}
-                </x-dropdown-link>
+                    <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Pilih Jenis Proyek') }}</div>
+                    <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'pengadaan-tanah']) }}">{{ __('Pengadaan Tanah') }}</x-dropdown-link>
+                    
+                    <x-dropdown-link href="{{ route('row.create') }}">{{ __('ROW') }}</x-dropdown-link>
+
                 </x-slot>
             </x-dropdown>
         </div>
@@ -23,25 +22,29 @@
         <div class="flex-1 overflow-y-auto px-4 py-4">
             
             @php
-                $projects = ['TL Otam - Molibagu', 'TL Marisa - GSM', 'TL Anggrek - Tolinggula'];
-                $tahapanSubMenus = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
+                // Variabel ini datang dari AppServiceProvider
+                $pengadaanTanahProjects = $daftarPengadaanTanah ?? [];
+                $rowProjects = $daftarRow ?? [];
                 
                 // Menu khusus untuk Pengadaan Tanah
                 $pengadaanTanahTopMenus = ['Dashboard', 'Perizinan'];
+                $pengadaanTanahTahapan = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
+                $pengadaanTanahMiddleMenus = ['Musyawarah', 'Pembayaran'];
                 $pengadaanTanahBottomMenus = ['Dokumen Hasil', 'Sertifikat'];
 
                 // Menu khusus untuk ROW
                 $rowTopMenus = ['Dashboard', 'Perizinan'];
+                $rowTahapan = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
                 $rowBottomMenus = ['Penetapan Nilai', 'Pembayaran'];
             @endphp
 
             {{-- BAGIAN 1: PENGADAAN TANAH --}}
             <div>
                 <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Pengadaan Tanah</h3>
-                @foreach($projects as $project)
+                @foreach($pengadaanTanahProjects as $proyek)
                 <details class="mb-2" {{ $loop->first ? 'open' : '' }}>
                     <summary class="cursor-pointer flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100">
-                        <span class="text-sm font-medium text-gray-800">{{ $project }}</span>
+                        <span class="text-sm font-medium text-gray-800">{{ $proyek->nama_proyek }}</span>
                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                     </summary>
                     <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
@@ -52,12 +55,15 @@
                             <details class="mb-2">
                                 <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
-                                    @foreach($tahapanSubMenus as $tahapan)
+                                    @foreach($pengadaanTanahTahapan as $tahapan)
                                     <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                     @endforeach
                                 </ul>
                             </details>
                         </li>
+                        @foreach($pengadaanTanahMiddleMenus as $menu)
+                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                        @endforeach
                         @foreach($pengadaanTanahBottomMenus as $menu)
                         <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
                         @endforeach
@@ -66,16 +72,15 @@
                 @endforeach
             </div>
 
-            {{-- Garis Pemisah Visual --}}
             <hr class="my-4 border-gray-200">
 
             {{-- BAGIAN 2: ROW --}}
             <div>
                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">ROW</h3>
-                 @foreach($projects as $project)
+                 @foreach($rowProjects as $proyek)
                  <details class="mb-2">
                      <summary class="cursor-pointer flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100">
-                         <span class="text-sm font-medium text-gray-800">{{ $project }}</span>
+                         <span class="text-sm font-medium text-gray-800">{{ $proyek->nama_proyek }}</span>
                          <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                      </summary>
                      <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
@@ -86,7 +91,7 @@
                             <details class="mb-2">
                                 <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
-                                    @foreach($tahapanSubMenus as $tahapan)
+                                    @foreach($rowTahapan as $tahapan)
                                     <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                     @endforeach
                                 </ul>
@@ -104,9 +109,7 @@
         <div class="px-6 py-4 border-t">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <a href="{{ route('logout') }}"
-                   class="w-full flex items-center gap-3 px-3 py-2 text-gray-600 rounded-md hover:bg-gray-100 transition"
-                   onclick="event.preventDefault(); this.closest('form').submit();">
+                <a href="{{ route('logout') }}" class="w-full flex items-center gap-3 px-3 py-2 text-gray-600 rounded-md hover:bg-gray-100 transition" onclick="event.preventDefault(); this.closest('form').submit();">
                     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 8V6C14 4.89543 13.1046 4 12 4H8C6.89543 4 6 4.89543 6 6V18C6 19.1046 6.89543 20 8 20H12C13.1046 20 14 19.1046 14 18V16M10 12H20M20 12L17 9M20 12L17 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Logout
                 </a>

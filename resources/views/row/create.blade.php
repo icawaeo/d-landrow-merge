@@ -1,19 +1,14 @@
 <x-app-layout>
-    {{-- Bagian Header: Diisi dengan tombol Kembali dan judul --}}
+    {{-- Header dengan tombol Kembali --}}
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                {{-- Tombol Kembali --}}
-                <a href="{{ route('homepage') }}" class="text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                </a>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Kembali
-                </h2>
-            </div>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight flex items-center gap-4">
+            <a href="{{ route('homepage') }}" class="text-gray-500 hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+            <span>Kembali</span>
+        </h2>
     </x-slot>
 
     {{-- Konten Utama Halaman --}}
@@ -22,15 +17,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 md:p-8">
                     {{-- Judul Form --}}
-                    <h3 class="text-2xl font-bold text-gray-800 border-b-2 border-dotted pb-4 mb-6">{{ $judul }}</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 border-b-2 border-dotted pb-4 mb-6">ROW</h3>
                     
-                    {{-- Form --}}
-                    <form action="{{ route('pengadaan_tanah.store') }}" method="POST">
+                    {{-- Form yang sudah lengkap --}}
+                    <form action="{{ route('row.store') }}" method="POST">
                         @csrf
-                        {{-- Menyimpan kategori secara tersembunyi --}}
-                        <input type="hidden" name="kategori" value="{{ $kategori }}">
-
                         <div class="space-y-6">
+                            
                             {{-- Baris NAMA PROYEK --}}
                             <div class="grid grid-cols-3 gap-4 items-center">
                                 <label for="nama_proyek" class="font-semibold text-gray-700">NAMA PROYEK</label>
@@ -54,7 +47,6 @@
                                 <label for="provinsi" class="font-semibold text-gray-700">PROVINSI</label>
                                 <div class="col-span-2 flex items-center gap-4">
                                     <span class="font-semibold">:</span>
-                                    {{-- Untuk sementara kita gunakan input teks biasa --}}
                                     <input type="text" name="provinsi" id="provinsi" class="flex-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 </div>
                             </div>
