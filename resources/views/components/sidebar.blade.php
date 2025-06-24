@@ -49,14 +49,23 @@
                     </summary>
                     <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
                         @foreach($pengadaanTanahTopMenus as $menu)
-                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @if ($menu === 'Perizinan')
+                                <li><a href="{{ route('pengadaan_tanah.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @else
+                                <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @endif
                         @endforeach
                         <li>
                             <details class="mb-2">
                                 <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
                                     @foreach($pengadaanTanahTahapan as $tahapan)
-                                    <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @if ($tahapan === 'Sosialisasi')
+                                            <li><a href="{{ route('sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @else
+                                            {{-- Link Musyawarah & lainnya dinonaktifkan sementara --}}
+                                            <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </details>
@@ -85,7 +94,11 @@
                      </summary>
                      <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
                         @foreach($rowTopMenus as $menu)
-                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @if ($menu === 'Perizinan')
+                                <li><a href="{{ route('row.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @else
+                                <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @endif
                         @endforeach
                         <li>
                             <details class="mb-2">

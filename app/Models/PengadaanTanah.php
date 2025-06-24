@@ -16,4 +16,8 @@ class PengadaanTanah extends Model
         'kecamatan',
         'desa',
     ];
+    public function sosialisasis()
+    {
+        return $this->hasMany(Sosialisasi::class);
+    }
 }

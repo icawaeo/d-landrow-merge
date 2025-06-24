@@ -17,4 +17,8 @@ class Row extends Model
         'kecamatan',
         'desa',
     ];
+    public function perizinans()
+    {
+        return $this->hasMany(RowPerizinan::class);
+    }
 }

@@ -6,6 +6,9 @@ use App\Http\Controllers\PengadaanTanahController;
 use App\Http\Controllers\RowController;
 use App\Models\PengadaanTanah; 
 use App\Models\Row;             
+use App\Http\Controllers\PerizinanController;
+use App\Http\Controllers\RowPerizinanController;
+use App\Http\Controllers\SosialisasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    /*pengadaan tanah*/
     Route::get('/pengadaan-tanah/baru/{kategori}', [PengadaanTanahController::class, 'create'])->name('pengadaan_tanah.create');
     Route::post('/pengadaan-tanah', [PengadaanTanahController::class, 'store'])->name('pengadaan_tanah.store');
 
@@ -44,12 +48,28 @@ Route::middleware('auth')->group(function () {
     Route::put('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'update'])->name('pengadaan_tanah.update');
     Route::delete('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'destroy'])->name('pengadaan_tanah.destroy');
 
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/perizinan', [PerizinanController::class, 'edit'])->name('pengadaan_tanah.perizinan.edit');
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/perizinan', [PerizinanController::class, 'store'])->name('pengadaan_tanah.perizinan.store');
+
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/sosialisasi', [SosialisasiController::class, 'index'])->name('sosialisasi.index');
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/sosialisasi/create', [SosialisasiController::class, 'create'])->name('sosialisasi.create');
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/sosialisasi', [SosialisasiController::class, 'store'])->name('sosialisasi.store');
+
+    Route::get('/sosialisasi/{sosialisasi}/edit', [SosialisasiController::class, 'edit'])->name('sosialisasi.edit');
+    Route::put('/sosialisasi/{sosialisasi}', [SosialisasiController::class, 'update'])->name('sosialisasi.update');
+    Route::delete('/sosialisasi/{sosialisasi}', [SosialisasiController::class, 'destroy'])->name('sosialisasi.destroy');
+
+    /*row*/
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
     Route::post('/row', [RowController::class, 'store'])->name('row.store');
 
     Route::get('/row/{row}/edit', [RowController::class, 'edit'])->name('row.edit');
     Route::put('/row/{row}', [RowController::class, 'update'])->name('row.update');
     Route::delete('/row/{row}', [RowController::class, 'destroy'])->name('row.destroy');
+
+    Route::get('/row/{row}/perizinan', [RowPerizinanController::class, 'edit'])->name('row.perizinan.edit');
+    Route::post('/row/{row}/perizinan', [RowPerizinanController::class, 'store'])->name('row.perizinan.store');
+
 });
 
 require __DIR__.'/auth.php';
