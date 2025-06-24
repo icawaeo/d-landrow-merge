@@ -9,6 +9,8 @@ use App\Models\Row;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\RowPerizinanController;
 use App\Http\Controllers\SosialisasiController;
+use App\Http\Controllers\RowSosialisasiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,22 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/row/{row}/perizinan', [RowPerizinanController::class, 'edit'])->name('row.perizinan.edit');
     Route::post('/row/{row}/perizinan', [RowPerizinanController::class, 'store'])->name('row.perizinan.store');
+
+    Route::get('/row/{row}/sosialisasi', [RowSosialisasiController::class, 'index'])->name('row.sosialisasi.index');
+    Route::get('/row/{row}/sosialisasi/create', [RowSosialisasiController::class, 'create'])->name('row.sosialisasi.create');
+    Route::post('/row/{row}/sosialisasi', [RowSosialisasiController::class, 'store'])->name('row.sosialisasi.store');
+
+    Route::get('/row/sosialisasi/{sosialisasi}/edit', [RowSosialisasiController::class, 'edit'])->name('row.sosialisasi.edit');
+    Route::put('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'update'])->name('row.sosialisasi.update');
+    Route::delete('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'destroy'])->name('row.sosialisasi.destroy');
+
+    Route::get('/row/{row}/sosialisasi', [RowSosialisasiController::class, 'index'])->name('row.sosialisasi.index');
+    Route::get('/row/{row}/sosialisasi/create', [RowSosialisasiController::class, 'create'])->name('row.sosialisasi.create');
+    Route::post('/row/{row}/sosialisasi', [RowSosialisasiController::class, 'store'])->name('row.sosialisasi.store');
+    
+    Route::get('/row/sosialisasi/{sosialisasi}/edit', [RowSosialisasiController::class, 'edit'])->name('row.sosialisasi.edit');
+    Route::put('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'update'])->name('row.sosialisasi.update');
+    Route::delete('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'destroy'])->name('row.sosialisasi.destroy'); 
 
 });
 

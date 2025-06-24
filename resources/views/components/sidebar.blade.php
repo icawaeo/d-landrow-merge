@@ -104,10 +104,15 @@
                             <details class="mb-2">
                                 <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
-                                    @foreach($rowTahapan as $tahapan)
-                                    <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @endforeach
-                                </ul>
+                                @foreach($rowTahapan as $tahapan)
+                                    @if ($tahapan === 'Sosialisasi')
+                                        {{-- Beri link yang benar ke route sosialisasi ROW --}}
+                                        <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                    @else
+                                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                    @endif
+                                @endforeach
+                            </ul>
                             </details>
                         </li>
                         @foreach($rowBottomMenus as $menu)

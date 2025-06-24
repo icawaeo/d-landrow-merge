@@ -21,4 +21,9 @@ class Row extends Model
     {
         return $this->hasMany(RowPerizinan::class);
     }
+
+    public function sosialisasis()
+    {
+        return $this->hasMany(RowSosialisasi::class);
+    }
 }
