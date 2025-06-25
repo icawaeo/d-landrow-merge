@@ -108,8 +108,9 @@
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
                                 @foreach($rowTahapan as $tahapan)
                                     @if ($tahapan === 'Sosialisasi')
-                                        {{-- Beri link yang benar ke route sosialisasi ROW --}}
                                         <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                    @elseif ($tahapan === 'Inventaris & Pengumuman')
+                                        <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                     @else
                                         <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                     @endif

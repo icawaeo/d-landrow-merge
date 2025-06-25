@@ -5,7 +5,7 @@
                 <a href="{{ route('homepage') }}" class="text-gray-500 hover:text-gray-700">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 </a>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dokumen Inventarisasi: {{ $proyek->nama_proyek }}</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dokumen Inventarisasi dan Pengumuman: {{ $proyek->nama_proyek }}</h2>
             </div>
             <a href="{{ route('inventarisasi.create', $proyek->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">+ Tambah Data</a>
         </div>

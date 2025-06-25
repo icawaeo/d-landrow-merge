@@ -11,6 +11,7 @@ use App\Http\Controllers\RowPerizinanController;
 use App\Http\Controllers\SosialisasiController;
 use App\Http\Controllers\RowSosialisasiController;
 use App\Http\Controllers\InventarisasiController;
+use App\Http\Controllers\RowInventarisasiController;
 
 
 /*
@@ -97,6 +98,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/row/sosialisasi/{sosialisasi}/edit', [RowSosialisasiController::class, 'edit'])->name('row.sosialisasi.edit');
     Route::put('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'update'])->name('row.sosialisasi.update');
     Route::delete('/row/sosialisasi/{sosialisasi}', [RowSosialisasiController::class, 'destroy'])->name('row.sosialisasi.destroy'); 
+
+    Route::get('/row/{row}/inventarisasi', [RowInventarisasiController::class, 'index'])->name('row-inventarisasi.index');
+    Route::get('/row/{row}/inventarisasi/create', [RowInventarisasiController::class, 'create'])->name('row-inventarisasi.create');
+    Route::post('/row/{row}/inventarisasi', [RowInventarisasiController::class, 'store'])->name('row-inventarisasi.store');
+    
+    Route::get('/row-inventarisasi/{rowInventarisasi}/edit', [RowInventarisasiController::class, 'edit'])->name('row-inventarisasi.edit');
+    Route::put('/row-inventarisasi/{rowInventarisasi}', [RowInventarisasiController::class, 'update'])->name('row-inventarisasi.update');
+    Route::delete('/row-inventarisasi/{rowInventarisasi}', [RowInventarisasiController::class, 'destroy'])->name('row-inventarisasi.destroy');
 
 });
 

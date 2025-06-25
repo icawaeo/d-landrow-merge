@@ -26,4 +26,10 @@ class Row extends Model
     {
         return $this->hasMany(RowSosialisasi::class);
     }
+    
+    public function rowInventarisasis()
+    {
+        return $this->hasMany(RowInventarisasi::class);
+    }
+
 }
