@@ -62,6 +62,8 @@
                                     @foreach($pengadaanTanahTahapan as $tahapan)
                                         @if ($tahapan === 'Sosialisasi')
                                             <li><a href="{{ route('sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Inventaris & Pengumuman')
+                                            <li><a href="{{ route('inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                         @else
                                             {{-- Link Musyawarah & lainnya dinonaktifkan sementara --}}
                                             <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>

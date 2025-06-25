@@ -18,6 +18,11 @@ class PengadaanTanah extends Model
     ];
     public function sosialisasis()
     {
-        return $this->hasMany(Sosialisasi::class);
+    return $this->hasMany(Sosialisasi::class);
+    }
+
+    public function inventarisasis()
+    {
+    return $this->hasMany(Inventarisasi::class);
     }
 }
