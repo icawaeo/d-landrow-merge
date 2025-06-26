@@ -15,6 +15,9 @@ use App\Http\Controllers\RowInventarisasiController;
 use App\Http\Controllers\MusyawarahSubController;
 use App\Http\Controllers\RowMusyawarahSubController;
 use App\Http\Controllers\PembayaranSubController;
+use App\Http\Controllers\RowPembayaranController;
+use App\Http\Controllers\MusyawarahController;
+use App\Http\Controllers\PembayaranController;
 
 
 /*
@@ -90,6 +93,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/pembayaran-sub/{pembayaranSub}', [PembayaranSubController::class, 'update'])->name('pembayaran_sub.update');
     Route::delete('/pembayaran-sub/{pembayaranSub}', [PembayaranSubController::class, 'destroy'])->name('pembayaran_sub.destroy');
 
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/musyawarah', [MusyawarahController::class, 'index'])->name('musyawarah.index');
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/musyawarah', [MusyawarahController::class, 'store'])->name('musyawarah.store');
+    Route::post('/musyawarah/{musyawarah}/upload', [MusyawarahController::class, 'upload'])->name('musyawarah.upload');
+
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
+    Route::post('/pembayaran/{item}/update', [PembayaranController::class, 'update'])->name('pembayaran.update');
 
     /*row*/
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
@@ -134,6 +143,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/row/musyawarah-sub/{musyawarahSub}', [RowMusyawarahSubController::class, 'update'])->name('row.musyawarah_sub.update');
     Route::delete('/row/musyawarah-sub/{musyawarahSub}', [RowMusyawarahSubController::class, 'destroy'])->name('row.musyawarah_sub.destroy');
 
+    Route::get('/row/{row}/pembayaran', [RowPembayaranController::class, 'index'])->name('row.pembayaran.index');
+    Route::get('/row/{row}/pembayaran/create', [RowPembayaranController::class, 'create'])->name('row.pembayaran.create');
+    Route::post('/row/{row}/pembayaran', [RowPembayaranController::class, 'store'])->name('row.pembayaran.store');
+
+    Route::get('/row-pembayaran/{pembayaran}/edit', [RowPembayaranController::class, 'edit'])->name('row.pembayaran.edit');
+    Route::put('/row-pembayaran/{pembayaran}', [RowPembayaranController::class, 'update'])->name('row.pembayaran.update');
+    Route::delete('/row-pembayaran/{pembayaran}', [RowPembayaranController::class, 'destroy'])->name('row.pembayaran.destroy');
 
 });
 

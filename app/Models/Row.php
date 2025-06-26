@@ -37,4 +37,8 @@ class Row extends Model
         return $this->hasMany(RowMusyawarahSub::class);
     }
 
+    public function pembayarans()
+    {
+        return $this->hasMany(RowPembayaran::class);
+    }
 }

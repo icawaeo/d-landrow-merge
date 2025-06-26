@@ -37,4 +37,8 @@ class PengadaanTanah extends Model
     return $this->hasMany(PembayaranSub::class);
     }
     
+    public function musyawarahs()
+    {
+    return $this->hasMany(Musyawarah::class);
+    }
 }
