@@ -64,10 +64,10 @@
                                             <li><a href="{{ route('sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
                                         @elseif ($tahapan === 'Inventaris & Pengumuman')
                                             <li><a href="{{ route('inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                        @else
-                                            {{-- Link Musyawarah & lainnya dinonaktifkan sementara --}}
-                                            <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                        @endif
+                                        @elseif ($tahapan === 'Musyawarah')
+                                             <li><a href="{{ route('musyawarah_sub.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Pembayaran')
+                                             <li><a href="{{ route('pembayaran_sub.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>                                        @endif
                                     @endforeach
                                 </ul>
                             </details>
@@ -107,14 +107,14 @@
                                 <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
                                 <ul class="pl-6 mt-1 space-y-1 text-xs">
                                 @foreach($rowTahapan as $tahapan)
-                                    @if ($tahapan === 'Sosialisasi')
-                                        <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @elseif ($tahapan === 'Inventaris & Pengumuman')
-                                        <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @else
-                                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @endif
-                                @endforeach
+                                        @if ($tahapan === 'Sosialisasi')
+                                            <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Musyawarah')
+                                            <li><a href="{{ route('row.musyawarah_sub.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @else
+                                            <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @endif
+                                    @endforeach
                             </ul>
                             </details>
                         </li>

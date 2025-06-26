@@ -25,4 +25,16 @@ class PengadaanTanah extends Model
     {
     return $this->hasMany(Inventarisasi::class);
     }
+
+    public function musyawarahSubs()
+    {
+    return $this->hasMany(MusyawarahSub::class);
+    }
+
+    // di dalam class PengadaanTanah
+    public function pembayaranSubs()
+    {
+    return $this->hasMany(PembayaranSub::class);
+    }
+    
 }

@@ -12,6 +12,9 @@ use App\Http\Controllers\SosialisasiController;
 use App\Http\Controllers\RowSosialisasiController;
 use App\Http\Controllers\InventarisasiController;
 use App\Http\Controllers\RowInventarisasiController;
+use App\Http\Controllers\MusyawarahSubController;
+use App\Http\Controllers\RowMusyawarahSubController;
+use App\Http\Controllers\PembayaranSubController;
 
 
 /*
@@ -71,6 +74,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/inventarisasi/{inventarisasi}', [InventarisasiController::class, 'update'])->name('inventarisasi.update');
     Route::delete('/inventarisasi/{inventarisasi}', [InventarisasiController::class, 'destroy'])->name('inventarisasi.destroy');
 
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/musyawarah-sub', [MusyawarahSubController::class, 'index'])->name('musyawarah_sub.index');
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/musyawarah-sub/create', [MusyawarahSubController::class, 'create'])->name('musyawarah_sub.create');    
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/musyawarah-sub', [MusyawarahSubController::class, 'store'])->name('musyawarah_sub.store');
+
+    Route::get('/musyawarah-sub/{musyawarahSub}/edit', [MusyawarahSubController::class, 'edit'])->name('musyawarah_sub.edit');
+    Route::put('/musyawarah-sub/{musyawarahSub}', [MusyawarahSubController::class, 'update'])->name('musyawarah_sub.update');
+    Route::delete('/musyawarah-sub/{musyawarahSub}', [MusyawarahSubController::class, 'destroy'])->name('musyawarah_sub.destroy');
+
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/pembayaran-sub', [PembayaranSubController::class, 'index'])->name('pembayaran_sub.index');
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/pembayaran-sub/create', [PembayaranSubController::class, 'create'])->name('pembayaran_sub.create');
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/pembayaran-sub', [PembayaranSubController::class, 'store'])->name('pembayaran_sub.store');
+
+    Route::get('/pembayaran-sub/{pembayaranSub}/edit', [PembayaranSubController::class, 'edit'])->name('pembayaran_sub.edit');
+    Route::put('/pembayaran-sub/{pembayaranSub}', [PembayaranSubController::class, 'update'])->name('pembayaran_sub.update');
+    Route::delete('/pembayaran-sub/{pembayaranSub}', [PembayaranSubController::class, 'destroy'])->name('pembayaran_sub.destroy');
+
 
     /*row*/
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
@@ -102,10 +121,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/row/{row}/inventarisasi', [RowInventarisasiController::class, 'index'])->name('row-inventarisasi.index');
     Route::get('/row/{row}/inventarisasi/create', [RowInventarisasiController::class, 'create'])->name('row-inventarisasi.create');
     Route::post('/row/{row}/inventarisasi', [RowInventarisasiController::class, 'store'])->name('row-inventarisasi.store');
-    
+
     Route::get('/row-inventarisasi/{rowInventarisasi}/edit', [RowInventarisasiController::class, 'edit'])->name('row-inventarisasi.edit');
     Route::put('/row-inventarisasi/{rowInventarisasi}', [RowInventarisasiController::class, 'update'])->name('row-inventarisasi.update');
     Route::delete('/row-inventarisasi/{rowInventarisasi}', [RowInventarisasiController::class, 'destroy'])->name('row-inventarisasi.destroy');
+
+    Route::get('/row/{row}/musyawarah-sub', [RowMusyawarahSubController::class, 'index'])->name('row.musyawarah_sub.index');
+    Route::get('/row/{row}/musyawarah-sub/create', [RowMusyawarahSubController::class, 'create'])->name('row.musyawarah_sub.create');
+    Route::post('/row/{row}/musyawarah-sub', [RowMusyawarahSubController::class, 'store'])->name('row.musyawarah_sub.store');
+
+    Route::get('/row/musyawarah-sub/{musyawarahSub}/edit', [RowMusyawarahSubController::class, 'edit'])->name('row.musyawarah_sub.edit');
+    Route::put('/row/musyawarah-sub/{musyawarahSub}', [RowMusyawarahSubController::class, 'update'])->name('row.musyawarah_sub.update');
+    Route::delete('/row/musyawarah-sub/{musyawarahSub}', [RowMusyawarahSubController::class, 'destroy'])->name('row.musyawarah_sub.destroy');
+
 
 });
 

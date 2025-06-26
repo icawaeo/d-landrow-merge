@@ -31,5 +31,10 @@ class Row extends Model
     {
         return $this->hasMany(RowInventarisasi::class);
     }
+    
+    public function musyawarahSubs()
+    {
+        return $this->hasMany(RowMusyawarahSub::class);
+    }
 
 }
