@@ -35,7 +35,7 @@
                 // Menu khusus untuk ROW
                 $rowTopMenus = ['Dashboard', 'Perizinan'];
                 $rowTahapan = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
-                $rowBottomMenus = ['Penetapan Nilai', 'Pembayaran'];
+                $rowBottomMenus = ['Penetapan Nilai', 'Penyampaian', 'Pembayaran'];
             @endphp
 
             {{-- BAGIAN 1: PENGADAAN TANAH --}}
@@ -81,7 +81,11 @@
                             @endif
                         @endforeach
                         @foreach($pengadaanTanahBottomMenus as $menu)
-                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @if ($menu === 'Dokumen Hasil')
+                                <li><a href="{{ route('dokumenhasil.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @elseif ($menu === 'Sertifikat')
+                                <li><a href="{{ route('sertifikat.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @endif
                         @endforeach
                     </ul>
                 </details>
@@ -126,7 +130,28 @@
                         </details>
                                 </li>
                         @foreach($rowBottomMenus as $menu)
-                        <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                            @if ($menu === 'Penetapan Nilai')
+                                <li>
+                                <a href="{{ route('row.penetapan-nilai.index', $proyek->id) }}"
+                                        class="block px-3 py-1 rounded-md hover:bg-gray-200">
+                                        {{ $menu }}
+                                    </a>
+                                </li>
+                            @elseif ($menu === 'Penyampaian')
+                                <li>
+                                    <a href="{{ route('row.penyampaian.index', $proyek->id) }}" 
+                                        class="block px-3 py-1 rounded-md hover:bg-gray-200">
+                                        {{ $menu }}
+                                    </a>
+                                </li>
+                                @elseif ($menu === 'Pembayaran')
+                                    <li>
+                                        <a href="{{ route('row.pembayaran-menu.index', $proyek->id) }}"
+                                            class="block px-3 py-1 rounded-md hover:bg-gray-200">
+                                            {{ $menu }}
+                                        </a>
+                                    </li>
+                                @endif
                         @endforeach
                     </ul>
                  </details>
