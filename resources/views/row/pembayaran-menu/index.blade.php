@@ -10,152 +10,158 @@
         </div>
     </x-slot>
 
-    <div class="py-8 px-6 max-w-7xl mx-auto space-y-6">
+    <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+        
+        {{-- Menggunakan Blade Component untuk notifikasi yang konsisten --}}
         @if (session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded text-sm">
-                {{ session('success') }}
-            </div>
+            <x-alert type="success">{{ session('success') }}</x-alert>
         @endif
 
-        <div class="bg-white shadow rounded overflow-x-auto">
-            <table class="min-w-full text-sm text-gray-800 border border-gray-200 rounded-lg">
-                <thead class="bg-gray-100 text-xs uppercase tracking-wider text-gray-700">
-                    <tr>
-                        <th class="px-4 py-3 border">No</th>
-                        <th class="px-4 py-3 border">SPAN</th>
-                        <th class="px-4 py-3 border">BIDANG</th>
-                        <th class="px-4 py-3 border">PEMILIK</th>
-                        <th class="px-4 py-3 border">DESA</th>
-                        <th class="px-4 py-3 border">NILAI</th>
-                        <th class="px-4 py-3 border">STATUS</th>
-                        <th class="px-4 py-3 border">TGL</th>
-                        <th class="px-4 py-3 border">BUKTI</th>
-                        <th class="px-4 py-3 border">AKSI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($penyampaians as $i => $penyampaian)
-                        @php
-                            $nilai = $penyampaian->penetapanNilai;
-                            $pembayaran = $penyampaian->pembayaranMenu;
-                        @endphp
-                        <tr class="hover:bg-gray-50">
-                            <td class="border px-4 py-2 text-center">{{ $i + 1 }}</td>
-                            <td class="border px-4 py-2">{{ $nilai->span }}</td>
-                            <td class="border px-4 py-2">{{ $nilai->no_bidang }}</td>
-                            <td class="border px-4 py-2">{{ $nilai->nama_pemilik }}</td>
-                            <td class="border px-4 py-2">{{ $nilai->desa }}</td>
-                            <td class="border px-4 py-2 text-right">
-                                Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
-                            </td>
-                            <td class="border px-4 py-2 text-center">
-                                @if ($pembayaran?->status === 'TERBAYAR')
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
-                                        ✅ TERBAYAR
-                                    </span>
-                                @elseif ($pembayaran?->status === 'BELUM TERBAYAR')
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                                        ❌ BELUM
-                                    </span>
-                                @else
-                                    <span class="text-gray-400 text-xs italic">Belum Diisi</span>
-                                @endif
-                            </td>
-                            <td class="border px-4 py-2 text-center">
-                                {{ $pembayaran?->tanggal_pembayaran ?? '-' }}
-                            </td>
-                            <td class="border px-4 py-2 text-center">
-                                @if ($pembayaran && $pembayaran->bukti_dokumen)
-                                    <a href="{{ asset('storage/' . $pembayaran->bukti_dokumen) }}" target="_blank"
-                                        class="text-blue-600 underline text-xs">📄 Lihat</a>
-                                @else
-                                    <span class="text-gray-400 text-xs">Belum Ada</span>
-                                @endif
-                            </td>
-                            <td class="border px-4 py-2 text-center">
-                                @if ($pembayaran)
-                                    <a href="#" onclick="event.preventDefault(); document.getElementById('form-{{ $pembayaran->id }}').classList.toggle('hidden')" class="text-green-600 text-xs hover:underline">
-                                        ✏ Update
-                                    </a>
-                                    <form action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus data ini?')">
-                                        @csrf @method('DELETE')
-                                        <button class="text-red-600 text-xs hover:underline">🗑 Hapus</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('row.pembayaran-menu.store', $penyampaian->id) }}"
-                                        method="POST" enctype="multipart/form-data"
-                                        class="flex flex-wrap items-center gap-1 justify-center text-xs">
-                                        @csrf
-
-                                        <select name="status" required class="border rounded px-1 py-0.5 text-xs w-[90px]">
-                                            <option value="TERBAYAR">TERBAYAR</option>
-                                            <option value="BELUM TERBAYAR">BELUM</option>
-                                        </select>
-
-                                        <input type="date" name="tanggal_pembayaran" required
-                                            class="border rounded px-1 py-0.5 text-xs w-[100px]">
-
-                                        <input type="file" name="bukti_dokumen"
-                                            accept="application/pdf,image/*"
-                                            class="text-xs w-[110px] truncate">
-
-                                        <button type="submit"
-                                                class="bg-blue-600 text-white px-2 py-0.5 rounded hover:bg-blue-700 transition text-xs">
-                                            💾 Simpan
-                                        </button>
-                                    </form>
-                                @endif
-                            </td>
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            {{-- PERBAIKAN: Menyesuaikan gaya header tabel --}}
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Span</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bidang</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Bayar</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
-
-                        {{-- FORM UPDATE --}}
-                        @if ($pembayaran)
-                            <tr id="form-{{ $pembayaran->id }}" class="hidden bg-gray-50">
-                                <td colspan="10" class="p-3 border">
-                                    <form action="{{ route('row.pembayaran-menu.update', $pembayaran->id) }}"
-                                        method="POST" enctype="multipart/form-data"
-                                        class="flex flex-wrap items-end gap-2 text-xs">
-                                        @csrf @method('PUT')
-
-                                        <div class="flex flex-col">
-                                            <label class="text-[11px]">Status</label>
-                                            <select name="status" required class="border rounded px-1 py-0.5 w-[90px]">
-                                                <option value="TERBAYAR" {{ $pembayaran->status == 'TERBAYAR' ? 'selected' : '' }}>TERBAYAR</option>
-                                                <option value="BELUM TERBAYAR" {{ $pembayaran->status == 'BELUM TERBAYAR' ? 'selected' : '' }}>BELUM</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label class="text-[11px]">Tanggal</label>
-                                            <input type="date" name="tanggal_pembayaran"
-                                                value="{{ $pembayaran->tanggal_pembayaran }}"
-                                                class="border rounded px-1 py-0.5 w-[100px]">
-                                        </div>
-
-                                        <div class="flex flex-col">
-                                            <label class="text-[11px]">Bukti</label>
-                                            <input type="file" name="bukti_dokumen"
-                                                accept="application/pdf,image/*"
-                                                class="text-xs w-[120px] truncate">
-                                        </div>
-
-                                        <div class="flex items-end">
-                                            <button type="submit"
-                                                    class="bg-green-600 text-white px-2 py-0.5 rounded hover:bg-green-700 transition">
-                                                💾 Simpan
-                                            </button>
-                                        </div>
-                                    </form>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach ($penyampaians as $i => $penyampaian)
+                            @php
+                                $nilai = $penyampaian->penetapanNilai;
+                                $pembayaran = $penyampaian->pembayaranMenu;
+                            @endphp
+                            <tr class="hover:bg-gray-50">
+                                {{-- PERBAIKAN: Menyesuaikan gaya sel tabel --}}
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $i + 1 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->span }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->no_bidang }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->nama_pemilik }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->desa }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right">
+                                    Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    @if ($pembayaran?->status === 'TERBAYAR')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">
+                                            TERBAYAR
+                                        </span>
+                                    @elseif ($pembayaran?->status === 'BELUM TERBAYAR')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-100 text-red-800 text-xs font-medium">
+                                            BELUM
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400 text-xs italic">Belum Diisi</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    {{ $pembayaran?->tanggal_pembayaran ? \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y') : '-' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    @if ($pembayaran && $pembayaran->bukti_dokumen)
+                                        <a href="{{ asset('storage/' . $pembayaran->bukti_dokumen) }}" target="_blank"
+                                           class="text-blue-600 hover:underline text-sm">Lihat</a>
+                                    @else
+                                        <span class="text-gray-400 text-xs">Kosong</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center space-x-4">
+                                        @if ($pembayaran)
+                                            {{-- PERBAIKAN: Mengganti tombol dengan ikon --}}
+                                            <a href="#" onclick="event.preventDefault(); document.getElementById('form-{{ $pembayaran->id }}').classList.toggle('hidden')" class="text-indigo-600 hover:text-indigo-900" title="Update">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                            <form action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus data ini?')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900" title="Hapus">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <a href="#" onclick="event.preventDefault(); document.getElementById('form-create-{{ $penyampaian->id }}').classList.toggle('hidden')" class="text-blue-600 hover:text-blue-900" title="Input Data">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
 
+                            {{-- FORM UPDATE (TERSEMBUNYI) --}}
+                            @if ($pembayaran)
+                                <tr id="form-{{ $pembayaran->id }}" class="hidden">
+                                    <td colspan="10" class="p-4 bg-gray-50">
+                                        <form action="{{ route('row.pembayaran-menu.update', $pembayaran->id) }}" method="POST" enctype="multipart/form-data" class="flex items-end gap-4">
+                                            @csrf @method('PUT')
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Status</label>
+                                                <select name="status" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                                    <option value="TERBAYAR" @selected($pembayaran->status == 'TERBAYAR')>TERBAYAR</option>
+                                                    <option value="BELUM TERBAYAR" @selected($pembayaran->status == 'BELUM TERBAYAR')>BELUM TERBAYAR</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Tanggal</label>
+                                                <input type="date" name="tanggal_pembayaran" value="{{ $pembayaran->tanggal_pembayaran }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Ganti Bukti</label>
+                                                <input type="file" name="bukti_dokumen" class="mt-1 block w-full text-xs text-gray-500">
+                                            </div>
+                                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm">Simpan</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @else
+                                {{-- FORM CREATE (TERSEMBUNYI) --}}
+                                <tr id="form-create-{{ $penyampaian->id }}" class="hidden">
+                                     <td colspan="10" class="p-4 bg-gray-50">
+                                        <form action="{{ route('row.pembayaran-menu.store', $penyampaian->id) }}" method="POST" enctype="multipart/form-data" class="flex items-end gap-4">
+                                            @csrf
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Status</label>
+                                                <select name="status" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                                    <option value="TERBAYAR">TERBAYAR</option>
+                                                    <option value="BELUM TERBAYAR">BELUM TERBAYAR</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Tanggal</label>
+                                                <input type="date" name="tanggal_pembayaran" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700">Upload Bukti</label>
+                                                <input type="file" name="bukti_dokumen" required class="mt-1 block w-full text-xs text-gray-500">
+                                            </div>
+                                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm">Simpan</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-blue-800 rounded">
-            Hanya data dengan status <strong>SETUJU</strong> yang ditampilkan. Silakan isi status <b>Terbayar</b>, <b>Tanggal</b>, dan <b>Upload Bukti Dokumen</b> jika pembayaran telah dilakukan.
+            Hanya data dengan status <strong>SETUJU</strong> dari halaman Penyampaian yang ditampilkan. Silakan isi status <b>Terbayar</b>, <b>Tanggal</b>, dan <b>Upload Bukti Dokumen</b> jika pembayaran telah dilakukan.
         </div>
     </div>
 </x-app-layout>

@@ -8,51 +8,82 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white">
-                        <thead>
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">No.</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">No Tip</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Pemilik</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Desa</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nilai</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tgl Bayar</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bukti Dokumen</th>
-                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">No.</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">No Tip</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Pemilik</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Desa</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nilai</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Bayar</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tgl Bayar</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bukti Dokumen</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach($pembayaranItems as $item)
-                                <tr>
-                                    <form action="{{ route('pembayaran.update', $item->id) }}" method="POST" enctype="multipart/form-data">
+                                {{-- Logika untuk beralih antara mode edit dan mode normal --}}
+                                @if(isset($itemToEdit) && $itemToEdit->id === $item->id)
+                                    {{-- MODE EDIT: Tampilkan baris sebagai form --}}
+                                    <form action="{{ route('pembayaran.update', $itemToEdit->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <td class="px-2 py-2">{{ $loop->iteration }}</td>
-                                        <td class="px-2 py-2">{{ $item->no_tip }}</td>
-                                        <td class="px-2 py-2">{{ $item->nama_pemilik }}</td>
-                                        <td class="px-2 py-2">{{ $item->desa }}</td>
-                                        <td class="px-2 py-2">Rp. {{ number_format($item->nilai, 0, ',', '.') }}</td>
-                                        <td class="px-2 py-2">
-                                            <select name="status_pembayaran" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                                                <option value="">--Pilih--</option>
-                                                <option value="TERBAYAR" @selected($item->status_pembayaran == 'TERBAYAR')>TERBAYAR</option>
-                                                <option value="PROSES" @selected($item->status_pembayaran == 'PROSES')>PROSES</option>
-                                                <option value="MENOLAK" @selected($item->status_pembayaran == 'MENOLAK')>MENOLAK</option>
-                                            </select>
-                                        </td>
-                                        <td class="px-2 py-2">
-                                            <input type="date" name="tanggal_pembayaran" value="{{ $item->tanggal_pembayaran }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                                        </td>
-                                        <td class="px-2 py-2">
-                                            @if ($item->bukti_pembayaran)
-                                                <a href="{{ Storage::url($item->bukti_pembayaran) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat</a>
-                                            @endif
-                                            <input type="file" name="bukti_pembayaran" class="text-xs">
-                                        </td>
-                                        <td class="px-2 py-2">
-                                            <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-3 py-1.5">Simpan</button>
-                                        </td>
+                                        @method('PUT')
+                                        <tr class="bg-yellow-50">
+                                            <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-2">{{ $itemToEdit->no_tip }}</td>
+                                            <td class="px-4 py-2">{{ $itemToEdit->nama_pemilik }}</td>
+                                            <td class="px-4 py-2">{{ $itemToEdit->desa }}</td>
+                                            <td class="px-4 py-2">Rp. {{ number_format($itemToEdit->nilai, 0, ',', '.') }}</td>
+                                            <td class="px-2 py-1">
+                                                <select name="status_pembayaran" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                                    <option value="">--Pilih--</option>
+                                                    <option value="TERBAYAR" @selected(old('status_pembayaran', $itemToEdit->status_pembayaran) == 'TERBAYAR')>TERBAYAR</option>
+                                                    <option value="PROSES" @selected(old('status_pembayaran', $itemToEdit->status_pembayaran) == 'PROSES')>PROSES</option>
+                                                    <option value="MENOLAK" @selected(old('status_pembayaran', $itemToEdit->status_pembayaran) == 'MENOLAK')>MENOLAK</option>
+                                                </select>
+                                            </td>
+                                            <td class="px-2 py-1">
+                                                <input type="date" name="tanggal_pembayaran" value="{{ old('tanggal_pembayaran', $itemToEdit->tanggal_pembayaran) }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                            </td>
+                                            <td class="px-2 py-1">
+                                                <input type="file" name="bukti_pembayaran" class="text-xs w-full">
+                                                @if ($itemToEdit->bukti_pembayaran)
+                                                    <a href="{{ Storage::url($itemToEdit->bukti_pembayaran) }}" target="_blank" class="text-blue-600 text-xs hover:underline block mt-1">Lihat File</a>
+                                                @endif
+                                            </td>
+                                            <td class="px-4 py-2">
+                                                <div class="flex items-center space-x-2">
+                                                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1.5">Update</button>
+                                                    <a href="{{ route('pembayaran.index', $proyek->id) }}" class="text-gray-600 hover:text-gray-900">Batal</a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </form>
-                                </tr>
+                                @else
+                                    {{-- MODE NORMAL: Tampilkan data seperti biasa --}}
+                                    <tr>
+                                        <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-2">{{ $item->no_tip }}</td>
+                                        <td class="px-4 py-2">{{ $item->nama_pemilik }}</td>
+                                        <td class="px-4 py-2">{{ $item->desa }}</td>
+                                        <td class="px-4 py-2">Rp. {{ number_format($item->nilai, 0, ',', '.') }}</td>
+                                        <td class="px-4 py-2">{{ $item->status_pembayaran ?? 'Belum Diproses' }}</td>
+                                        <td class="px-4 py-2">{{ $item->tanggal_pembayaran ? \Carbon\Carbon::parse($item->tanggal_pembayaran)->format('d/m/Y') : '-' }}</td>
+                                        <td class="px-4 py-2">
+                                            @if ($item->bukti_pembayaran)
+                                                <a href="{{ Storage::url($item->bukti_pembayaran) }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
+                                            @else
+                                                <span class="text-gray-400">Kosong</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            {{-- Tombol Edit akan memicu mode inline-edit --}}
+                                            <a href="{{ route('pembayaran.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            {{-- Hapus tetap terpisah jika diperlukan --}}
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

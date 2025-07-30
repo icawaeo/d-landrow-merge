@@ -101,10 +101,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/musyawarah', [MusyawarahController::class, 'index'])->name('musyawarah.index');
     Route::post('/pengadaan-tanah/{pengadaanTanah}/musyawarah', [MusyawarahController::class, 'store'])->name('musyawarah.store');
+    Route::get('/musyawarah/{musyawarah}/edit', [MusyawarahController::class, 'edit'])->name('musyawarah.edit');
+    Route::put('/musyawarah/{musyawarah}', [MusyawarahController::class, 'update'])->name('musyawarah.update');
+    Route::delete('/musyawarah/{musyawarah}', [MusyawarahController::class, 'destroy'])->name('musyawarah.destroy');
     Route::post('/musyawarah/{musyawarah}/upload', [MusyawarahController::class, 'upload'])->name('musyawarah.upload');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
-    Route::post('/pembayaran/{item}/update', [PembayaranController::class, 'update'])->name('pembayaran.update');
+    Route::get('/pembayaran/{item}/edit', [PembayaranController::class, 'edit'])->name('pembayaran.edit');
+    Route::put('/pembayaran/{item}/update', [PembayaranController::class, 'update'])->name('pembayaran.update');
 
     Route::get('/dokumenhasil', [DokumenHasilController::class, 'index'])->name('dokumenhasil.index');
     Route::post('/dokumenhasil/upload/{id}', [DokumenHasilController::class, 'upload'])->name('dokumenhasil.upload');
@@ -113,7 +117,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sertifikat/{proyek}', [SertifikatController::class, 'index'])->name('sertifikat.index');
     Route::post('/sertifikat/search/{proyek}', [SertifikatController::class, 'search'])->name('sertifikat.search');
     Route::post('/sertifikat/upload/{id}', [SertifikatController::class, 'upload'])->name('sertifikat.upload');
-
+    
 
     /*row*/
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
@@ -173,12 +177,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/row/{row}/penetapan-nilai/{id}', [PenetapanNilaiController::class, 'destroy'])->name('row.penetapan-nilai.destroy');
 
     Route::get('/row/{row}/penyampaian', [PenyampaianController::class, 'index'])->name('row.penyampaian.index');
-    Route::post('/row/penyampaian/{penetapanNilaiId}', [PenyampaianController::class, 'store'])->name('row.penyampaian.store');
-    Route::put('/row/penyampaian/update/{penyampaian}', [PenyampaianController::class, 'update'])->name('row.penyampaian.update');
-    Route::delete('/row/penyampaian/delete/{penyampaian}', [PenyampaianController::class, 'destroy'])->name('row.penyampaian.destroy');
-    Route::delete('/row/penyampaian/file/{penyampaian}', [PenyampaianController::class, 'deleteFile'])->name('row.penyampaian.file.delete');
+    Route::post('/row/{row}/penyampaian/{penetapanNilai}', [PenyampaianController::class, 'store'])->name('row.penyampaian.store');
+    Route::put('/penyampaian/{penyampaian}', [PenyampaianController::class, 'update'])->name('row.penyampaian.update');
+    Route::delete('/penyampaian/{penyampaian}', [PenyampaianController::class, 'destroy'])->name('row.penyampaian.destroy');
 
-    // PembayaranMenu - Data diturunkan dari Penyampaian
     Route::get('/row/{row}/pembayaran-menu', [PembayaranMenuController::class, 'index'])->name('row.pembayaran-menu.index');
     Route::post('/row/pembayaran-menu/{penyampaianId}', [PembayaranMenuController::class, 'store'])->name('row.pembayaran-menu.store');
     Route::put('/row/pembayaran-menu/{pembayaran}', [PembayaranMenuController::class, 'update'])->name('row.pembayaran-menu.update');

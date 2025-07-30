@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Penyampaian;
 use App\Models\PenetapanNilai;
 use App\Models\Row;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PenyampaianController extends Controller
 {
+    /**
+     * Menampilkan data Penetapan Nilai beserta status Penyampaian-nya.
+     */
     public function index(Row $row, Request $request)
     {
         $spanFilter = $request->input('span');
@@ -21,7 +24,7 @@ class PenyampaianController extends Controller
 
         $penetapanNilais = PenetapanNilai::with('penyampaian')
             ->where('row_id', $row->id)
-            ->when($spanFilter, function ($query) use ($spanFilter) {
+            ->when($spanFilter, function ($query, $spanFilter) {
                 $query->where('span', $spanFilter);
             })
             ->get();
@@ -29,68 +32,51 @@ class PenyampaianController extends Controller
         return view('row.penyampaian.index', compact('penetapanNilais', 'spans', 'spanFilter', 'row'));
     }
 
-    public function store(Request $request, $penetapanNilaiId)
+    /**
+     * Menyimpan data Penyampaian baru untuk sebuah Penetapan Nilai.
+     */
+    public function store(Request $request, Row $row, PenetapanNilai $penetapanNilai)
     {
-        $request->validate([
-            'status' => 'required',
-            'bukti_dokumen' => 'required|file|max:5120',
+        $validated = $request->validate([
+            'status_persetujuan' => 'required|string|in:Setuju,Menolak',
+            'dokumen_penyampaian' => 'required|file|mimes:pdf,jpg,png|max:5120',
         ]);
 
-        $filePath = $request->file('bukti_dokumen')->store('penyampaian', 'public');
+        if ($request->hasFile('dokumen_penyampaian')) {
+            $validated['dokumen_penyampaian'] = $request->file('dokumen_penyampaian')->store('penyampaian_docs', 'public');
+        }
 
-        $penetapanNilai = \App\Models\PenetapanNilai::findOrFail($penetapanNilaiId);
+        $validated['penetapan_nilai_id'] = $penetapanNilai->id;
+        $validated['row_id'] = $row->id;
 
-        Penyampaian::create([
-            'penetapan_nilai_id' => $penetapanNilaiId,
-            'row_id' => $penetapanNilai->row_id, // 👈 tambahkan ini
-            'status_persetujuan' => $request->status,
-            'bukti_dokumen' => $filePath,
-        ]);
+        Penyampaian::create($validated);
 
-        return back()->with('success', 'Data berhasil disimpan.');
+        return back()->with('success', 'Data penyampaian berhasil disimpan.');
     }
 
+    /**
+     * PERBAIKAN: Mengupdate hanya status dan dokumen.
+     */
     public function update(Request $request, Penyampaian $penyampaian)
     {
         $validated = $request->validate([
-            'status_persetujuan' => 'required|string',
-            'bukti_dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'status_persetujuan' => 'required|string|in:Setuju,Menolak',
+            'dokumen_penyampaian' => 'nullable|file|mimes:pdf,jpg,png|max:5120',
         ]);
 
-        // Handle file baru jika ada
-        if ($request->hasFile('bukti_dokumen')) {
-            if ($penyampaian->bukti_dokumen && Storage::disk('public')->exists($penyampaian->bukti_dokumen)) {
-                Storage::disk('public')->delete($penyampaian->bukti_dokumen);
+        if ($request->hasFile('dokumen_penyampaian')) {
+            if ($penyampaian->dokumen_penyampaian && Storage::disk('public')->exists($penyampaian->dokumen_penyampaian)) {
+                Storage::disk('public')->delete($penyampaian->dokumen_penyampaian);
             }
-
-            $validated['bukti_dokumen'] = $request->file('bukti_dokumen')->store('penyampaian', 'public');
+            $validated['dokumen_penyampaian'] = $request->file('dokumen_penyampaian')->store('penyampaian_docs', 'public');
         }
 
         $penyampaian->update($validated);
 
-        return back()->with('success', 'Data berhasil diperbarui.');
+        return back()->with('success', 'Data penyampaian berhasil diperbarui.');
     }
 
-    public function destroy(Penyampaian $penyampaian)
-    {
-        // Hapus file dari storage jika ada
-        if ($penyampaian->bukti_dokumen && Storage::disk('public')->exists($penyampaian->bukti_dokumen)) {
-            Storage::disk('public')->delete($penyampaian->bukti_dokumen);
-        }
-
-        // Hapus data
-        $penyampaian->delete();
-
-        return back()->with('success', 'Data berhasil dihapus.');
-    }
-
-    public function deleteFile(Penyampaian $penyampaian)
-    {
-        if ($penyampaian->bukti_dokumen && Storage::disk('public')->exists($penyampaian->bukti_dokumen)) {
-            Storage::disk('public')->delete($penyampaian->bukti_dokumen);
-            $penyampaian->update(['bukti_dokumen' => null]);
-        }
-
-        return back()->with('success', 'Dokumen berhasil dihapus.');
-    }
+    /**
+     * Fungsi destroy tidak lagi digunakan.
+     */
 }

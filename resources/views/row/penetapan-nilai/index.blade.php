@@ -11,133 +11,117 @@
     </x-slot>
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+        
+        {{-- PERBAIKAN: Menggunakan Blade Component untuk Notifikasi --}}
         @if (session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded text-sm">
-                {{ session('success') }}
-            </div>
+            <x-alert type="success">{{ session('success') }}</x-alert>
         @endif
 
         @if ($errors->any())
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-800 p-4 rounded text-sm">
+            <x-alert type="danger">
                 <ul class="list-disc list-inside">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </div>
+            </x-alert>
         @endif
 
-        <!-- Dropdown Filter Span -->
-        <div class="bg-white p-4 sm:p-6 rounded shadow">
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
             <form method="GET" action="{{ route('row.penetapan-nilai.index', $row->id) }}">
                 <div class="flex items-center gap-2">
                     <label for="span_select" class="font-medium text-gray-700">Pilih Span:</label>
                     <select id="span_select" name="span"
-                        class="border rounded px-3 py-2 text-sm pr-8 min-w-[160px]"
-                        onchange="this.form.submit()">
+                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm"
+                            onchange="this.form.submit()">
                         <option value="1 ke 2" {{ $span == '1 ke 2' ? 'selected' : '' }}>TIP 1 ke TIP 2</option>
                         <option value="2 ke 3" {{ $span == '2 ke 3' ? 'selected' : '' }}>TIP 2 ke TIP 3</option>
-                        <!-- Tambahkan opsi lain jika perlu -->
                     </select>
                 </div>
             </form>
         </div>
 
-        <!-- Tabel Data -->
-        <div class="bg-white p-4 sm:p-6 rounded shadow overflow-x-auto">
-            <form method="POST" action="{{ route('row.penetapan-nilai.store', $row->id) }}">
-                @csrf
-                <input type="hidden" name="span" value="{{ $span }}">
-                <table class="min-w-full text-sm text-gray-700 border border-gray-200">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 overflow-x-auto">
+                {{-- PERBAIKAN: Mengubah gaya tabel agar konsisten --}}
+                <table class="min-w-full bg-white">
                     <thead class="bg-gray-50">
-                        <tr class="text-left">
-                            <th class="border px-4 py-2">SPAN</th>
-                            <th class="border px-4 py-2">NO BIDANG</th>
-                            <th class="border px-4 py-2">NAMA PEMILIK</th>
-                            <th class="border px-4 py-2">DESA</th>
-                            <th class="border px-4 py-2">NILAI KOMPENSASI</th>
-                            <th class="border px-4 py-2 text-center">AKSI</th>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SPAN</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NO BIDANG</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NAMA PEMILIK</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DESA</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NILAI KOMPENSASI</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AKSI</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-200">
                         @foreach ($data as $item)
-                            <tr>
-                                @if (isset($itemToEdit) && $itemToEdit->id === $item->id)
-                                    <form method="POST" action="{{ route('row.penetapan-nilai.update', [$row->id, $item->id]) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <td class="border px-4 py-2"><input type="text" name="span" value="{{ $item->span }}" class="w-full border rounded px-2 py-1" readonly></td>
-                                        <td class="border px-4 py-2"><input type="text" name="no_bidang" value="{{ $item->no_bidang }}" class="w-full border rounded px-2 py-1"></td>
-                                        <td class="border px-4 py-2"><input type="text" name="nama_pemilik" value="{{ $item->nama_pemilik }}" class="w-full border rounded px-2 py-1"></td>
-                                        <td class="border px-4 py-2"><input type="text" name="desa" value="{{ $item->desa }}" class="w-full border rounded px-2 py-1"></td>
-                                        <td class="border px-4 py-2"><input type="text" name="nilai_kompensasi" value="{{ $item->nilai_kompensasi }}" class="w-full border rounded px-2 py-1"></td>
-                                        <td class="border px-4 py-2 text-center">
-                                            <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-sm">Update</button>
-                                            <a href="{{ route('row.penetapan-nilai.index', [$row->id, 'span' => $span]) }}" class="text-gray-500 text-sm">Batal</a>
+                            @if (isset($itemToEdit) && $itemToEdit->id === $item->id)
+                                {{-- Mode Edit --}}
+                                <form method="POST" action="{{ route('row.penetapan-nilai.update', [$row->id, $item->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <tr class="bg-yellow-50">
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="text" value="{{ $item->span }}" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm text-sm" readonly></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="text" name="no_bidang" value="{{ $item->no_bidang }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="text" name="nama_pemilik" value="{{ $item->nama_pemilik }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="text" name="desa" value="{{ $item->desa }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <input type="text" name="nilai_kompensasi" value="{{ $item->nilai_kompensasi }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                                            @error('nilai_kompensasi') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                         </td>
-                                    </form>
-                                @else
-                                    <td class="border px-4 py-2">{{ $item->span }}</td>
-                                    <td class="border px-4 py-2">{{ $item->no_bidang }}</td>
-                                    <td class="border px-4 py-2">{{ $item->nama_pemilik }}</td>
-                                    <td class="border px-4 py-2">{{ $item->desa }}</td>
-                                    <td class="border px-4 py-2">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
-                                    <td class="border px-4 py-2 text-center space-x-2">
-                                        <a href="{{ route('row.penetapan-nilai.edit', [$row->id, $item->id]) }}" class="text-blue-600 text-sm hover:underline">Edit</a>
-                                        <button type="button" onclick="confirmDelete(`{{ route('row.penetapan-nilai.destroy', [$row->id, $item->id]) }}`)" class="text-red-600 text-sm hover:underline">Hapus</button>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center space-x-2">
+                                                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1.5">Update</button>
+                                                <a href="{{ route('row.penetapan-nilai.index', [$row->id, 'span' => $span]) }}" class="text-gray-600 hover:text-gray-900">Batal</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </form>
+                            @else
+                                {{-- Mode Tampilan Normal --}}
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->span }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->no_bidang }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_pemilik }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->desa }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center space-x-4">
+                                            <a href="{{ route('row.penetapan-nilai.edit', [$row->id, $item->id]) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <button type="button" onclick="confirmDelete(`{{ route('row.penetapan-nilai.destroy', [$row->id, $item->id]) }}`)" class="text-red-600 hover:text-red-900">Hapus</button>
+                                        </div>
                                     </td>
-                                @endif
-                            </tr>
+                                </tr>
+                            @endif
                         @endforeach
 
-                        <!-- Form Tambah -->
-                        <tr>
-                            <td class="border px-4 py-2"><input type="text" name="span" value="{{ $span }}" class="w-full border rounded px-2 py-1" readonly></td>
-                            <td class="border px-4 py-2"><input type="text" name="no_bidang" class="w-full border rounded px-2 py-1" required></td>
-                            <td class="border px-4 py-2"><input type="text" name="nama_pemilik" class="w-full border rounded px-2 py-1" required></td>
-                            <td class="border px-4 py-2"><input type="text" name="desa" class="w-full border rounded px-2 py-1" required></td>
-                            <td class="border px-4 py-2"><input type="text" name="nilai_kompensasi" class="w-full border rounded px-2 py-1" required></td>
-                            <td class="border px-4 py-2 text-center"><button type="submit" class="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">Simpan</button></td>
-                        </tr>
+                        {{-- Form Tambah --}}
+                        <form method="POST" action="{{ route('row.penetapan-nilai.store', $row->id) }}">
+                            @csrf
+                            <input type="hidden" name="span" value="{{ $span }}">
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4"><input type="text" value="{{ $span }}" class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm text-sm" readonly></td>
+                                <td class="px-6 py-4"><input type="text" name="no_bidang" class="w-full border-gray-300 rounded-md shadow-sm text-sm" required></td>
+                                <td class="px-6 py-4"><input type="text" name="nama_pemilik" class="w-full border-gray-300 rounded-md shadow-sm text-sm" required></td>
+                                <td class="px-6 py-4"><input type="text" name="desa" class="w-full border-gray-300 rounded-md shadow-sm text-sm" required></td>
+                                <td class="px-6 py-4">
+                                    <input type="text" name="nilai_kompensasi" class="w-full border-gray-300 rounded-md shadow-sm text-sm" required>
+                                    @error('nilai_kompensasi') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                </td>
+                                <td class="px-6 py-4 text-left">
+                                    <button type="submit" class="bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700">Simpan</button>
+                                </td>
+                            </tr>
+                        </form>
                     </tbody>
                 </table>
-            </form>
-        </div>
-
-        <!-- Info -->
-        <div class="bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded text-sm">
-            <p>Data ditampilkan berdasarkan pilihan span. Gunakan dropdown untuk mengganti.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Hapus -->
-    <div id="deleteModal" class="fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Konfirmasi Hapus</h2>
-            <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
-
-            <form method="POST" id="deleteForm" class="flex justify-end gap-2">
-                @csrf
-                @method('DELETE')
-                <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 text-sm">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Hapus</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Script Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 hidden">...</div>
     <script>
-        function confirmDelete(url) {
-            const modal = document.getElementById('deleteModal');
-            document.getElementById('deleteForm').action = url;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('deleteModal');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-        }
     </script>
 </x-app-layout>
