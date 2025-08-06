@@ -18,7 +18,7 @@
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Bayar</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tgl Bayar</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bukti Dokumen</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -77,10 +77,16 @@
                                                 <span class="text-gray-400">Kosong</span>
                                             @endif
                                         </td>
-                                        <td class="px-4 py-2">
-                                            {{-- Tombol Edit akan memicu mode inline-edit --}}
-                                            <a href="{{ route('pembayaran.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            {{-- Hapus tetap terpisah jika diperlukan --}}
+                                        <td class="px-4 py-2 text-sm font-medium text-center">
+                                            <div class="flex justify-center items-center space-x-3">
+                                                {{-- Tombol Edit --}}
+                                                <a href="{{ route('pembayaran.edit', $item->id) }}" class="text-gray-500 hover:text-blue-600" title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endif

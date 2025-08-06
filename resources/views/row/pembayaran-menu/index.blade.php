@@ -20,90 +20,91 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 overflow-x-auto">
                 <table class="min-w-full bg-white">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            {{-- PERBAIKAN: Menyesuaikan gaya header tabel --}}
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Span</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bidang</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Bayar</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Span</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bidang</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Bayar</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach ($penyampaians as $i => $penyampaian)
+                        @php
+                            $nilai = $penyampaian->penetapanNilai;
+                            $pembayaran = $penyampaian->pembayaranMenu;
+                        @endphp
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 text-center">{{ $i + 1 }}</td>
+                            <td class="px-6 py-4 text-center">{{ $nilai->span }}</td>
+                            <td class="px-6 py-4 text-left">{{ $nilai->no_bidang }}</td>
+                            <td class="px-6 py-4 text-left">{{ $nilai->nama_pemilik }}</td>
+                            <td class="px-6 py-4 text-left">{{ $nilai->desa }}</td>
+                            <td class="px-6 py-4 text-left">
+                                Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if ($pembayaran?->status === 'TERBAYAR')
+                                    <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-emerald-800 bg-emerald-200 rounded-full">
+                                        TERBAYAR
+                                    </span>
+                                @elseif ($pembayaran?->status === 'BELUM TERBAYAR')
+                                    <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">
+                                        BELUM
+                                    </span>
+                                @else
+                                    <span class="text-gray-400 text-xs italic">Belum Diisi</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {{ $pembayaran?->tanggal_pembayaran ? \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y') : '-' }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if ($pembayaran && $pembayaran->bukti_dokumen)
+                                    <a href="{{ asset('storage/' . $pembayaran->bukti_dokumen) }}" target="_blank"
+                                    class="inline-block px-3 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full hover:underline">
+                                        Lihat
+                                    </a>
+                                @else
+                                    <span class="text-gray-400 text-xs">Kosong</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex justify-center gap-3">
+                                    @if ($pembayaran)
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('form-{{ $pembayaran->id }}').classList.toggle('hidden')" class="text-gray-600 hover:text-indigo-700" title="Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                        </a>
+                                        <form action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-gray-600 hover:text-red-700" title="Hapus">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('form-create-{{ $penyampaian->id }}').classList.toggle('hidden')" class="text-blue-600 hover:text-blue-900" title="Input Data">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach ($penyampaians as $i => $penyampaian)
-                            @php
-                                $nilai = $penyampaian->penetapanNilai;
-                                $pembayaran = $penyampaian->pembayaranMenu;
-                            @endphp
-                            <tr class="hover:bg-gray-50">
-                                {{-- PERBAIKAN: Menyesuaikan gaya sel tabel --}}
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $i + 1 }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->span }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->no_bidang }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->nama_pemilik }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $nilai->desa }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right">
-                                    Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    @if ($pembayaran?->status === 'TERBAYAR')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">
-                                            TERBAYAR
-                                        </span>
-                                    @elseif ($pembayaran?->status === 'BELUM TERBAYAR')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-100 text-red-800 text-xs font-medium">
-                                            BELUM
-                                        </span>
-                                    @else
-                                        <span class="text-gray-400 text-xs italic">Belum Diisi</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    {{ $pembayaran?->tanggal_pembayaran ? \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y') : '-' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    @if ($pembayaran && $pembayaran->bukti_dokumen)
-                                        <a href="{{ asset('storage/' . $pembayaran->bukti_dokumen) }}" target="_blank"
-                                           class="text-blue-600 hover:underline text-sm">Lihat</a>
-                                    @else
-                                        <span class="text-gray-400 text-xs">Kosong</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center space-x-4">
-                                        @if ($pembayaran)
-                                            {{-- PERBAIKAN: Mengganti tombol dengan ikon --}}
-                                            <a href="#" onclick="event.preventDefault(); document.getElementById('form-{{ $pembayaran->id }}').classList.toggle('hidden')" class="text-indigo-600 hover:text-indigo-900" title="Update">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                                </svg>
-                                            </a>
-                                            <form action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus data ini?')">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900" title="Hapus">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        @else
-                                            <a href="#" onclick="event.preventDefault(); document.getElementById('form-create-{{ $penyampaian->id }}').classList.toggle('hidden')" class="text-blue-600 hover:text-blue-900" title="Input Data">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                                                </svg>
-                                            </a>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-
                             {{-- FORM UPDATE (TERSEMBUNYI) --}}
                             @if ($pembayaran)
                                 <tr id="form-{{ $pembayaran->id }}" class="hidden">

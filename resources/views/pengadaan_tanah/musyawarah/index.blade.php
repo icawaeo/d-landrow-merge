@@ -26,7 +26,7 @@
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti Dokumen</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -58,8 +58,8 @@
                                                     </a>
                                                 @endif
                                             </td>
-                                            <td class="px-4 py-2 whitespace-nowrap">
-                                                <div class="flex items-center space-x-2">
+                                            <td class="px-4 py-2 text-center">
+                                                <div class="flex justify-center items-center space-x-2">
                                                     <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1.5">Update</button>
                                                     <a href="{{ route('musyawarah.index', $proyek->id) }}" class="text-gray-600 hover:text-gray-900">Batal</a>
                                                 </div>
@@ -86,13 +86,26 @@
                                                 @endif
                                             </form>
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap">
-                                            <div class="flex items-center space-x-4">
-                                                <a href="{{ route('musyawarah.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                        <td class="px-4 py-2 text-center">
+                                            <div class="flex justify-center items-center space-x-3">
+                                                {{-- Tombol Edit --}}
+                                                <a href="{{ route('musyawarah.edit', $item->id) }}" class="text-gray-500 hover:text-blue-600" title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                </a>
+
+                                                {{-- Tombol Hapus --}}
                                                 <form action="{{ route('musyawarah.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus data ini?');" class="inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                                    <button type="submit" class="text-gray-500 hover:text-red-600" title="Hapus">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"/>
+                                                        </svg>
+                                                    </button>
                                                 </form>
                                             </div>
                                         </td>
@@ -118,7 +131,7 @@
                                         </select>
                                     </td>
                                     <td class="px-4 py-2"></td>
-                                    <td class="px-4 py-2">
+                                    <td class="px-4 py-2 text-center">
                                         <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2">Simpan</button>
                                     </td>
                                 </tr>
