@@ -15,6 +15,14 @@ class PengadaanTanah extends Model
         'kabupaten',
         'kecamatan',
         'desa',
+        'status_persetujuan',
+        'admin1_id',
+        'admin1_reviewed_at',
+        'admin2_id',
+        'admin2_reviewed_at',
+        'admin3_id',
+        'admin3_reviewed_at',
+        'catatan_penolakan',
     ];
     public function sosialisasis()
     {

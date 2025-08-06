@@ -70,4 +70,16 @@ class PengadaanTanahController extends Controller
 
         return redirect()->route('homepage')->with('success', 'Data berhasil dihapus!');
     }
+
+    /**
+     * Mengajukan proyek untuk persetujuan.
+     */
+    public function submitForApproval(PengadaanTanah $pengadaanTanah)
+    {
+        $pengadaanTanah->update([
+            'status_persetujuan' => 'menunggu_admin_1',
+            'catatan_penolakan' => null,
+        ]);
+        return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');
+    }
 }

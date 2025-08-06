@@ -1,5 +1,8 @@
-<aside class="w-64 bg-white border-r flex-shrink-0">
-    <div class="flex flex-col h-full">
+<aside 
+    :class="sidebarOpen ? 'w-64' : 'w-0'"
+    class="bg-white border-r flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden"
+>
+    <div class="flex flex-col h-full w-64"> 
         <div class="px-4 py-4 border-b">
             <x-dropdown align="left" width="60">
                 <x-slot name="trigger">
@@ -12,27 +15,29 @@
                 <x-slot name="content">
                     <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Pilih Jenis Proyek') }}</div>
                     <x-dropdown-link href="{{ route('pengadaan_tanah.create', ['kategori' => 'pengadaan-tanah']) }}">{{ __('Pengadaan Tanah') }}</x-dropdown-link>
-                    
                     <x-dropdown-link href="{{ route('row.create') }}">{{ __('ROW') }}</x-dropdown-link>
-
                 </x-slot>
             </x-dropdown>
         </div>
 
+        @if(Auth::check() && in_array(Auth::user()->role, ['admin1', 'admin2', 'admin3']))
+        <div class="px-4 py-4 border-b">
+            <a href="{{ route('admin.dashboard') }}" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                <span>Admin Dashboard</span>
+            </a>
+        </div>
+        @endif
+
         <div class="flex-1 overflow-y-auto px-4 py-4">
             
             @php
-                // Variabel ini datang dari AppServiceProvider
                 $pengadaanTanahProjects = $daftarPengadaanTanah ?? [];
                 $rowProjects = $daftarRow ?? [];
-                
-                // Menu khusus untuk Pengadaan Tanah
                 $pengadaanTanahTopMenus = ['Dashboard', 'Perizinan'];
                 $pengadaanTanahTahapan = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
                 $pengadaanTanahMiddleMenus = ['Musyawarah', 'Pembayaran'];
                 $pengadaanTanahBottomMenus = ['Dokumen Hasil', 'Sertifikat'];
-
-                // Menu khusus untuk ROW
                 $rowTopMenus = ['Dashboard', 'Perizinan'];
                 $rowTahapan = ['Sosialisasi', 'Inventaris & Pengumuman', 'Musyawarah', 'Pembayaran'];
                 $rowBottomMenus = ['Penetapan Nilai', 'Penyampaian', 'Pembayaran'];
@@ -99,61 +104,61 @@
                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">ROW</h3>
                  @foreach($rowProjects as $proyek)
                  <details class="mb-2">
-                     <summary class="cursor-pointer flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100">
-                         <span class="text-sm font-medium text-gray-800">{{ $proyek->nama_proyek }}</span>
-                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                     </summary>
-                     <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
-                        @foreach($rowTopMenus as $menu)
-                            @if ($menu === 'Perizinan')
-                                <li><a href="{{ route('row.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
-                            @else
-                                <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
-                            @endif
-                        @endforeach
-                        <li>
-                        <details class="mb-2">
-                            <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
-                            <ul class="pl-6 mt-1 space-y-1 text-xs">
-                                @foreach($rowTahapan as $tahapan)
-                                    @if ($tahapan === 'Sosialisasi')
-                                        <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @elseif ($tahapan === 'Inventaris & Pengumuman')
-                                        <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @elseif ($tahapan === 'Musyawarah')
-                                        <li><a href="{{ route('row.musyawarah_sub.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @elseif ($tahapan === 'Pembayaran')
-                                        <li><a href="{{ route('row.pembayaran.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
-                                    @endif 
-                                @endforeach
-                            </ul>
-                        </details>
-                                </li>
-                        @foreach($rowBottomMenus as $menu)
-                            @if ($menu === 'Penetapan Nilai')
-                                <li>
-                                <a href="{{ route('row.penetapan-nilai.index', $proyek->id) }}"
-                                        class="block px-3 py-1 rounded-md hover:bg-gray-200">
-                                        {{ $menu }}
-                                    </a>
-                                </li>
-                            @elseif ($menu === 'Penyampaian')
-                                <li>
-                                    <a href="{{ route('row.penyampaian.index', $proyek->id) }}" 
-                                        class="block px-3 py-1 rounded-md hover:bg-gray-200">
-                                        {{ $menu }}
-                                    </a>
-                                </li>
-                                @elseif ($menu === 'Pembayaran')
+                       <summary class="cursor-pointer flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100">
+                           <span class="text-sm font-medium text-gray-800">{{ $proyek->nama_proyek }}</span>
+                           <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                       </summary>
+                       <ul class="pl-6 mt-2 space-y-1 text-sm text-gray-700">
+                            @foreach($rowTopMenus as $menu)
+                                @if ($menu === 'Perizinan')
+                                    <li><a href="{{ route('row.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                                @else
+                                    <li><a href="#" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $menu }}</a></li>
+                                @endif
+                            @endforeach
+                            <li>
+                            <details class="mb-2">
+                                <summary class="cursor-pointer flex items-center justify-between px-3 py-1 rounded-md hover:bg-gray-100"><span class="text-sm font-medium">Tahapan</span></summary>
+                                <ul class="pl-6 mt-1 space-y-1 text-xs">
+                                    @foreach($rowTahapan as $tahapan)
+                                        @if ($tahapan === 'Sosialisasi')
+                                            <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Inventaris & Pengumuman')
+                                            <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Musyawarah')
+                                            <li><a href="{{ route('row.musyawarah_sub.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @elseif ($tahapan === 'Pembayaran')
+                                            <li><a href="{{ route('row.pembayaran.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200">{{ $tahapan }}</a></li>
+                                        @endif 
+                                    @endforeach
+                                </ul>
+                            </details>
+                                  </li>
+                            @foreach($rowBottomMenus as $menu)
+                                @if ($menu === 'Penetapan Nilai')
                                     <li>
-                                        <a href="{{ route('row.pembayaran-menu.index', $proyek->id) }}"
+                                    <a href="{{ route('row.penetapan-nilai.index', $proyek->id) }}"
                                             class="block px-3 py-1 rounded-md hover:bg-gray-200">
                                             {{ $menu }}
                                         </a>
                                     </li>
-                                @endif
-                        @endforeach
-                    </ul>
+                                @elseif ($menu === 'Penyampaian')
+                                    <li>
+                                        <a href="{{ route('row.penyampaian.index', $proyek->id) }}" 
+                                            class="block px-3 py-1 rounded-md hover:bg-gray-200">
+                                            {{ $menu }}
+                                        </a>
+                                    </li>
+                                    @elseif ($menu === 'Pembayaran')
+                                        <li>
+                                            <a href="{{ route('row.pembayaran-menu.index', $proyek->id) }}"
+                                                class="block px-3 py-1 rounded-md hover:bg-gray-200">
+                                                {{ $menu }}
+                                            </a>
+                                        </li>
+                                    @endif
+                            @endforeach
+                       </ul>
                  </details>
                  @endforeach
             </div>

@@ -59,4 +59,16 @@ class RowController extends Controller
 
         return redirect()->route('homepage')->with('success', 'Data ROW berhasil dihapus!');
     }
+
+    /**
+     * Mengajukan ROW untuk persetujuan.
+     */
+    public function submitForApproval(Row $row)
+    {
+        $row->update([
+            'status_persetujuan' => 'menunggu_admin_1',
+            'catatan_penolakan' => null,
+        ]);
+        return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');
+    }
 }

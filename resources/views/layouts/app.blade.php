@@ -10,20 +10,21 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        {{-- AlpineJS Persist Plugin untuk mengingat state sidebar --}}
+        <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+        
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="flex h-screen bg-gray-100">
+        <div 
+            x-data="{ sidebarOpen: $persist(true).as('sidebar-open') }" 
+            class="flex h-screen bg-gray-100"
+        >
             
-            {{-- KOLOM 1: SIDEBAR --}}
-            {{-- Komponen sidebar Anda akan dipanggil di sini --}}
             <x-sidebar />
 
-            {{-- KOLOM 2: KONTEN UTAMA --}}
-            {{-- Kontainer ini akan mengisi sisa ruang dan mengatur scroll --}}
             <div class="flex-1 flex flex-col overflow-hidden">
                 
-                {{-- Navigasi atas yang sudah ada sebelumnya --}}
                 @include('layouts.navigation')
 
                 @if (isset($header))

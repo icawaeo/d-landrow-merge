@@ -23,6 +23,8 @@ use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\PenetapanNilaiController;
 use App\Http\Controllers\PenyampaianController;
 use App\Http\Controllers\PembayaranMenuController;
+use App\Http\Controllers\Admin\ApprovalController;
+use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController as AdminAuthenticatedSessionController;
 
 
 
@@ -117,6 +119,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sertifikat/{proyek}', [SertifikatController::class, 'index'])->name('sertifikat.index');
     Route::post('/sertifikat/search/{proyek}', [SertifikatController::class, 'search'])->name('sertifikat.search');
     Route::post('/sertifikat/upload/{id}', [SertifikatController::class, 'upload'])->name('sertifikat.upload');
+
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/submit', [PengadaanTanahController::class, 'submitForApproval'])->name('pengadaan_tanah.submit');
     
 
     /*row*/
@@ -186,7 +190,27 @@ Route::middleware('auth')->group(function () {
     Route::put('/row/pembayaran-menu/{pembayaran}', [PembayaranMenuController::class, 'update'])->name('row.pembayaran-menu.update');
     Route::delete('/row/pembayaran-menu/{pembayaran}', [PembayaranMenuController::class, 'destroy'])->name('row.pembayaran-menu.destroy');
 
+    Route::post('/row/{row}/submit', [RowController::class, 'submitForApproval'])->name('row.submit');
+    
 
+});
+
+Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [ApprovalController::class, 'index'])->name('dashboard');
+    Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('projects.decide');
+});
+
+Route::prefix('admin')->name('admin.')->group(function() {
+    Route::get('/login', [AdminAuthenticatedSessionController::class, 'create'])
+        ->middleware('guest:admin')
+        ->name('login');
+
+    Route::post('/login', [AdminAuthenticatedSessionController::class, 'store'])
+        ->middleware('guest:admin');
+
+    Route::post('/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
+        ->middleware('auth:admin')
+        ->name('logout');
 });
 
 require __DIR__.'/auth.php';

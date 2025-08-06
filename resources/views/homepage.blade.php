@@ -48,12 +48,30 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $proyek->desa }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center gap-4">
+                                            {{-- Tombol Edit & Hapus tetap ada --}}
                                             <a href="{{ route('pengadaan_tanah.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            <form action="{{ route('pengadaan_tanah.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini secara permanen?');">
+                                            <form action="{{ route('pengadaan_tanah.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                             </form>
+
+                                            @if($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'))
+                                                <form action="{{ route('pengadaan_tanah.submit', $proyek->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">Ajukan</button>
+                                                </form>
+                                                @if(str_starts_with($proyek->status_persetujuan, 'ditolak'))
+                                                    <span class="text-xs text-red-500">(Ditolak)</span>
+                                                @endif
+                                            @elseif($proyek->status_persetujuan === 'disetujui')
+                                                <div class="flex items-center gap-2">
+                                                    <span class="h-3 w-3 bg-green-500 rounded-full"></span>
+                                                    <span class="text-green-600 font-semibold">Disetujui</span>
+                                                </div>
+                                            @else
+                                                <span class="text-xs text-yellow-600 font-semibold">{{ ucwords(str_replace('_', ' ', $proyek->status_persetujuan)) }}</span>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -96,19 +114,32 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $proyek->kabupaten }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $proyek->kecamatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $proyek->desa }}</td>
-                                    
-                                    {{-- INI BAGIAN YANG DIPERBAIKI UNTUK TABEL ROW --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center gap-4">
-                                            {{-- Link Edit untuk ROW --}}
                                             <a href="{{ route('row.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            
-                                            {{-- Form Hapus untuk ROW --}}
-                                            <form action="{{ route('row.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini secara permanen?');">
+                                            <form action="{{ route('row.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                             </form>
+
+                                            {{-- LOGIKA BARU UNTUK PERSETUJUAN --}}
+                                            @if($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'))
+                                                <form action="{{ route('row.submit', $proyek->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">Ajukan</button>
+                                                </form>
+                                                @if(str_starts_with($proyek->status_persetujuan, 'ditolak'))
+                                                    <span class="text-xs text-red-500">(Ditolak)</span>
+                                                @endif
+                                            @elseif($proyek->status_persetujuan === 'disetujui')
+                                                <div class="flex items-center gap-2">
+                                                    <span class="h-3 w-3 bg-green-500 rounded-full"></span>
+                                                    <span class="text-green-600 font-semibold">Disetujui</span>
+                                                </div>
+                                            @else
+                                                <span class="text-xs text-yellow-600 font-semibold">{{ ucwords(str_replace('_', ' ', $proyek->status_persetujuan)) }}</span>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
