@@ -195,9 +195,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [ApprovalController::class, 'index'])->name('dashboard');
-    Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('projects.decide');
+Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [ApprovalController::class, 'index'])->name('admin.dashboard');
+    Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('admin.projects.decide');
+
+    Route::get('/pengadaan-tanah/{pengadaanTanah}', [\App\Http\Controllers\PengadaanTanahController::class, 'show'])->name('pengadaan_tanah.show');
+    Route::get('/row/{row}', [\App\Http\Controllers\RowController::class, 'show'])->name('row.show');
 });
 
 Route::prefix('admin')->name('admin.')->group(function() {

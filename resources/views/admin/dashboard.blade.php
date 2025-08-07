@@ -35,15 +35,20 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $project->nama_proyek }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ ucwords(str_replace('-', ' ', $type)) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <form action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
+                                            <form x-data="{ showTolak: false }" action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
                                                 @csrf
+                                                {{-- Bagian atas untuk tombol utama --}}
                                                 <div class="flex items-center gap-4">
                                                     <button type="submit" name="decision" value="setuju" class="px-4 py-2 bg-green-500 text-white text-xs font-semibold rounded-md hover:bg-green-600">Setuju</button>
-                                                    <button type="button" onclick="document.getElementById('form-tolak-{{$type}}-{{$project->id}}').style.display='block'" class="px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600">Tolak</button>
+                                                    <button @click.prevent="showTolak = !showTolak" type="button" class="px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600">Tolak</button>
                                                 </div>
-                                                <div id="form-tolak-{{$type}}-{{$project->id}}" style="display: none;" class="mt-2">
-                                                    <textarea name="catatan_penolakan" rows="2" class="w-full border-gray-300 rounded-md text-sm" placeholder="Tambahkan catatan penolakan..."></textarea>
-                                                    <button type="submit" name="decision" value="tolak" class="mt-1 px-4 py-1 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600">Konfirmasi Tolak</button>
+
+                                                {{-- Bagian bawah yang tersembunyi untuk form penolakan --}}
+                                                <div x-show="showTolak" x-transition class="mt-4 border-t pt-4">
+                                                    <label for="catatan_penolakan_{{$project->id}}" class="block text-sm font-medium text-gray-700">Catatan Penolakan (Wajib diisi)</label>
+                                                    <textarea name="catatan_penolakan" id="catatan_penolakan_{{$project->id}}" rows="3" class="mt-1 w-full border-gray-300 rounded-md text-sm" required></textarea>
+                                                    {{-- Tombol konfirmasi di bawah textarea --}}
+                                                    <button type="submit" name="decision" value="tolak" class="mt-2 w-full px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded-md hover:bg-red-700">Konfirmasi Tolak</button>
                                                 </div>
                                             </form>
                                         </td>
@@ -59,6 +64,13 @@
                      <p class="text-sm text-gray-600 mt-4">
                         <strong>Cara Kerja:</strong> Silakan review detail proyek melalui menu di sidebar kiri sebelum memberikan persetujuan. Halaman ini hanya untuk aksi menyetujui atau menolak.
                     </p>
+
+                    <script>
+                        function toggleTolakForm(id) {
+                            const form = document.getElementById('form-tolak-' + id);
+                            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                        }
+                    </script>
                 </div>
             </div>
         </div>

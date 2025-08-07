@@ -9,7 +9,7 @@
                     @csrf
                     <div class="space-y-4">
                         <div>
-                            <label for="lokasi_musyawarah" class="block font-medium text-sm text-gray-700">Lokasi Musyawarah</label>
+                            <label for="lokasi_musyawarah" class="block font-medium text-sm text-gray-700">Nama Kecamatan</label>
                             <input type="text" name="lokasi_musyawarah" id="lokasi_musyawarah" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required value="{{ old('lokasi_musyawarah') }}">
                         </div>
                         <div>

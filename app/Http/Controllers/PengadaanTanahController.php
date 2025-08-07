@@ -82,4 +82,12 @@ class PengadaanTanahController extends Controller
         ]);
         return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');
     }
+
+    /**
+     * Menampilkan detail proyek pengadaan tanah.
+     */
+    public function show(PengadaanTanah $pengadaanTanah)
+    {
+        return view('pengadaan_tanah.show', compact('pengadaanTanah'));
+    }
 }

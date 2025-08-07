@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View; 
-use App\Models\PengadaanTanah;  
-use App\Models\Row;    
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+use App\Models\PengadaanTanah;
+use App\Models\Row;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,9 +23,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('components.sidebar', function ($view) {
-            $view->with('daftarPengadaanTanah', PengadaanTanah::where('kategori', 'pengadaan-tanah')->latest()->get());
-            $view->with('daftarRow', Row::latest()->get());
+        View::composer('*', function ($view) {
+            $projectsForReview = collect(); // Default collection kosong
+            if (Auth::guard('admin')->check()) {
+                $userRole = Auth::guard('admin')->user()->role;
+
+                if ($userRole === 'admin1') {
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_1')->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_1')->get();
+                    $projectsForReview = $pengadaanTanah->concat($row);
+                } elseif ($userRole === 'admin2') {
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_2')->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_2')->get();
+                    $projectsForReview = $pengadaanTanah->concat($row);
+                } elseif ($userRole === 'admin3') {
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_3')->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_3')->get();
+                    $projectsForReview = $pengadaanTanah->concat($row);
+                }
+            }
+            $view->with('projectsForReview', $projectsForReview);
         });
     }
 }

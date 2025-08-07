@@ -19,7 +19,7 @@
                     <div class="space-y-4">
                         <div>
                             {{-- LABEL DIUBAH DI SINI --}}
-                            <label for="nama_kecamatan" class="block font-medium text-sm text-gray-700">Lokasi Musyawarah</label>
+                            <label for="nama_kecamatan" class="block font-medium text-sm text-gray-700">Nama Kecamatan</label>
                             {{-- name="nama_kecamatan" tetap sama --}}
                             <input type="text" name="nama_kecamatan" id="nama_kecamatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required value="{{ old('nama_kecamatan') }}">
                         </div>

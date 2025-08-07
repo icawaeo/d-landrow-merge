@@ -71,4 +71,12 @@ class RowController extends Controller
         ]);
         return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');
     }
+
+    /**
+     * Menampilkan detail ROW.
+     */
+    public function show(Row $row)
+    {
+        return view('row.show', compact('row'));
+    }
 }

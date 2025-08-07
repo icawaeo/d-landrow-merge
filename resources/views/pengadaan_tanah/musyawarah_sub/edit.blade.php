@@ -16,7 +16,7 @@
                     <div class="space-y-4">
                         <div>
                             {{-- LABEL DIUBAH DI SINI --}}
-                            <label for="nama_kecamatan" class="block font-medium text-sm text-gray-700">Lokasi Musyawarah</label>
+                            <label for="nama_kecamatan" class="block font-medium text-sm text-gray-700">Nama Kecamatan</label>
                             {{-- Variabel diubah menjadi $musyawarah sesuai kiriman dari controller --}}
                             <input type="text" name="nama_kecamatan" id="nama_kecamatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required value="{{ old('nama_kecamatan', $musyawarah->nama_kecamatan) }}">
                         </div>

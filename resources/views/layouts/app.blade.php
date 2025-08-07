@@ -15,30 +15,41 @@
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
+    
     <body class="font-sans antialiased">
-        <div 
-            x-data="{ sidebarOpen: $persist(true).as('sidebar-open') }" 
+        <div
+            x-data="{ sidebarOpen: window.innerWidth > 768 }"
+            @resize.window="sidebarOpen = window.innerWidth > 768"
             class="flex h-screen bg-gray-100"
         >
-            
-            <x-sidebar />
+
+            {{-- KONDISIONAL SIDEBAR (KUNCI UTAMA) --}}
+            @auth('admin')
+                {{-- Panggil sidebar admin jika yang login adalah admin --}}
+                <x-admin-sidebar />
+            @else
+                {{-- Panggil sidebar user jika bukan admin --}}
+                <x-sidebar />
+            @endauth
 
             <div class="flex-1 flex flex-col overflow-hidden">
-                
-                @include('layouts.navigation')
+                <header class="flex justify-between items-center px-6 py-4 bg-white border-b">
+                    {{-- Hamburger menu hanya untuk ADMIN dan di layar kecil --}}
+                    @auth('admin')
+                        <button @click="sidebarOpen = !sidebarOpen" class="sm:hidden text-gray-500 focus:outline-none">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    @endauth
+                    {{-- Biarkan kosong untuk user atau beri judul --}}
+                    <div class="flex-1"></div>
 
-                @if (isset($header))
-                    <header class="bg-white shadow-sm">
-                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endif
-
-                <main class="flex-1 overflow-x-hidden overflow-y-auto">
-                    <div class="py-6 px-4 sm:px-6 lg:px-8">
-                         {{ $slot }}
-                    </div>
+                    {{-- Navigasi (Logout dll) --}}
+                    @include('layouts.navigation')
+                </header>
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                    {{ $slot }}
                 </main>
             </div>
         </div>
