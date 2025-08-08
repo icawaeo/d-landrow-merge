@@ -11,7 +11,7 @@
             {{-- Salam Sambutan Personal --}}
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 border-b border-gray-200">
-                    Selamat datang kembali, <strong>{{ Auth::user()->name }}</strong>!
+                    Selamat datang, <strong>{{ Auth::user()->name }}</strong>!
                 </div>
             </div>
 
@@ -49,15 +49,23 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center gap-4">
                                             @if($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'))
-                                                <a href="{{ route('pengadaan_tanah.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                                <form action="{{ route('pengadaan_tanah.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
+                                                <a href="{{ route('pengadaan_tanah.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Ubah</a>
+                                                <form action="{{ route('pengadaan_tanah.destroy', $proyek->id) }}" 
+                                                    method="POST" 
+                                                    class="form-hapus"
+                                                    data-nama="{{ $proyek->nama_proyek }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                                 </form>
-                                                <form action="{{ route('pengadaan_tanah.submit', $proyek->id) }}" method="POST">
+                                                <form action="{{ route('pengadaan_tanah.submit', $proyek->id) }}" 
+                                                    method="POST" 
+                                                    class="form-ajukan"
+                                                    data-nama="{{ $proyek->nama_proyek }}">
                                                     @csrf
-                                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">Ajukan</button>
+                                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">
+                                                        Ajukan
+                                                    </button>
                                                 </form>
                                                 @if(str_starts_with($proyek->status_persetujuan, 'ditolak'))
                                                     <span class="text-xs text-red-500">(Ditolak)</span>
@@ -115,20 +123,27 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex items-center gap-4">
                                                 @if($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'))
-                                                    <a href="{{ route('row.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                                    <form action="{{ route('row.destroy', $proyek->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
+                                                    <a href="{{ route('row.edit', $proyek->id) }}" class="text-indigo-600 hover:text-indigo-900">Ubah</a>
+                                                    <form action="{{ route('row.destroy', $proyek->id) }}" 
+                                                        method="POST" 
+                                                        class="form-hapus"
+                                                        data-nama="{{ $proyek->nama_proyek }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                                     </form>
-                                                    <form action="{{ route('row.submit', $proyek->id) }}" method="POST">
+                                                    <form action="{{ route('row.submit', $proyek->id) }}" 
+                                                        method="POST" 
+                                                        class="form-ajukan"
+                                                        data-nama="{{ $proyek->nama_proyek }}">
                                                         @csrf
-                                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">Ajukan</button>
+                                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700">
+                                                            Ajukan
+                                                        </button>
                                                     </form>
                                                     @if(str_starts_with($proyek->status_persetujuan, 'ditolak'))
                                                         <div class="group relative">
                                                             <span class="text-xs text-red-500 font-semibold cursor-pointer">(Ditolak)</span>
-                                                            {{-- KUNCI UTAMA: Tooltip/Box untuk catatan --}}
                                                             @if($proyek->catatan_penolakan)
                                                                 <div class="absolute hidden group-hover:block bg-white border border-gray-300 shadow-lg p-3 rounded-md z-10 w-64 -mt-24">
                                                                     <p class="text-xs font-bold text-gray-800 mb-1">Catatan Penolakan:</p>
@@ -163,4 +178,75 @@
 
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.querySelectorAll('.form-ajukan').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); 
+            let namaProyek = form.getAttribute('data-nama');
+            Swal.fire({
+                title: 'Konfirmasi',
+                html: `Apakah Anda yakin ingin mengajukan proyek <strong>${namaProyek}</strong>?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Ajukan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.querySelectorAll('.form-ajukan').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); 
+            let namaProyek = form.getAttribute('data-nama');
+            Swal.fire({
+                title: 'Konfirmasi',
+                html: `Apakah Anda yakin ingin mengajukan proyek <strong>${namaProyek}</strong>?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Ajukan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    document.querySelectorAll('.form-hapus').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); 
+            let namaProyek = form.getAttribute('data-nama');
+            Swal.fire({
+                title: 'Hapus Proyek',
+                html: `Apakah Anda yakin ingin menghapus proyek <strong>${namaProyek}</strong>? Tindakan ini tidak dapat dibatalkan.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+    </script>
+
+
 </x-app-layout>

@@ -26,8 +26,17 @@
             <ul class="space-y-2">
                 @forelse($pengadaanTanahProjects as $proyek)
                     @php
+                        // Logika untuk menentukan apakah proyek atau tahapannya sedang aktif
                         $isProjectActive = request()->is('pengadaan-tanah/'.$proyek->id.'/*') || request()->is('pengadaan-tanah/'.$proyek->id);
-                        $isTahapanActive = request()->routeIs('sosialisasi.index', $proyek->id) || request()->routeIs('inventarisasi.index', $proyek->id) || request()->routeIs('musyawarah_sub.index', $proyek->id) || request()->routeIs('pembayaran_sub.index', $proyek->id);
+                        $currentPengadaanTanah = request()->route('pengadaanTanah');
+                        $isCurrentProject = $currentPengadaanTanah && $currentPengadaanTanah->id == $proyek->id;
+
+                        $isTahapanActive = $isCurrentProject && (
+                            request()->routeIs('sosialisasi.index') ||
+                            request()->routeIs('inventarisasi.index') ||
+                            request()->routeIs('musyawarah_sub.index') ||
+                            request()->routeIs('pembayaran_sub.index')
+                        );
                     @endphp
                     <li x-data="{ projectOpen: {{ $isProjectActive ? 'true' : 'false' }} }">
                         <a @click.prevent="projectOpen = !projectOpen" href="#" class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer {{ $isProjectActive ? 'bg-gray-100' : '' }}">
@@ -44,16 +53,16 @@
                                     <svg class="h-4 w-4 transform transition-transform" :class="{ 'rotate-180': tahapanOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </a>
                                 <ul x-show="tahapanOpen" x-transition class="pl-4 mt-1 space-y-1 text-xs">
-                                    <li><a href="{{ route('sosialisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('sosialisasi.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Sosialisasi</a></li>
-                                    <li><a href="{{ route('inventarisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('inventarisasi.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Inventaris & Pengumuman</a></li>
-                                    <li><a href="{{ route('musyawarah_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('musyawarah_sub.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
-                                    <li><a href="{{ route('pembayaran_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('pembayaran_sub.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
+                                    <li><a href="{{ route('sosialisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('sosialisasi.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Sosialisasi</a></li>
+                                    <li><a href="{{ route('inventarisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('inventarisasi.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Inventaris & Pengumuman</a></li>
+                                    <li><a href="{{ route('musyawarah_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('musyawarah_sub.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
+                                    <li><a href="{{ route('pembayaran_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('pembayaran_sub.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
                                 </ul>
                             </li>
                             
-                            <li><a href="{{ route('musyawarah.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('musyawarah.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
-                            <li><a href="{{ route('pembayaran.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('pembayaran.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
-                            <li><a href="{{ route('dokumenhasil.index', ['pengadaanTanah' => $proyek->id]) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('dokumenhasil.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Dokumen Hasil</a></li>
+                            <li><a href="{{ route('musyawarah.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('musyawarah.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
+                            <li><a href="{{ route('pembayaran.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('pembayaran.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
+                            <li><a href="{{ route('dokumenhasil.index', ['pengadaanTanah' => $proyek->id]) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentProject && request()->routeIs('dokumenhasil.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Dokumen Hasil</a></li>
                             <li><a href="{{ route('sertifikat.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('sertifikat.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Sertifikat</a></li>
                         </ul>
                     </li>
@@ -69,7 +78,15 @@
                 @forelse($rowProjects as $proyek)
                      @php
                         $isRowProjectActive = request()->is('row/'.$proyek->id.'/*') || request()->is('row/'.$proyek->id);
-                        $isRowTahapanActive = request()->routeIs('row.sosialisasi.index', $proyek->id) || request()->routeIs('row-inventarisasi.index', $proyek->id) || request()->routeIs('row.musyawarah_sub.index', $proyek->id) || request()->routeIs('row.pembayaran.index', $proyek->id);
+                        $currentRow = request()->route('row');
+                        $isCurrentRowProject = $currentRow && $currentRow->id == $proyek->id;
+
+                        $isRowTahapanActive = $isCurrentRowProject && (
+                            request()->routeIs('row.sosialisasi.index') || 
+                            request()->routeIs('row-inventarisasi.index') || 
+                            request()->routeIs('row.musyawarah_sub.index') || 
+                            request()->routeIs('row.pembayaran.index')
+                        );
                     @endphp
                     <li x-data="{ projectOpen: {{ $isRowProjectActive ? 'true' : 'false' }} }">
                         <a @click.prevent="projectOpen = !projectOpen" href="#" class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer {{ $isRowProjectActive ? 'bg-gray-100' : '' }}">
@@ -85,15 +102,15 @@
                                     <svg class="h-4 w-4 transform transition-transform" :class="{ 'rotate-180': tahapanOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </a>
                                 <ul x-show="tahapanOpen" x-transition class="pl-4 mt-1 space-y-1 text-xs">
-                                    <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.sosialisasi.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Sosialisasi</a></li>
-                                    <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row-inventarisasi.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Inventaris & Pengumuman</a></li>
-                                    <li><a href="{{ route('row.musyawarah_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.musyawarah_sub.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
-                                    <li><a href="{{ route('row.pembayaran.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.pembayaran.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
+                                    <li><a href="{{ route('row.sosialisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.sosialisasi.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Sosialisasi</a></li>
+                                    <li><a href="{{ route('row-inventarisasi.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row-inventarisasi.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Inventaris & Pengumuman</a></li>
+                                    <li><a href="{{ route('row.musyawarah_sub.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.musyawarah_sub.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Musyawarah</a></li>
+                                    <li><a href="{{ route('row.pembayaran.index', $proyek->id) }}" class="block px-2 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.pembayaran.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{ route('row.penetapan-nilai.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.penetapan-nilai.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Penetapan Nilai</a></li>
-                            <li><a href="{{ route('row.penyampaian.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.penyampaian.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Penyampaian</a></li>
-                            <li><a href="{{ route('row.pembayaran-menu.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ request()->routeIs('row.pembayaran-menu.index', $proyek->id) ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
+                            <li><a href="{{ route('row.penetapan-nilai.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.penetapan-nilai.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Penetapan Nilai</a></li>
+                            <li><a href="{{ route('row.penyampaian.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.penyampaian.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Penyampaian</a></li>
+                            <li><a href="{{ route('row.pembayaran-menu.index', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-gray-200 {{ $isCurrentRowProject && request()->routeIs('row.pembayaran-menu.index') ? 'bg-blue-100 text-blue-700 font-semibold' : '' }}">Pembayaran</a></li>
                         </ul>
                     </li>
                 @empty
