@@ -14,7 +14,7 @@ class DokumenHasilController extends Controller
      */
     public function index(PengadaanTanah $pengadaanTanah)
     {
-        $dokumen = $pengadaanTanah->dokumenHasils()->latest()->get();
+        $dokumen = $pengadaanTanah->dokumenHasils()->oldest()->get();
 
         return view('pengadaan_tanah.dokumenhasil', [
             'proyek' => $pengadaanTanah,
@@ -61,4 +61,39 @@ class DokumenHasilController extends Controller
 
         return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
     }
+
+    public function update(Request $request, DokumenHasil $dokumen)
+    {
+        $validated = $request->validate([
+            'no_surat' => 'required|string|max:255',
+            'total_tip_luas' => 'required|string|max:255',
+            'tgl_surat' => 'required|date',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        $dokumen->update($validated);
+
+        if ($request->hasFile('file')) {
+            if ($dokumen->file_path) {
+                Storage::disk('public')->delete($dokumen->file_path);
+            }
+            $path = $request->file('file')->store('dokumenhasil', 'public');
+            $dokumen->file_path = $path;
+            $dokumen->save();
+        }
+
+        return redirect()->route('dokumenhasil.index', $dokumen->pengadaan_tanah_id)->with('success', 'Data berhasil diperbarui.');
+    }
+
+    public function destroy(DokumenHasil $dokumen)
+    {
+        if ($dokumen->file_path) {
+            Storage::disk('public')->delete($dokumen->file_path);
+        }
+
+        $dokumen->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+    }
+
 }

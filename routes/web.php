@@ -114,6 +114,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/dokumenhasil', [DokumenHasilController::class, 'index'])->name('dokumenhasil.index');    Route::post('/dokumenhasil/upload/{id}', [DokumenHasilController::class, 'upload'])->name('dokumenhasil.upload');
     Route::post('/dokumenhasil/store', [DokumenHasilController::class, 'store'])->name('dokumenhasil.store');
+    Route::put('/dokumenhasil/{dokumen}', [DokumenHasilController::class, 'update'])->name('dokumenhasil.update');
+    Route::delete('/dokumenhasil/{dokumen}', [DokumenHasilController::class, 'destroy'])->name('dokumenhasil.destroy');
 
     Route::get('/sertifikat/{proyek}', [SertifikatController::class, 'index'])->name('sertifikat.index');
     Route::post('/sertifikat/search/{proyek}', [SertifikatController::class, 'search'])->name('sertifikat.search');
