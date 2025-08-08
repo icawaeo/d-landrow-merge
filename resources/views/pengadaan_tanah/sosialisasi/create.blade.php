@@ -30,11 +30,12 @@
                             <input type="file" name="lampiran_berita_acara" id="lampiran_berita_acara" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                         </div>
                     </div>
-                    <div class="flex justify-end mt-6">
+                    <div class="flex justify-end mt-6 gap-4">
+                        <a href="{{ route('sosialisasi.index', $proyek->id) }}" class="px-6 py-2 bg-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-400">Batal</a>
                         <button type="submit" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded-md hover:bg-gray-700">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout>x

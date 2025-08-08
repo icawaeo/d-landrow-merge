@@ -12,7 +12,6 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="overflow-x-auto">
-                        {{-- Kode ini dijamin tidak memiliki form yang membungkus tabel --}}
                         <table class="min-w-full bg-white">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -40,8 +39,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center gap-4">
-                                            <a href="{{ route('pembayaran_sub.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            {{-- Form ini adalah satu-satunya form di baris ini --}}
+                                            <a href="{{ route('pembayaran_sub.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Ubah</a>
                                             <form action="{{ route('pembayaran_sub.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('DELETE')

@@ -1,6 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- Header diperbaiki agar tombol Kembali dan judul terpisah --}}
         <div class="flex items-center gap-4">
             <a href="{{ route('musyawarah_sub.index', $proyek->id) }}" class="text-gray-500 hover:text-gray-700">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -18,9 +17,7 @@
                     @csrf
                     <div class="space-y-4">
                         <div>
-                            {{-- LABEL DIUBAH DI SINI --}}
                             <label for="nama_kecamatan" class="block font-medium text-sm text-gray-700">Nama Kecamatan</label>
-                            {{-- name="nama_kecamatan" tetap sama --}}
                             <input type="text" name="nama_kecamatan" id="nama_kecamatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required value="{{ old('nama_kecamatan') }}">
                         </div>
                         <div>
@@ -40,7 +37,8 @@
                             <input type="file" name="lampiran_berita_acara" id="lampiran_berita_acara" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                         </div>
                     </div>
-                    <div class="flex justify-end mt-6">
+                    <div class="flex justify-end mt-6 gap-4">
+                        <a href="{{ route('musyawarah_sub.index', $proyek->id) }}" class="px-6 py-2 bg-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-400">Batal</a>
                         <button type="submit" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded-md hover:bg-gray-700">Simpan</button>
                     </div>
                 </form>

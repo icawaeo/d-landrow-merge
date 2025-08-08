@@ -40,7 +40,7 @@
                                     {{-- KOLOM AKSI BARU --}}
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center gap-4">
-                                            <a href="{{ route('sosialisasi.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <a href="{{ route('sosialisasi.edit', $item->id) }}" class="text-indigo-600 hover:text-indigo-900">Ubah</a>
                                             <form action="{{ route('sosialisasi.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('DELETE')
