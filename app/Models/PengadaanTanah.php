@@ -2,6 +2,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DokumenHasil;
 
 class PengadaanTanah extends Model
 {
@@ -24,6 +25,9 @@ class PengadaanTanah extends Model
         'admin3_reviewed_at',
         'catatan_penolakan',
     ];
+
+    protected $guarded = ['id'];
+
     public function sosialisasis()
     {
     return $this->hasMany(Sosialisasi::class);
@@ -48,5 +52,10 @@ class PengadaanTanah extends Model
     public function musyawarahs()
     {
     return $this->hasMany(Musyawarah::class);
+    }
+
+    public function dokumenHasils()
+    {
+        return $this->hasMany(DokumenHasil::class, 'pengadaan_tanah_id');
     }
 }

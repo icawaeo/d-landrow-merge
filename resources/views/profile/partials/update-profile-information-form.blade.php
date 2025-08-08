@@ -17,37 +17,96 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
+        {{-- Layout Grid Dua Kolom --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            {{-- Kolom Kiri --}}
+            <div class="space-y-4">
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+                    <x-input-label for="name" :value="('Fullname')" />
+                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+                    <x-input-error class="mt-2" :messages="$errors->get('name')" />
+                </div>
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+                <div>
+                    <x-input-label for="nip" :value="('NIP')" />
+                    <x-text-input id="nip" name="nip" type="text" class="mt-1 block w-full" :value="old('nip', $user->nip)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('nip')" />
+                </div>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
+                <div>
+                    <x-input-label for="position" :value="('Position')" />
+                    <x-text-input id="position" name="position" type="text" class="mt-1 block w-full" :value="old('position', $user->position)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('position')" />
+                </div>
+
+                <div>
+                    <x-input-label for="email" :value="('Email')" />
+                    <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+                    <x-input-error class="mt-2" :messages="$errors->get('email')" />
+
+                    @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                        <div>
+                            <p class="text-sm mt-2 text-gray-800">
+                                {{ __('Your email address is unverified.') }}
+
+                                <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    {{ __('Click here to re-send the verification email.') }}
+                                </button>
+                            </p>
+
+                            @if (session('status') === 'verification-link-sent')
+                                <p class="mt-2 font-medium text-sm text-green-600">
+                                    {{ __('A new verification link has been sent to your email address.') }}
+                                </p>
+                            @endif
+                        </div>
                     @endif
                 </div>
-            @endif
+
+                <div>
+                    <x-input-label for="role" :value="('Role')" />
+                    <x-text-input id="role" name="role" type="text" class="mt-1 block w-full" :value="old('role', $user->role)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('role')" />
+                </div>
+            </div>
+
+            {{-- Kolom Kanan --}}
+            <div class="space-y-4">
+                <div>
+                    <x-input-label for="organization" :value="('Organization')" />
+                    <x-text-input id="organization" name="organization" type="text" class="mt-1 block w-full" :value="old('organization', $user->organization)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('organization')" />
+                </div>
+
+                <div>
+                    <x-input-label for="company" :value="('Company')" />
+                    <x-text-input id="company" name="company" type="text" class="mt-1 block w-full" :value="old('company', $user->company)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('company')" />
+                </div>
+
+                <div>
+                    <x-input-label for="business_area" :value="('Business Area')" />
+                    <x-text-input id="business_area" name="business_area" type="text" class="mt-1 block w-full" :value="old('business_area', $user->business_area)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('business_area')" />
+                </div>
+
+                <div>
+                    <x-input-label for="personal_sub_area" :value="('Personal Sub Area')" />
+                    <x-text-input id="personal_sub_area" name="personal_sub_area" type="text" class="mt-1 block w-full" :value="old('personal_sub_area', $user->personal_sub_area)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('personal_sub_area')" />
+                </div>
+
+                <div>
+                    <x-input-label for="unit_organization" :value="('Unit Organization')" />
+                    <x-text-input id="unit_organization" name="unit_organization" type="text" class="mt-1 block w-full" :value="old('unit_organization', $user->unit_organization)" />
+                    <x-input-error class="mt-2" :messages="$errors->get('unit_organization')" />
+                </div>
+            </div>
         </div>
 
-        <div class="flex items-center gap-4">
+
+        <div class="flex items-center gap-4 mt-6">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')

@@ -23,6 +23,14 @@ class User extends Authenticatable
         'password',
         'iam',
         'role',
+        'nip',
+        'position',
+        'organization',
+        'company',
+        'business_area',
+        'personal_sub_area',
+        'unit_organization',
+
     ];
 
     /**

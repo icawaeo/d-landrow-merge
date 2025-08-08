@@ -1,10 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dokumen Musyawarah: {{ $proyek->nama_proyek }}</h2>
-            <a href="{{ route('musyawarah_sub.create', $proyek->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700">+ Tambah Data</a>
-        </div>
-    </x-slot>
+    @push('content-header')
+        <x-content-header
+            :proyek="$proyek"
+            tahapan="Musyawarah"
+            :tambahDataUrl="route('musyawarah_sub.create', $proyek->id)"
+        />
+    @endpush
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

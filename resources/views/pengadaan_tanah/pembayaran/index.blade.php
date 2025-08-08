@@ -1,7 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">PEMBAYARAN: {{ $proyek->nama_proyek }}</h2>
-    </x-slot>
+    @push('content-header')
+        <x-content-header
+            :proyek="$proyek"
+            tahapan="Pembayaran"
+        />
+    @endpush
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

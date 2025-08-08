@@ -22,8 +22,8 @@ class Sidebar extends Component
      */
     public function __construct()
     {
-        $this->pengadaanTanahProjects = PengadaanTanah::latest()->get();
-        $this->rowProjects = Row::latest()->get();
+        $this->pengadaanTanahProjects = PengadaanTanah::orderBy('nama_proyek', 'asc')->get();
+        $this->rowProjects = Row::orderBy('nama_proyek', 'asc')->get();
     }
 
     /**

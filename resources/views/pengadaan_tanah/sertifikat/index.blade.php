@@ -1,15 +1,11 @@
 <x-app-layout>
 
-    <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <a href="{{ url()->previous() }}" class="text-gray-500 hover:text-gray-700">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Sertifikat</h2>
-        </div>
-    </x-slot>
+    @push('content-header')
+        <x-content-header
+            :proyek="$proyek"
+            tahapan="Sertifikat"
+        />
+    @endpush
 
     <div class="p-4 sm:p-6 max-w-7xl mx-auto space-y-4">
 
