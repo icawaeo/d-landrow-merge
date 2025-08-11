@@ -23,10 +23,10 @@ class RowMusyawarahSub extends Model
      */
     protected $fillable = [
         'row_id',
-        'lokasi_musyawarah',
+        'nama_kecamatan',
         'status',
         'tanggal_pelaksanaan',
-        'file_berita_acara',
+        'lampiran_berita_acara',
     ];
 
     /**

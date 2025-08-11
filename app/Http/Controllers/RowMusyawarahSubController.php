@@ -14,7 +14,6 @@ class RowMusyawarahSubController extends Controller
      */
     public function index(Row $row)
     {
-        // Menggunakan relasi 'musyawarahSubs' yang kita buat di Model Row
         $musyawarahs = $row->musyawarahSubs()->latest()->get();
         
         return view('row.musyawarah_sub.index', [
@@ -37,14 +36,14 @@ class RowMusyawarahSubController extends Controller
     public function store(Request $request, Row $row)
     {
         $data = $request->validate([
-            'lokasi_musyawarah' => 'required|string|max:255',
+            'nama_kecamatan' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'tanggal_pelaksanaan' => 'required|date',
-            'file_berita_acara' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
+            'lampiran_berita_acara' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
         ]);
 
-        if ($request->hasFile('file_berita_acara')) {
-            $data['file_berita_acara'] = $request->file('file_berita_acara')->store('row_musyawarah_files', 'public');
+        if ($request->hasFile('lampiran_berita_acara')) {
+            $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('row_musyawarah_files', 'public');
         }
 
         $row->musyawarahSubs()->create($data);
@@ -69,17 +68,17 @@ class RowMusyawarahSubController extends Controller
     public function update(Request $request, RowMusyawarahSub $musyawarahSub)
     {
         $data = $request->validate([
-            'lokasi_musyawarah' => 'required|string|max:255',
+            'nama_kecamatan' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'tanggal_pelaksanaan' => 'required|date',
-            'file_berita_acara' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
+            'lampiran_berita_acara' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:5120',
         ]);
 
-        if ($request->hasFile('file_berita_acara')) {
-            if ($musyawarahSub->file_berita_acara) {
-                Storage::disk('public')->delete($musyawarahSub->file_berita_acara);
+        if ($request->hasFile('lampiran_berita_acara')) {
+            if ($musyawarahSub->lampiran_berita_acara) {
+                Storage::disk('public')->delete($musyawarahSub->lampiran_berita_acara);
             }
-            $data['file_berita_acara'] = $request->file('file_berita_acara')->store('row_musyawarah_files', 'public');
+            $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('row_musyawarah_files', 'public');
         }
 
         $musyawarahSub->update($data);
@@ -92,8 +91,8 @@ class RowMusyawarahSubController extends Controller
      */
     public function destroy(RowMusyawarahSub $musyawarahSub)
     {
-        if ($musyawarahSub->file_berita_acara) {
-            Storage::disk('public')->delete($musyawarahSub->file_berita_acara);
+        if ($musyawarahSub->lampiran_berita_acara) {
+            Storage::disk('public')->delete($musyawarahSub->lampiran_berita_acara);
         }
         
         $rowId = $musyawarahSub->row_id;

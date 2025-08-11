@@ -36,7 +36,10 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end mt-6">
+                    <div class="flex justify-end mt-6 gap-4">
+                        <a href="{{ route('row.pembayaran.index', $row->id) }}" class="px-6 py-2 bg-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-400 text-sm">
+                            Batal
+                        </a>
                         <button type="submit" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded-md hover:bg-gray-700">Simpan</button>
                     </div>
                 </form>
