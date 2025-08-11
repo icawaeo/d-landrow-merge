@@ -46,4 +46,12 @@ class Penyampaian extends Model
     {
         return $this->hasOne(PembayaranMenu::class);
     }
+
+    /**
+     * Relasi ke model Tip.
+     */
+    public function tip()
+    {
+        return $this->belongsTo(Tip::class);
+    }
 }

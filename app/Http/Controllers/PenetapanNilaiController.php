@@ -3,18 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\PenetapanNilai;
+use App\Models\Penyampaian; 
 use App\Models\Row;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PenetapanNilaiController extends Controller
 {
     public function index(Row $row, Request $request)
     {
-        $span = $request->input('span', '1 ke 2');
-        $data = PenetapanNilai::where('row_id', $row->id)
-                        ->where('span', $span)
-                        ->get();
-        return view('row.penetapan-nilai.index', compact('data', 'row', 'span'));
+        $spanFilter = $request->input('span');
+
+        $dbSpans = PenetapanNilai::where('row_id', $row->id)
+            ->whereNotNull('span')
+            ->select('span')
+            ->distinct()
+            ->pluck('span');
+
+        $spans = $dbSpans;
+            if ($spanFilter && !$spans->contains($spanFilter)) {
+                $spans->push($spanFilter);
+            }
+
+        $penetapanNilais = PenetapanNilai::with('penyampaian')
+            ->where('row_id', $row->id)
+            ->when($spanFilter, function ($query, $spanFilter) {
+                if ($spanFilter !== '') {
+                    return $query->where('span', $spanFilter);
+                }
+                return $query;
+            })
+            ->get();
+
+        return view('row.penetapan-nilai.index', compact('penetapanNilais', 'spans', 'spanFilter', 'row'));
     }
 
 
@@ -33,7 +54,11 @@ class PenetapanNilaiController extends Controller
 
         $validated['row_id'] = $row->id;
         PenetapanNilai::create($validated);
-        return redirect()->route('row.penetapan-nilai.index', $row->id)->with('success', 'Data berhasil ditambahkan');
+
+        return redirect()->route('row.penetapan-nilai.index', [
+            'row' => $row->id, 
+            'span' => $validated['span']
+        ])->with('success', 'Data berhasil ditambahkan');
     }
 
     public function update(Request $request, Row $row, $id)
@@ -56,10 +81,32 @@ class PenetapanNilaiController extends Controller
 
     public function edit(Row $row, $id)
     {
-        $data = PenetapanNilai::where('row_id', $row->id)->get();
         $itemToEdit = PenetapanNilai::findOrFail($id);
-        $span = $itemToEdit->span;
-        return view('row.penetapan-nilai.index', compact('data', 'row', 'span', 'itemToEdit'));
+
+        $spanFilter = $itemToEdit->span;
+
+        $dbSpans = PenetapanNilai::where('row_id', $row->id)
+            ->whereNotNull('span')
+            ->select('span')
+            ->distinct()
+            ->pluck('span');
+
+        $spans = $dbSpans;
+        if ($spanFilter && !$spans->contains($spanFilter)) {
+            $spans->push($spanFilter);
+        }
+
+        $penetapanNilais = PenetapanNilai::where('row_id', $row->id)
+            ->where('span', $spanFilter)
+            ->get();
+
+        return view('row.penetapan-nilai.index', compact(
+            'penetapanNilais', 
+            'spans', 
+            'spanFilter', 
+            'row', 
+            'itemToEdit'
+        ));
     }
 
 
@@ -69,5 +116,32 @@ class PenetapanNilaiController extends Controller
         $span = $nilai->span;
         $nilai->delete();
         return redirect()->route('row.penetapan-nilai.index', [$row->id, 'span' => $span])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function storeSpan(Request $request, Row $row)
+    {
+        $validated = $request->validate([
+            'start_tip' => 'required|integer|min:1',
+            'end_tip' => 'required|integer|gt:start_tip',
+        ]);
+
+        $startBidang = $validated['start_tip'];
+        $endBidang = $validated['end_tip'];
+        $spanName = $startBidang . ' ke ' . $endBidang;
+
+        $spanExists = PenetapanNilai::where('row_id', $row->id)
+        ->where('span', $spanName)
+        ->exists();
+
+        if ($spanExists) {
+            $message = "Menampilkan data untuk span {$startBidang}–{$endBidang}.";
+        } else {
+            $message = "Span {$startBidang}–{$endBidang} berhasil dibuat.";
+        }
+
+        return redirect()->route('row.penetapan-nilai.index', [
+            'row' => $row->id,
+            'span' => $spanName
+        ])->with('success', $message);
     }
 }

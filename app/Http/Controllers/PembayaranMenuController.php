@@ -6,18 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PembayaranMenu;
 use App\Models\Penyampaian;
+use App\Models\Row;
 
 class PembayaranMenuController extends Controller
 {
-    public function index($rowId)
+    public function index(Row $row)
     {
-        // Ambil semua penyampaian yang disetujui dari ROW ini
-        $penyampaians = Penyampaian::where('row_id', $rowId)
+        $penyampaians = Penyampaian::where('row_id', $row->id)
             ->where('status_persetujuan', 'Setuju')
             ->with(['penetapanNilai', 'pembayaranMenu'])
             ->get();
 
-        return view('row.pembayaran-menu.index', compact('penyampaians'));
+        return view('row.pembayaran-menu.index', compact('penyampaians', 'row'));
     }
 
     public function store(Request $request, $penyampaianId)

@@ -1,14 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <a href="{{ url()->previous() }}" class="text-gray-500 hover:text-gray-700">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </a>
-            <h2 class="text-xl font-semibold text-gray-800 leading-tight">Pembayaran</h2>
-        </div>
-    </x-slot>
+    @push('content-header')
+        <x-content-header
+            :proyek="$row"
+            tahapan="Pembayaran"
+        />
+    @endpush
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
         
@@ -85,16 +81,17 @@
                                                     d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                             </svg>
                                         </a>
-                                        <form action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
+                                        <form id="delete-form-{{ $pembayaran->id }}" action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" style="display: none;">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="text-gray-600 hover:text-red-700" title="Hapus">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" />
-                                                </svg>
-                                            </button>
                                         </form>
+                                        <button type="button" class="text-gray-600 hover:text-red-700" title="Hapus"
+                                            onclick="confirmDelete('{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}', 'delete-form-{{ $pembayaran->id }}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" />
+                                            </svg>
+                                        </button>
                                     @else
                                         <a href="#" onclick="event.preventDefault(); document.getElementById('form-create-{{ $penyampaian->id }}').classList.toggle('hidden')" class="text-blue-600 hover:text-blue-900" title="Input Data">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -165,4 +162,26 @@
             Hanya data dengan status <strong>SETUJU</strong> dari halaman Penyampaian yang ditampilkan. Silakan isi status <b>Terbayar</b>, <b>Tanggal</b>, dan <b>Upload Bukti Dokumen</b> jika pembayaran telah dilakukan.
         </div>
     </div>
+    <script>
+        function confirmDelete(deleteUrl) {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang sudah dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const deleteForm = document.getElementById('delete-form');
+                        
+                        deleteForm.action = deleteUrl;
+                        
+                        deleteForm.submit();
+                    }
+                });
+            }
+    </script>
 </x-app-layout>
