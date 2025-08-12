@@ -13,23 +13,41 @@ class ApprovalController extends Controller
     public function index()
     {
         $userRole = Auth::user()->role;
-        $projectsForReview = [];
+        $projectsForReview = collect();
+        $approvedProjects = collect();
 
         if ($userRole === 'admin1') {
             $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_1')->get();
             $row = Row::where('status_persetujuan', 'menunggu_admin_1')->get();
             $projectsForReview = $pengadaanTanah->concat($row);
+
+            $approvedPengadaanTanah = PengadaanTanah::where('admin1_id', Auth::id())->get();
+            $approvedRow = Row::where('admin1_id', Auth::id())->get();
+            $approvedProjects = $approvedPengadaanTanah->concat($approvedRow);
+
         } elseif ($userRole === 'admin2') {
             $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_2')->get();
             $row = Row::where('status_persetujuan', 'menunggu_admin_2')->get();
             $projectsForReview = $pengadaanTanah->concat($row);
+
+            $approvedPengadaanTanah = PengadaanTanah::where('admin2_id', Auth::id())->get();
+            $approvedRow = Row::where('admin2_id', Auth::id())->get();
+            $approvedProjects = $approvedPengadaanTanah->concat($approvedRow);
+
         } elseif ($userRole === 'admin3') {
             $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_3')->get();
             $row = Row::where('status_persetujuan', 'menunggu_admin_3')->get();
             $projectsForReview = $pengadaanTanah->concat($row);
+
+            $approvedPengadaanTanah = PengadaanTanah::where('admin3_id', Auth::id())->get();
+            $approvedRow = Row::where('admin3_id', Auth::id())->get();
+            $approvedProjects = $approvedPengadaanTanah->concat($approvedRow);
         }
 
-        return view('admin.dashboard', ['projects' => $projectsForReview]);
+        return view('admin.dashboard', [
+            'projects' => $projectsForReview,
+            'approvedProjects' => $approvedProjects
+        ]);
     }
 
     public function decide(Request $request, $type, $id)

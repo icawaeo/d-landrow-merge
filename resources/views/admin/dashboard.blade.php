@@ -73,6 +73,50 @@
                     </script>
                 </div>
             </div>
+
+            {{-- TABEL BARU UNTUK PROYEK YANG DISETUJUI --}}
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-medium text-gray-900">Proyek yang Telah Anda Setujui</h3>
+                    <div class="mt-6 overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Proyek</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @forelse ($approvedProjects as $project)
+                                    @php
+                                        $type = $project instanceof \App\Models\PengadaanTanah ? 'pengadaan-tanah' : 'row';
+                                    @endphp
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $project->nama_proyek }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ ucwords(str_replace('-', ' ', $type)) }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if ($project->status_persetujuan == 'disetujui')
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Disetujui Penuh
+                                                </span>
+                                            @else
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                    Menunggu Admin Berikutnya
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-4 text-center text-gray-500">Anda belum menyetujui proyek apapun.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>
