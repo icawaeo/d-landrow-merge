@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengadaan-tanah/{pengadaanTanah}/edit', [PengadaanTanahController::class, 'edit'])->name('pengadaan_tanah.edit');
     Route::put('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'update'])->name('pengadaan_tanah.update');
     Route::delete('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'destroy'])->name('pengadaan_tanah.destroy');
+    Route::post('/pengadaan-tanah/{pengadaanTanah}/ajukan', [PengadaanTanahController::class, 'submitForApproval'])->name('pengadaan-tanah.ajukan');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/perizinan', [PerizinanController::class, 'edit'])->name('pengadaan_tanah.perizinan.edit');
     Route::post('/pengadaan-tanah/{pengadaanTanah}/perizinan', [PerizinanController::class, 'store'])->name('pengadaan_tanah.perizinan.store');
@@ -131,6 +132,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/row/{row}/edit', [RowController::class, 'edit'])->name('row.edit');
     Route::put('/row/{row}', [RowController::class, 'update'])->name('row.update');
     Route::delete('/row/{row}', [RowController::class, 'destroy'])->name('row.destroy');
+    Route::post('/row/{row}/ajukan', [RowController::class, 'submitForApproval'])->name('row.ajukan');
 
     Route::get('/row/{row}/perizinan', [RowPerizinanController::class, 'edit'])->name('row.perizinan.edit');
     Route::post('/row/{row}/perizinan', [RowPerizinanController::class, 'store'])->name('row.perizinan.store');

@@ -58,8 +58,8 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                                 </form>
-                                                <form action="{{ route('pengadaan_tanah.submit', $proyek->id) }}" 
-                                                    method="POST" 
+                                                <form action="{{ route('pengadaan-tanah.ajukan', $proyek->id) }}"
+                                                    method="POST"
                                                     class="form-ajukan"
                                                     data-nama="{{ $proyek->nama_proyek }}">
                                                     @csrf
@@ -132,7 +132,7 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
                                                     </form>
-                                                    <form action="{{ route('row.submit', $proyek->id) }}" 
+                                                    <form action="{{ route('row.ajukan', $proyek->id) }}" 
                                                         method="POST" 
                                                         class="form-ajukan"
                                                         data-nama="{{ $proyek->nama_proyek }}">

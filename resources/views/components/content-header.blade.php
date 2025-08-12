@@ -4,28 +4,48 @@
     'tambahDataUrl' => null
 ])
 
+@php
+    if ($proyek) {
+        $status = $proyek->status_persetujuan;
+        $statusText = '';
+        $statusColor = '';
+
+        switch ($status) {
+            case 'sudah_diajukan':
+                $statusText = 'Sudah Diajukan';
+                $statusColor = 'bg-yellow-200 text-yellow-800';
+                break;
+            case 'ditolak':
+                $statusText = 'Ditolak';
+                $statusColor = 'bg-red-200 text-red-800';
+                break;
+            case 'disetujui':
+                $statusText = 'Disetujui';
+                $statusColor = 'bg-green-200 text-green-800';
+                break;
+            default:
+                $statusText = 'Belum Diajukan';
+                $statusColor = 'bg-gray-200 text-gray-800';
+        }
+    }
+@endphp
+
 <div class="bg-white shadow-sm">
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <div {{ $attributes->merge(['class' => 'py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4']) }}>
             <div>
-                {{-- Breadcrumb Navigation --}}
-                {{-- <nav class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-1">
-                    @if($proyek)
-                        <a href="{{ route('homepage') }}">Homepage</a>
-                        <span class="mx-2">/</span>
-                        <span>{{ $proyek->nama_proyek }}</span>
-                        <span class="mx-2">/</span>
-                        <span class="text-gray-800 font-semibold">{{ $tahapan }}</span>
-                    @else
-                        <span class="text-gray-800 font-semibold">{{ $tahapan }}</span>
-                    @endif
-                </nav> --}}
-
                 <h2 class="text-2xl font-bold text-gray-800 leading-tight">
-                    {{ $tahapan }}{{ $proyek ? ': ' . $proyek->nama_proyek : '' }}
+                    {{ $tahapan }}
                 </h2>
+
+                @if($proyek)
+                    <div class="mt-1 flex items-center gap-3">
+                        <span class="text-sm text-gray-500 font-medium">{{ $proyek->nama_proyek }}</span>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full {{ $statusColor }}">
+                            {{ $statusText }}
+                        </span>
+                    </div>
+                @endif
             </div>
 
             @if($tambahDataUrl)
@@ -37,6 +57,5 @@
                 </a>
             @endif
         </div>
-
     </div>
 </div>
