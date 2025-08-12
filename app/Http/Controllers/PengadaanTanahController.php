@@ -88,6 +88,33 @@ class PengadaanTanahController extends Controller
      */
     public function show(PengadaanTanah $pengadaanTanah)
     {
-        return view('pengadaan_tanah.show', compact('pengadaanTanah'));
+        $pengadaanTanah = PengadaanTanah::with([
+            'perizinan', 'sosialisasi', 'inventarisasi', 'musyawarah', 'musyawarah_sub', 'pembayaran_sub', 'dokumen_hasil'
+        ])->findOrFail($id);
+
+        $isLocked = in_array($pengadaanTanah->status_persetujuan, [
+            'menunggu_admin_1', 'menunggu_admin_2', 'menunggu_admin_3', 'disetujui'
+        ]); 
+        
+        $perizinan = Perizinan::where('pengadaan_tanah_id', $id)->first();
+        $sosialisasi = Sosialisasi::where('pengadaan_tanah_id', $id)->get();
+        $inventarisasi = Inventarisasi::where('pengadaan_tanah_id', $id)->get();
+        $musyawarah_sub = MusyawarahSub::where('pengadaan_tanah_id', $id)->get();
+        $musyawarahs = Musyawarah::where('pengadaan_tanah_id', $id)->get();
+        $pembayaran_sub = PembayaranSub::where('pengadaan_tanah_id', $id)->get();
+        $dokumen_hasil = DokumenHasil::where('pengadaan_tanah_id', $id)->first();
+
+        return view('pengadaan_tanah.show', compact(
+            'pengadaanTanah', 
+            'perizinan',
+            'sosialisasi',
+            'inventarisasi',
+            'musyawarah_sub',
+            'musyawarahs',
+            'pembayaran_sub',
+            'dokumen_hasil',
+            'isLocked'
+        ));
+        
     }
 }

@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $isReadOnly = !($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'));
+    @endphp
+
     @push('content-header')
         <x-content-header
             :proyek="$proyek"
@@ -7,47 +11,49 @@
     @endpush
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
-        <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
-            <h3 class="text-lg font-semibold mb-4">Tambah Dokumen Hasil</h3>
-            {{-- Tambahkan enctype untuk upload file --}}
-            <form action="{{ route('dokumenhasil.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="pengadaan_tanah_id" value="{{ $proyek->id }}">
-                
-                {{-- Layout diubah untuk mengakomodasi judul dan input file --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
-                    <div class="space-y-1">
-                        <label for="no_surat" class="text-sm font-medium text-gray-700">Nama Surat</label>
-                        <input type="text" id="no_surat" name="no_surat" placeholder="Nama Surat" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
-                    </div>
+        @if(!$isReadOnly)
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-4">Tambah Dokumen Hasil</h3>
+                {{-- Tambahkan enctype untuk upload file --}}
+                <form action="{{ route('dokumenhasil.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="pengadaan_tanah_id" value="{{ $proyek->id }}">
+                    
+                    {{-- Layout diubah untuk mengakomodasi judul dan input file --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                        <div class="space-y-1">
+                            <label for="no_surat" class="text-sm font-medium text-gray-700">Nama Surat</label>
+                            <input type="text" id="no_surat" name="no_surat" placeholder="Nama Surat" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
+                        </div>
 
-                    <div class="space-y-1">
-                        <label for="total_tip_luas" class="text-sm font-medium text-gray-700">Total TIP / Luas</label>
-                        <input type="text" id="total_tip_luas" name="total_tip_luas" placeholder="Total TIP / Luas" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
-                    </div>
+                        <div class="space-y-1">
+                            <label for="total_tip_luas" class="text-sm font-medium text-gray-700">Total TIP / Luas</label>
+                            <input type="text" id="total_tip_luas" name="total_tip_luas" placeholder="Total TIP / Luas" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
+                        </div>
 
-                    <div class="space-y-1">
-                        <label for="tgl_surat" class="text-sm font-medium text-gray-700">Tanggal Surat</label>
-                        <input type="date" id="tgl_surat" name="tgl_surat" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
-                    </div>
+                        <div class="space-y-1">
+                            <label for="tgl_surat" class="text-sm font-medium text-gray-700">Tanggal Surat</label>
+                            <input type="date" id="tgl_surat" name="tgl_surat" class="border border-gray-300 rounded-md px-3 py-2 text-sm w-full" required>
+                        </div>
 
-                    <div x-data="{ fileName: '' }" class="space-y-1">
-                        <label class="text-sm font-medium text-gray-700">Dokumen</label>
-                        <div class="mt-1 flex items-center gap-2">
-                            <label for="file_tambah" class="cursor-pointer text-white bg-teal-500 hover:bg-teal-600 font-medium rounded-lg text-xs px-12 py-2 text-center">
-                                Pilih File
-                            </label>
-                            <input type="file" name="file" id="file_tambah" class="hidden" @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
-                            <span x-text="fileName" class="text-xs text-gray-500 truncate max-w-24" x-show="fileName"></span>
+                        <div x-data="{ fileName: '' }" class="space-y-1">
+                            <label class="text-sm font-medium text-gray-700">Dokumen</label>
+                            <div class="mt-1 flex items-center gap-2">
+                                <label for="file_tambah" class="cursor-pointer text-white bg-teal-500 hover:bg-teal-600 font-medium rounded-lg text-xs px-12 py-2 text-center">
+                                    Pilih File
+                                </label>
+                                <input type="file" name="file" id="file_tambah" class="hidden" @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                <span x-text="fileName" class="text-xs text-gray-500 truncate max-w-24" x-show="fileName"></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm w-full">Simpan</button>
                         </div>
                     </div>
-
-                    <div>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm w-full">Simpan</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        @endif
 
 
         <div 
@@ -133,21 +139,23 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 whitespace-nowrap">
-                                <div class="flex items-center justify-center space-x-2">
-                                    <button @click="editingId = {{ $item->id }}" class="text-gray-600 hover:text-blue-800 p-1" title="Edit">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                    </button>
-                                    <form action="{{ route('dokumenhasil.destroy', $item->id) }}" 
-                                        method="POST" 
-                                        class="form-hapus"
-                                        data-nama="{{ $item->no_surat }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-gray-600 hover:text-red-700 p-1" title="Hapus">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                @if(!$isReadOnly)
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button @click="editingId = {{ $item->id }}" class="text-gray-600 hover:text-blue-800 p-1" title="Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                         </button>
-                                    </form>
-                                </div>
+                                        <form action="{{ route('dokumenhasil.destroy', $item->id) }}" 
+                                            method="POST" 
+                                            class="form-hapus"
+                                            data-nama="{{ $item->no_surat }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-gray-600 hover:text-red-700 p-1" title="Hapus">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
                             </td>
                         </tr>
                     @empty

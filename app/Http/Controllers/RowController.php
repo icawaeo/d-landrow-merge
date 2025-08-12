@@ -77,6 +77,7 @@ class RowController extends Controller
      */
     public function show(Row $row)
     {
-        return view('row.show', compact('row'));
+        $isReview = Auth::guard('admin')->check();
+        return view('row.show', compact('row', 'isReview'));
     }
 }

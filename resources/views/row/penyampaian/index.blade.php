@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $isReadOnly = !($row->status_persetujuan === 'belum_diajukan' || str_starts_with($row->status_persetujuan, 'ditolak'));
+    @endphp
+
     @push('content-header')
         <x-content-header
             :proyek="$row"
@@ -90,29 +94,32 @@
                                     </td>
 
                                     <td class="px-6 py-4 align-top text-center">
-                                        <div class="view-mode flex justify-center gap-3">
-                                            <button type="button" class="text-gray-600 hover:text-indigo-700 edit-btn" title="Edit">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                            </button>
-                                            <form action="{{ route('row.penyampaian.destroy', $item->penyampaian->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-gray-600 hover:text-red-700" title="Hapus">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                        @if(!$isReadOnly)
+                                            <div class="view-mode flex justify-center gap-3">
+                                                <button type="button" class="text-gray-600 hover:text-indigo-700 edit-btn" title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                 </button>
-                                            </form>
-                                        </div>
-
-                                        <form id="edit-form-{{ $item->id }}" action="{{ route('row.penyampaian.update', $item->penyampaian->id) }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="edit-mode hidden flex justify-center gap-2">
-                                                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1.5">Update</button>
-                                                <button type="button" class="text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-sm px-3 py-1.5 cancel-btn">Batal</button>
+                                                <form action="{{ route('row.penyampaian.destroy', $item->penyampaian->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-gray-600 hover:text-red-700" title="Hapus">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                                    </button>
+                                                </form>
                                             </div>
-                                        </form>
+
+                                            <form id="edit-form-{{ $item->id }}" action="{{ route('row.penyampaian.update', $item->penyampaian->id) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="edit-mode hidden flex justify-center gap-2">
+                                                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1.5">Update</button>
+                                                    <button type="button" class="text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-sm px-3 py-1.5 cancel-btn">Batal</button>
+                                                </div>
+                                            </form>
+                                        @endif
                                     </td>
                                 @else
+                                @if(!$isReadOnly)
                                     <td class="px-6 py-4 align-top text-center">
                                         <select name="status_persetujuan" class="w-full border-gray-300 rounded-md shadow-sm text-sm" form="create-form-{{ $item->id }}">
                                             <option value="Setuju">Setuju</option>
@@ -128,6 +135,10 @@
                                             <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-3 py-1.5">Simpan</button>
                                         </form>
                                     </td>
+                                @else
+                                <td class="px-6 py-4 align-top text-center">-</td>
+                                    <td class="px-6 py-4 align-top text-center">-</td>
+                                    <td class="px-6 py-4 align-top text-center">-</td>
                                 @endif
                             </tr>
                         @empty

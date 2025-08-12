@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $isReadOnly = !($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'));
+    @endphp
+
     @push('content-header')
         <x-content-header
             :proyek="$proyek"
@@ -48,10 +52,12 @@
                                         <a href="{{ Storage::url($perizinan->{$izin['name']}) }}" target="_blank" class="text-sm text-green-600 hover:underline">Lihat File</a>
                                     @endif
                                     <span id="{{ $izin['name'] }}_filename" class="text-sm text-gray-500 max-w-[120px] truncate"></span>
-                                    <label for="{{ $izin['name'] }}_input" class="cursor-pointer px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-md transition">
-                                        {{ $perizinan->{$izin['name']} ? 'Ganti File' : 'Upload Doc' }}
-                                    </label>
-                                    <input type="file" name="{{ $izin['name'] }}" class="hidden" id="{{ $izin['name'] }}_input" onchange="document.getElementById('{{ $izin['name'] }}_filename').textContent = this.files[0].name">
+                                    @if(!$isReadOnly)
+                                        <label for="{{ $izin['name'] }}_input" class="cursor-pointer px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-md transition">
+                                            {{ $perizinan->{$izin['name']} ? 'Ganti File' : 'Upload Doc' }}
+                                        </label>
+                                        <input type="file" name="{{ $izin['name'] }}" class="hidden" id="{{ $izin['name'] }}_input" onchange="document.getElementById('{{ $izin['name'] }}_filename').textContent = this.files[0].name">
+                                    @endif
                                 </div>
                             </div>
                             @error($izin['name'])
@@ -61,11 +67,13 @@
                         @endforeach
                     </div>
 
-                    <div class="px-6 py-4 bg-gray-50 border-t flex justify-end">
-                        <button type="submit" class="px-6 py-2 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700">
-                            Simpan
-                        </button>
-                    </div>
+                    @if(!$isReadOnly)
+                        <div class="px-6 py-4 bg-gray-50 border-t flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700">
+                                Simpan
+                            </button>
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>

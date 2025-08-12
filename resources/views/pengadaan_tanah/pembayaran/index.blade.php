@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $isReadOnly = !($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'));
+    @endphp
+
     @push('content-header')
         <x-content-header
             :proyek="$proyek"
@@ -83,12 +87,14 @@
                                         <td class="px-4 py-2 text-sm font-medium text-center">
                                             <div class="flex justify-center items-center space-x-3">
                                                 {{-- Tombol Edit --}}
-                                                <a href="{{ route('pembayaran.edit', $item->id) }}" class="text-gray-500 hover:text-blue-600" title="Edit">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                                    </svg>
-                                                </a>
+                                                @if(!$isReadOnly)
+                                                    <a href="{{ route('pembayaran.edit', $item->id) }}" class="text-gray-500 hover:text-blue-600" title="Edit">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                        </svg>
+                                                    </a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
