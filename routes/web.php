@@ -202,6 +202,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [ApprovalController::class, 'index'])->name('admin.dashboard');
     Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('admin.projects.decide');
+    Route::get('/projects/{type}/{id}', [ApprovalController::class, 'show'])->name('admin.projects.show');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}', [\App\Http\Controllers\PengadaanTanahController::class, 'show'])->name('pengadaan_tanah.show');
     Route::get('/row/{row}', [\App\Http\Controllers\RowController::class, 'show'])->name('row.show');

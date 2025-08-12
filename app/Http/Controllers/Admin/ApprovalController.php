@@ -101,4 +101,20 @@ class ApprovalController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Keputusan berhasil disimpan.');
     }
+
+    public function show($type, $id)
+    {
+        if ($type === 'pengadaan-tanah') {
+            $project = \App\Models\PengadaanTanah::with('dokumenHasils')->findOrFail($id); // [ BENAR ]
+        } elseif ($type === 'row') {
+            $project = \App\Models\Row::with('dokumenROW')->findOrFail($id);
+        } else {
+            abort(404);
+        }
+
+        return view('admin.detail-project', [
+            'project' => $project,
+            'type' => $type
+        ]);
+    }
 }

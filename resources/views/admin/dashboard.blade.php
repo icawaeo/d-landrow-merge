@@ -23,6 +23,7 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Proyek</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Detail</th> 
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                 </tr>
                             </thead>
@@ -34,6 +35,9 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $project->nama_proyek }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ ucwords(str_replace('-', ' ', $type)) }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="{{ route('admin.projects.show', ['type' => $type, 'id' => $project->id]) }}" class="text-indigo-600 hover:text-indigo-900">Lihat Detail</a>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div x-data="{ showTolak: false }" class="flex items-center gap-2">
                                                 <form action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
@@ -66,14 +70,14 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="px-6 py-4 text-center text-gray-500">Tidak ada proyek yang memerlukan persetujuan saat ini.</td>
+                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada proyek yang memerlukan persetujuan saat ini.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                      <p class="text-sm text-gray-600 mt-4">
-                        <strong>Cara Kerja:</strong> Silakan review detail proyek melalui menu di sidebar kiri sebelum memberikan persetujuan. Halaman ini hanya untuk aksi menyetujui atau menolak.
+                        <strong>Keterangan:</strong> Silakan review detail proyek sebelum memberikan persetujuan.
                     </p>
 
                     <script>
@@ -96,6 +100,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Proyek</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Detail</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -117,10 +122,13 @@
                                                 </span>
                                             @endif
                                         </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="{{ route('admin.projects.show', ['type' => $type, 'id' => $project->id]) }}" class="text-indigo-600 hover:text-indigo-900">Lihat Detail</a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="px-6 py-4 text-center text-gray-500">Anda belum menyetujui proyek apapun.</td>
+                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Anda belum menyetujui proyek apapun.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
