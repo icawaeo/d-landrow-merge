@@ -35,22 +35,33 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $project->nama_proyek }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ ucwords(str_replace('-', ' ', $type)) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <form x-data="{ showTolak: false }" action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
-                                                @csrf
-                                                {{-- Bagian atas untuk tombol utama --}}
-                                                <div class="flex items-center gap-4">
-                                                    <button type="submit" name="decision" value="setuju" class="px-4 py-2 bg-green-500 text-white text-xs font-semibold rounded-md hover:bg-green-600">Setuju</button>
-                                                    <button @click.prevent="showTolak = !showTolak" type="button" class="px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600">Tolak</button>
-                                                </div>
+                                            <div x-data="{ showTolak: false }" class="flex items-center gap-2">
+                                                <form action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="decision" value="setuju">
+                                                    <button type="submit" class="px-4 py-2 bg-green-500 text-white text-xs font-semibold rounded-md hover:bg-green-600">Setuju</button>
+                                                </form>
 
-                                                {{-- Bagian bawah yang tersembunyi untuk form penolakan --}}
-                                                <div x-show="showTolak" x-transition class="mt-4 border-t pt-4">
-                                                    <label for="catatan_penolakan_{{$project->id}}" class="block text-sm font-medium text-gray-700">Catatan Penolakan (Wajib diisi)</label>
-                                                    <textarea name="catatan_penolakan" id="catatan_penolakan_{{$project->id}}" rows="3" class="mt-1 w-full border-gray-300 rounded-md text-sm" required></textarea>
-                                                    {{-- Tombol konfirmasi di bawah textarea --}}
-                                                    <button type="submit" name="decision" value="tolak" class="mt-2 w-full px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded-md hover:bg-red-700">Konfirmasi Tolak</button>
+                                                <button @click.prevent="showTolak = true" type="button" class="px-4 py-2 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600">Tolak</button>
+
+                                                <div x-show="showTolak" x-transition:enter="transition ease-out duration-300" x-transition:leave="transition ease-in duration-200" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+                                                    <div @click.away="showTolak = false" class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+                                                        <h4 class="text-lg font-bold mb-4">Catatan Tambahan</h4>
+                                                        <form action="{{ route('admin.projects.decide', ['type' => $type, 'id' => $project->id]) }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="decision" value="tolak">
+                                                            <div>
+                                                                <label for="catatan_penolakan_{{$project->id}}" class="block text-sm font-medium text-gray-700">Catatan Penolakan (Wajib diisi)</label>
+                                                                <textarea name="catatan_penolakan" id="catatan_penolakan_{{$project->id}}" rows="4" class="mt-1 w-full border-gray-300 rounded-md text-sm" required></textarea>
+                                                            </div>
+                                                            <div class="mt-4 flex justify-end gap-4">
+                                                                <button @click="showTolak = false" type="button" class="px-4 py-2 bg-gray-200 text-gray-800 text-xs font-semibold rounded-md hover:bg-gray-300">Batal</button>
+                                                                <button type="submit" class="px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded-md hover:bg-red-700">Konfirmasi Tolak</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
