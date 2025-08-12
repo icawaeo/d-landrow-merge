@@ -10,19 +10,32 @@
         $statusText = '';
         $statusColor = '';
 
-        switch ($status) {
-            case 'sudah_diajukan':
-                $statusText = 'Sudah Diajukan';
-                $statusColor = 'bg-yellow-200 text-yellow-800';
-                break;
-            case 'ditolak':
+        switch (true) {
+            case str_starts_with($status, 'ditolak'):
                 $statusText = 'Ditolak';
                 $statusColor = 'bg-red-200 text-red-800';
                 break;
-            case 'disetujui':
+
+            case $status === 'menunggu_admin_1':
+                $statusText = 'Sudah Diajukan';
+                $statusColor = 'bg-yellow-200 text-yellow-800';
+                break;
+            
+            case $status === 'menunggu_admin_2':
+                $statusText = 'Menunggu Admin 2';
+                $statusColor = 'bg-yellow-200 text-yellow-800';
+                break;
+            
+            case $status === 'menunggu_admin_3':
+                $statusText = 'Menunggu Admin 3';
+                $statusColor = 'bg-yellow-200 text-yellow-800';
+                break;
+            
+            case $status === 'disetujui':
                 $statusText = 'Disetujui';
                 $statusColor = 'bg-green-200 text-green-800';
                 break;
+
             default:
                 $statusText = 'Belum Diajukan';
                 $statusColor = 'bg-gray-200 text-gray-800';

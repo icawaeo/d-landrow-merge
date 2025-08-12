@@ -66,9 +66,10 @@ class RowController extends Controller
     public function submitForApproval(Row $row)
     {
         $row->update([
-            'status_persetujuan' => 'sudah_diajukan', // Ganti dari 'menunggu_admin_1'
+            'status_persetujuan' => 'menunggu_admin_1',
             'catatan_penolakan' => null,
         ]);
+        
         return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');
     }
 
