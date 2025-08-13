@@ -24,6 +24,7 @@ class Row extends Model
         'admin3_id',
         'admin3_reviewed_at',
         'catatan_penolakan',
+        'is_viewed'
     ];
     public function row_perizinans()
     {

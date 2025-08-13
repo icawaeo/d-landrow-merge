@@ -79,6 +79,7 @@ class PengadaanTanahController extends Controller
         $pengadaanTanah->update([
             'status_persetujuan' => 'menunggu_admin_1', 
             'catatan_penolakan' => null,
+            'is_viewed' => false
         ]);
         
         return redirect()->route('homepage')->with('success', 'Proyek berhasil diajukan untuk persetujuan.');

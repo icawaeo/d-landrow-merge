@@ -24,6 +24,7 @@ class PengadaanTanah extends Model
         'admin3_id',
         'admin3_reviewed_at',
         'catatan_penolakan',
+        'is_viewed'
     ];
 
     protected $guarded = ['id'];

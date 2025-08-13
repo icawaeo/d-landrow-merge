@@ -137,6 +137,8 @@ class ApprovalController extends Controller
             $project->update(['is_viewed' => true]);
         }
         
+        $project->refresh(); 
+        
         return view('admin.detail-project', [
             'project' => $project,
             'type' => $type
