@@ -55,7 +55,13 @@ class DokumenHasilController extends Controller
             'total_tip_luas' => 'required|string|max:255',
             'tgl_surat' => 'required|date',
             'pengadaan_tanah_id' => 'required|exists:pengadaan_tanahs,id',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:2048',
         ]);
+
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('dokumenhasil', 'public');
+            $validated['file_path'] = $path;
+        }
 
         DokumenHasil::create($validated);
 
