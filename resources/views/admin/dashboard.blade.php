@@ -5,8 +5,41 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            <div class="relative bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg shadow-lg overflow-hidden mb-6">
+                <div class="absolute inset-0 bg-black opacity-20"></div>
+                <div class="relative p-8 flex items-center justify-between">
+                    <div class="max-w-xl">
+                        @php
+                            date_default_timezone_set('Asia/Makassar');
+                            $hour = date('G');
+                            $greeting = '';
+
+                            if ($hour >= 5 && $hour < 12) {
+                                $greeting = 'Selamat Pagi';
+                            } elseif ($hour >= 12 && $hour < 15) {
+                                $greeting = 'Selamat Siang';
+                            } elseif ($hour >= 15 && $hour < 18) {
+                                $greeting = 'Selamat Sore';
+                            } else {
+                                $greeting = 'Selamat Malam';
+                            }
+                        @endphp
+                        
+                        <h3 class="text-2xl font-bold text-white">{{ $greeting }}, {{ Str::words(Auth::user()->name, 2, '') }}!</h3>
+                        
+                        <p class="text-sm text-blue-100 mt-2">
+                            Kelola semua pengajuan data proyek Pengadaan Tanah dan ROW di sini.
+                        </p>
+                    </div>
+                    <div class="hidden md:block">
+                        <img src="{{ asset('images/icon-admin.png') }}" alt="Tower Icon" class="w-32 h-32 opacity-90" />
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900">Proyek yang Membutuhkan Persetujuan Anda</h3>
@@ -28,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($projects as $project)
+                                @forelse ($projectsForReview as $project)
                                     @php
                                         $type = $project instanceof \App\Models\PengadaanTanah ? 'pengadaan-tanah' : 'row';
                                     @endphp

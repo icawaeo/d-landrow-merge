@@ -57,7 +57,7 @@ class ApprovalController extends Controller
         }
 
         return view('admin.dashboard', [
-            'projects' => $projectsForReview,
+            'projectsForReview' => $projectsForReview,
             'approvedProjects' => $approvedProjects
         ]);
     }
@@ -133,6 +133,10 @@ class ApprovalController extends Controller
             abort(404);
         }
 
+        if (!$project->is_viewed) {
+            $project->update(['is_viewed' => true]);
+        }
+        
         return view('admin.detail-project', [
             'project' => $project,
             'type' => $type

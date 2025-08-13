@@ -14,7 +14,7 @@
                     <div class="max-w-xl">
                         <h3 class="text-2xl font-bold text-white">Selamat Datang, {{ Str::words(Auth::user()->name, 2, '') }}!</h3>
                         <p class="text-sm text-blue-100 mt-2">
-                            Kelola semua data proyek Pengadaan Tanah dan ROW disini. 
+                            Kelola semua data proyek Pengadaan Tanah dan ROW di sini. 
                         </p>
                     </div>
                     <div class="hidden md:block">

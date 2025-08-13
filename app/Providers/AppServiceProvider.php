@@ -29,16 +29,16 @@ class AppServiceProvider extends ServiceProvider
                 $userRole = Auth::guard('admin')->user()->role;
 
                 if ($userRole === 'admin1') {
-                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_1')->get();
-                    $row = Row::where('status_persetujuan', 'menunggu_admin_1')->get();
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_1')->latest()->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_1')->latest()->get();
                     $projectsForReview = $pengadaanTanah->concat($row);
                 } elseif ($userRole === 'admin2') {
-                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_2')->get();
-                    $row = Row::where('status_persetujuan', 'menunggu_admin_2')->get();
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_2')->latest()->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_2')->latest()->get();
                     $projectsForReview = $pengadaanTanah->concat($row);
                 } elseif ($userRole === 'admin3') {
-                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_3')->get();
-                    $row = Row::where('status_persetujuan', 'menunggu_admin_3')->get();
+                    $pengadaanTanah = PengadaanTanah::where('status_persetujuan', 'menunggu_admin_3')->latest()->get();
+                    $row = Row::where('status_persetujuan', 'menunggu_admin_3')->latest()->get();
                     $projectsForReview = $pengadaanTanah->concat($row);
                 }
             }

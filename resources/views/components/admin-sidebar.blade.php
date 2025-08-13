@@ -15,22 +15,25 @@
 
         {{-- Daftar Proyek --}}
         <div class="flex-1 overflow-y-auto px-2 py-4">
-            <p :class="sidebarOpen ? '' : 'text-center'" class="px-2 pb-2 text-xs font-semibold text-gray-400 uppercase">Review Projects</p>
+            <p :class="sidebarOpen ? '' : 'text-center'" class="px-2 pb-2 text-xs font-semibold text-gray-400 uppercase">Review Proyek</p>
             <ul class="space-y-1">
                 @forelse ($projectsForReview as $project)
                     @php
                         $type = $project instanceof \App\Models\PengadaanTanah ? 'pengadaan-tanah' : 'row';
-                        if ($type === 'pengadaan-tanah') {
-                            $route = route('pengadaan_tanah.show', ['pengadaanTanah' => $project->id]);
-                        } else {
-                            $route = route('row.show', ['row' => $project->id]);
-                        }
-                        $isActive = request()->url() == $route;
+
+                        $route = route('admin.projects.show', ['type' => $type, 'id' => $project->id]);
+
+                        $isActive = request()->is('admin/projects/' . $type . '/' . $project->id);
                     @endphp
                     <li>
-                        <a href="{{ $route }}" class="flex items-center gap-3 px-3 py-2 rounded-md transition {{ $isActive ? 'bg-slate-900' : 'hover:bg-slate-700' }}">
-                            <span class="h-2 w-2 rounded-full {{ $type === 'pengadaan-tanah' ? 'bg-blue-500' : 'bg-green-500' }}"></span>
-                            <span :class="sidebarOpen ? '' : 'hidden'" class="font-medium text-sm truncate {{ $isActive ? 'text-white' : 'text-gray-300' }}">{{ $project->nama_proyek }}</span>
+                        <a href="{{ $route }}" class="flex items-center justify-between gap-3 px-3 py-2 rounded-md transition {{ $isActive ? 'bg-slate-900' : 'hover:bg-slate-700' }}">
+                            <div class="flex items-center gap-3">
+                                <span class="h-2 w-2 rounded-full {{ $type === 'pengadaan-tanah' ? 'bg-blue-500' : 'bg-green-500' }}"></span>
+                                <span :class="sidebarOpen ? '' : 'hidden'" class="font-medium text-sm truncate {{ $isActive ? 'text-white' : 'text-gray-300' }}">{{ $project->nama_proyek }}</span>
+                            </div>
+                            @if(!$project->is_viewed)
+                                <span class="bg-yellow-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">Baru</span>
+                            @endif
                         </a>
                     </li>
                 @empty
