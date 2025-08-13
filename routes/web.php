@@ -195,6 +195,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/row/pembayaran-menu/{penyampaianId}', [PembayaranMenuController::class, 'store'])->name('row.pembayaran-menu.store');
     Route::put('/row/pembayaran-menu/{pembayaran}', [PembayaranMenuController::class, 'update'])->name('row.pembayaran-menu.update');
     Route::delete('/row/pembayaran-menu/{pembayaran}', [PembayaranMenuController::class, 'destroy'])->name('row.pembayaran-menu.destroy');
+    Route::get('/row/{row}/pembayaran-menu/export-pdf', [PembayaranMenuController::class, 'exportPdf'])->name('row.pembayaran-menu.exportPdf');
 
     Route::post('/row/{row}/submit', [RowController::class, 'submitForApproval'])->name('row.submit');
     

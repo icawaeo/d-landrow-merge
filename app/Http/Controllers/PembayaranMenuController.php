@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\PembayaranMenu;
 use App\Models\Penyampaian;
 use App\Models\Row;
+use Illuminate\Support\Str;
+use PDF;
 
 class PembayaranMenuController extends Controller
 {
@@ -77,5 +79,22 @@ class PembayaranMenuController extends Controller
         $pembayaran->delete();
 
         return back()->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function exportPdf(Row $row)
+    {
+        $penyampaians = Penyampaian::where('row_id', $row->id)
+            ->where('status_persetujuan', 'Setuju')
+            ->with(['penetapanNilai', 'pembayaranMenu'])
+            ->get();
+
+        $pdf = PDF::loadView('row.pembayaran-menu.pdf', [
+            'penyampaians' => $penyampaians,
+            'proyek' => $row,
+        ]);
+
+        $fileName = 'laporan-pembayaran-' . Str::slug($row->nama_proyek) . '.pdf';
+
+        return $pdf->stream($fileName);
     }
 }

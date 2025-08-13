@@ -90,6 +90,14 @@
                     </a>
                 @endif
 
+                {{-- Tombol Export PDF Pembayaran - ROW --}}
+                @if($proyek && Route::currentRouteName() == 'row.pembayaran-menu.index' && !$isReadOnly)
+                    <a href="{{ route('row.pembayaran-menu.exportPdf', $proyek->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold text-sm rounded-md hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Export PDF
+                    </a>
+                @endif
+
                 {{-- Tombol Tambah Data --}}
                 @if($tambahDataUrl)
                     <a href="{{ $tambahDataUrl }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-md hover:bg-blue-700 transition">
