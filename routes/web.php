@@ -184,6 +184,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/row/{row}/penetapan-nilai/{id}', [PenetapanNilaiController::class, 'update'])->name('row.penetapan-nilai.update');
     Route::delete('/row/{row}/penetapan-nilai/{id}', [PenetapanNilaiController::class, 'destroy'])->name('row.penetapan-nilai.destroy');
     Route::post('/row/{row}/penetapan-nilai/store-span', [PenetapanNilaiController::class, 'storeSpan'])->name('row.penetapan-nilai.store-span');
+    Route::get('/row/{row}/penetapan-nilai/export-pdf', [PenetapanNilaiController::class, 'exportPdf'])->name('row.penetapan-nilai.exportPdf');
 
     Route::get('/row/{row}/penyampaian', [PenyampaianController::class, 'index'])->name('row.penyampaian.index');
     Route::post('/row/{row}/penyampaian/{penetapanNilai}', [PenyampaianController::class, 'store'])->name('row.penyampaian.store');

@@ -43,9 +43,9 @@
                 <table class="min-w-full bg-white">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No Bidang</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Pemilik</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nilai Kompensasi</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">No Bidang</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Nama Pemilik</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Nilai Kompensasi</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status Persetujuan</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Dokumen</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
@@ -54,9 +54,9 @@
                     <tbody class="divide-y divide-gray-200">
                         @forelse ($penetapanNilais as $item)
                             <tr>
-                                <td class="px-6 py-4 align-top text-left">{{ $item->no_bidang }}</td>
-                                <td class="px-6 py-4 align-top text-left">{{ $item->nama_pemilik }}</td>
-                                <td class="px-6 py-4 align-top text-left">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4 align-top text-center">{{ $item->no_bidang }}</td>
+                                <td class="px-6 py-4 align-top text-center">{{ $item->nama_pemilik }}</td>
+                                <td class="px-6 py-4 align-top text-center">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
 
                                 @if($item->penyampaian)
                                     <td class="px-6 py-4 align-top text-center">

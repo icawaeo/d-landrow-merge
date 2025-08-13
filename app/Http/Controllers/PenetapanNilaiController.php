@@ -7,6 +7,8 @@ use App\Models\Penyampaian;
 use App\Models\Row;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use PDF;
 
 class PenetapanNilaiController extends Controller
 {
@@ -143,5 +145,19 @@ class PenetapanNilaiController extends Controller
             'row' => $row->id,
             'span' => $spanName
         ])->with('success', $message);
+    }
+
+    public function exportPdf(Row $row)
+    {
+        $penetapanNilaiItems = $row->penetapan_nilais()->orderBy('id')->get();
+
+        $pdf = PDF::loadView('row.penetapan-nilai.pdf', [
+            'penetapanNilaiItems' => $penetapanNilaiItems,
+            'proyek' => $row,
+        ]);
+
+        $fileName = 'laporan-penetapan-nilai-' . Str::slug($row->nama_proyek) . '.pdf';
+
+        return $pdf->stream($fileName);
     }
 }

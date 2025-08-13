@@ -47,10 +47,10 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 text-center">{{ $i + 1 }}</td>
                             <td class="px-6 py-4 text-center">{{ $nilai->span }}</td>
-                            <td class="px-6 py-4 text-left">{{ $nilai->no_bidang }}</td>
-                            <td class="px-6 py-4 text-left">{{ $nilai->nama_pemilik }}</td>
-                            <td class="px-6 py-4 text-left">{{ $nilai->desa }}</td>
-                            <td class="px-6 py-4 text-left">
+                            <td class="px-6 py-4 text-center">{{ $nilai->no_bidang }}</td>
+                            <td class="px-6 py-4 text-center">{{ $nilai->nama_pemilik }}</td>
+                            <td class="px-6 py-4 text-center">{{ $nilai->desa }}</td>
+                            <td class="px-6 py-4 text-center">
                                 Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
                             </td>
                             <td class="px-6 py-4 text-center">

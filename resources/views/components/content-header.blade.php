@@ -72,12 +72,20 @@
 
             {{-- Wadah untuk semua tombol aksi --}}
             <div class="flex items-center space-x-3 flex-shrink-0">
-                {{-- Tombol Export PDF (hanya muncul di halaman pembayaran) --}}
+                {{-- Tombol Export PDF Pembayaran - Pengadaan Tanah --}}
                 @if($proyek && (Route::currentRouteName() == 'pembayaran.index' || Route::currentRouteName() == 'pembayaran.edit') && !$isReadOnly)
                     <a href="{{ route('pembayaran.exportPdf', $proyek->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold text-sm rounded-md hover:bg-red-700 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
+                        Export PDF
+                    </a>
+                @endif
+
+                {{-- Tombol Export PDF Penetapan Nilai - ROW --}}
+                @if($proyek && Route::currentRouteName() == 'row.penetapan-nilai.index' && !$isReadOnly)
+                    <a href="{{ route('row.penetapan-nilai.exportPdf', $proyek->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold text-sm rounded-md hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                         Export PDF
                     </a>
                 @endif
