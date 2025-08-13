@@ -57,11 +57,11 @@ class Row extends Model
 
     public function penyampaians()
     {
-        return $this->hasMany(Penyampaian::class);
+        return $this->hasManyThrough(Penyampaian::class, PenetapanNilai::class);
     }
 
-    public function pembayaran_menus()
-    {
-        return $this->hasOne(PembayaranMenu::class);
-    }
+    // public function pembayaran_menus()
+    // {
+    //     return $this->hasManyThrough(PembayaranMenu::class, Penyampaian::class);
+    // }
 }

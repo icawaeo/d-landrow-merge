@@ -126,8 +126,7 @@ class ApprovalController extends Controller
                 'row_musyawarah_subs', 
                 'row_pembayarans',
                 'penetapan_nilais',
-                'penyampaians',
-                'pembayaran_menus'
+                'penyampaians.pembayaranMenu'
             ])->findOrFail($id);
 
         } else {

@@ -312,6 +312,7 @@
                                 <div x-show="openSection === 'penyampaian'" x-transition class="p-4 border-t space-y-4">
                                      @forelse($project->penyampaians as $item)
                                         <dl class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-4 text-sm p-4 border rounded-md">
+                                            <div><dt class="font-medium text-gray-500">No. Bidang</dt><dd class="mt-1">{{ $item->penetapanNilai->no_bidang ?? '-' }}</dd></div>
                                             <div><dt class="font-medium text-gray-500">Nama Pemilik</dt><dd class="mt-1">{{ $item->penetapanNilai->nama_pemilik ?? '-' }}</dd></div>
                                             <div><dt class="font-medium text-gray-500">Nilai Kompensasi</dt><dd class="mt-1">Rp {{ number_format($item->penetapanNilai->nilai_kompensasi, 0, ',', '.') }}</dd></div>
                                             <div><dt class="font-medium text-gray-500">Status Persetujuan</dt><dd class="mt-1">@if($item->status_persetujuan == 'Setuju')<span class="font-semibold text-green-600">SETUJU</span>@else<span class="font-semibold text-red-600">MENOLAK</span>@endif</dd></div>
@@ -329,15 +330,73 @@
                                     <svg class="w-5 h-5 transform transition-transform" :class="{ 'rotate-180': openSection === 'pembayaran_row' }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </button>
                                 <div x-show="openSection === 'pembayaran_row'" x-transition class="p-4 border-t space-y-4">
-                                    @if($project->pembayaran_menus)
-                                        @php $item = $project->pembayaran_menus; @endphp
-                                        <dl class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4 text-sm p-4 border rounded-md">
-                                            <div><dt class="font-medium text-gray-500">Status</dt><dd class="mt-1 font-semibold {{ $item->status == 'TERBAYAR' ? 'text-green-600' : 'text-red-600' }}">{{ $item->status }}</dd></div>
-                                            <div><dt class="font-medium text-gray-500">Tanggal Bayar</dt><dd class="mt-1">{{ $item->tanggal_pembayaran ? \Carbon\Carbon::parse($item->tanggal_pembayaran)->translatedFormat('d F Y') : '-' }}</dd></div>
-                                            <div><dt class="font-medium text-gray-500">Bukti Dokumen</dt><dd class="mt-1">@if(!empty($item->bukti_dokumen))<a href="{{ asset('storage/' . $item->bukti_dokumen) }}" target="_blank" class="text-blue-600 hover:underline">Lihat Bukti</a>@else<span class="text-gray-500">Belum diinput</span>@endif</dd></div>
-                                        </dl>
-                                    @else
-                                         <p class="text-sm text-gray-500">Data pembayaran belum diinput.</p>
+                                    @php
+                                        $pembayaranDataExists = false;
+                                    @endphp
+                                    @foreach($project->penyampaians as $penyampaian)
+                                        @if($penyampaian->pembayaranMenu)
+                                            @php
+                                                $pembayaranDataExists = true;
+                                                $item = $penyampaian->pembayaranMenu;
+                                                $penetapan = $penyampaian->penetapanNilai;
+                                            @endphp
+                                            <div class="p-4 border rounded-md">
+                                                <div class="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-4 text-sm">
+                                                    <div>
+                                                        <div>
+                                                            <p class="font-medium text-gray-500">Span</p>
+                                                            <p class="mt-1">{{ $penetapan->span ?? '-' }}</p>
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <p class="font-medium text-gray-500">Status</p>
+                                                            <p class="mt-1 font-semibold {{ $item->status == 'TERBAYAR' ? 'text-green-600' : 'text-red-600' }}">{{ $item->status }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <div>
+                                                            <p class="font-medium text-gray-500">No. Bidang</p>
+                                                            <p class="mt-1">{{ $penetapan->no_bidang ?? '-' }}</p>
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <p class="font-medium text-gray-500">Tanggal Bayar</p>
+                                                            <p class="mt-1">{{ $item->tanggal_pembayaran ? \Carbon\Carbon::parse($item->tanggal_pembayaran)->translatedFormat('d F Y') : '-' }}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <div>
+                                                            <p class="font-medium text-gray-500">Nama Pemilik</p>
+                                                            <p class="mt-1">{{ $penetapan->nama_pemilik ?? '-' }}</p>
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <p class="font-medium text-gray-500">Bukti Dokumen</p>
+                                                            <p class="mt-1">
+                                                                @if(!empty($item->bukti_dokumen))
+                                                                    <a href="{{ asset('storage/' . $item->bukti_dokumen) }}" target="_blank" class="text-blue-600 hover:underline">Lihat Bukti</a>
+                                                                @else
+                                                                    <span class="text-gray-500">Belum diinput</span>
+                                                                @endif
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <p class="font-medium text-gray-500">Desa</p>
+                                                        <p class="mt-1">{{ $penetapan->desa ?? '-' }}</p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p class="font-medium text-gray-500">Nilai</p>
+                                                        <p class="mt-1">Rp {{ number_format($penetapan->nilai_kompensasi ?? 0, 0, ',', '.') }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+                                    @if(!$pembayaranDataExists)
+                                        <p class="text-sm text-gray-500">Data pembayaran belum diinput.</p>
                                     @endif
                                 </div>
                             </div>
