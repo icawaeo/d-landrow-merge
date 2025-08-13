@@ -62,6 +62,6 @@ class Row extends Model
 
     public function pembayaran_menus()
     {
-        return $this->hasOne(Pembayaran::class);
+        return $this->hasOne(PembayaranMenu::class);
     }
 }
