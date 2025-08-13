@@ -163,12 +163,15 @@
                                     <svg class="w-5 h-5 transform transition-transform" :class="{ 'rotate-180': openSection === 'pembayaran' }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </button>
                                 <div x-show="openSection === 'pembayaran'" x-transition class="p-4 border-t space-y-4">
-                                     @forelse($project->musyawarahs->where('status_pembayaran', '!=', null) as $item)
-                                        <dl class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-4 text-sm p-4 border rounded-md">
+                                    @forelse($project->musyawarahs->where('status_pembayaran', '!=', null) as $item)
+                                        <dl class="grid grid-cols-1 md:grid-cols-6 gap-x-6 gap-y-4 text-sm p-4 border rounded-md">
                                             <div><dt class="font-medium text-gray-500">No. TIP</dt><dd class="mt-1">{{ $item->no_tip ?? '-' }}</dd></div>
-                                            <div><dt class="font-medium text-gray-500">Status</dt><dd class="mt-1 font-semibold {{ $item->status_pembayaran == 'TERBAYAR' ? 'text-green-600' : 'text-yellow-600' }}">{{ $item->status_pembayaran }}</dd></div>
-                                            <div><dt class="font-medium text-gray-500">Tanggal Bayar</dt><dd class="mt-1">{{ $item->tanggal_pembayaran ? \Carbon\Carbon::parse($item->tanggal_pembayaran)->translatedFormat('d F Y') : '-' }}</dd></div>
-                                            <div><dt class="font-medium text-gray-500">Bukti Pembayaran</dt><dd class="mt-1">@if(!empty($item->bukti_pembayaran))<a href="{{ asset('storage/' . $item->bukti_pembayaran) }}" target="_blank" class="text-blue-600 hover:underline">Lihat Bukti</a>@else<span class="text-gray-500">Belum diinput</span>@endif</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Nama Pemilik</dt><dd class="mt-1">{{ $item->nama_pemilik ?? '-' }}</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Desa</dt><dd class="mt-1">{{ $item->desa ?? '-' }}</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Nilai</dt><dd class="mt-1">Rp {{ number_format($item->nilai, 0, ',', '.') }}</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Status Bayar</dt><dd class="mt-1 font-semibold {{ $item->status_pembayaran == 'TERBAYAR' ? 'text-green-600' : 'text-yellow-600' }}">{{ $item->status_pembayaran }}</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Tgl Bayar</dt><dd class="mt-1">{{ $item->tanggal_pembayaran ? \Carbon\Carbon::parse($item->tanggal_pembayaran)->translatedFormat('d F Y') : '-' }}</dd></div>
+                                            <div><dt class="font-medium text-gray-500">Bukti Pembayaran</dt><dd class="mt-1">@if(!empty($item->bukti_pembayaran))<a href="{{ asset('storage/' . $item->bukti_pembayaran) }}" target="_blank" class="text-blue-600 hover:underline">Lihat Dokumen</a>@else<span class="text-gray-500">Belum diinput</span>@endif</dd></div>
                                         </dl>
                                     @empty
                                         <p class="text-sm text-gray-500">Data pembayaran belum diinput.</p>

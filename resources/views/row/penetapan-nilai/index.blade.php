@@ -59,9 +59,9 @@
                         <tr>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">SPAN</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">NO BIDANG</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">NAMA PEMILIK</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">DESA</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">NILAI KOMPENSASI</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NAMA PEMILIK</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DESA</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NILAI KOMPENSASI</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">AKSI</th>
                         </tr>
                     </thead>
@@ -100,9 +100,9 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $item->span }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">{{ $item->no_bidang }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $item->nama_pemilik }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">{{ $item->desa }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-left">{{ $item->nama_pemilik }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-left">{{ $item->desa }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-left">Rp. {{ number_format($item->nilai_kompensasi, 0, ',', '.') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                         @if(!$isReadOnly)
                                             <div class="flex justify-center items-center space-x-3">

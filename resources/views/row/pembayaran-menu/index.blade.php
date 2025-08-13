@@ -26,16 +26,17 @@
                 <table class="min-w-full bg-white">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Span</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bidang</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Bayar</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        {{-- PERUBAHAN: Mengurangi padding (px) dan menyesuaikan perataan teks --}}
+                        <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                        <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Span</th>
+                        <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bidang</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
+                        <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Bayar</th>
+                        <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Bukti</th>
+                        <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -45,41 +46,42 @@
                             $pembayaran = $penyampaian->pembayaranMenu;
                         @endphp
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 text-center">{{ $i + 1 }}</td>
-                            <td class="px-6 py-4 text-center">{{ $nilai->span }}</td>
-                            <td class="px-6 py-4 text-center">{{ $nilai->no_bidang }}</td>
-                            <td class="px-6 py-4 text-center">{{ $nilai->nama_pemilik }}</td>
-                            <td class="px-6 py-4 text-center">{{ $nilai->desa }}</td>
-                            <td class="px-6 py-4 text-center">
+                            {{-- PERUBAHAN: Mengurangi padding (px), ukuran font (text-xs), dan menyesuaikan perataan teks --}}
+                            <td class="px-2 py-3 text-center text-xs whitespace-nowrap">{{ $i + 1 }}</td>
+                            <td class="px-2 py-3 text-center text-xs whitespace-nowrap">{{ $nilai->span }}</td>
+                            <td class="px-2 py-3 text-center text-xs whitespace-nowrap">{{ $nilai->no_bidang }}</td>
+                            <td class="px-4 py-3 text-left text-xs whitespace-nowrap">{{ $nilai->nama_pemilik }}</td>
+                            <td class="px-4 py-3 text-left text-xs whitespace-nowrap">{{ $nilai->desa }}</td>
+                            <td class="px-4 py-3 text-left text-xs whitespace-nowrap">
                                 Rp {{ number_format($nilai->nilai_kompensasi, 0, ',', '.') }}
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-2 py-3 text-center text-xs whitespace-nowrap">
                                 @if ($pembayaran?->status === 'TERBAYAR')
-                                    <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-emerald-800 bg-emerald-200 rounded-full">
+                                    <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold text-emerald-800 bg-emerald-200 rounded-full">
                                         TERBAYAR
                                     </span>
                                 @elseif ($pembayaran?->status === 'BELUM TERBAYAR')
-                                    <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">
+                                    <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold text-red-800 bg-red-200 rounded-full">
                                         BELUM
                                     </span>
                                 @else
                                     <span class="text-gray-400 text-xs italic">Belum Diisi</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-3 py-3 text-center text-xs whitespace-nowrap">
                                 {{ $pembayaran?->tanggal_pembayaran ? \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y') : '-' }}
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-2 py-3 text-center text-xs whitespace-nowrap">
                                 @if ($pembayaran && $pembayaran->bukti_dokumen)
                                     <a href="{{ asset('storage/' . $pembayaran->bukti_dokumen) }}" target="_blank"
-                                    class="inline-block px-3 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full hover:underline">
+                                    class="inline-block px-2 py-0.5 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full hover:underline">
                                         Lihat
                                     </a>
                                 @else
                                     <span class="text-gray-400 text-xs">Kosong</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-3 py-3 text-center text-xs whitespace-nowrap">
                                 @if(!$isReadOnly)
                                     <div class="flex justify-center gap-3">
                                         @if ($pembayaran)
@@ -165,8 +167,8 @@
                                         </td>
                                     </tr>
                                 @endif
-                        @endforeach
-                    </tbody>
+                    @endforeach
+                </tbody>
                 </table>
             </div>
         </div>

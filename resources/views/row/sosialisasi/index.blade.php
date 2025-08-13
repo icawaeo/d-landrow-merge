@@ -20,10 +20,10 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">No.</th>
-                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Nama Kecamatan</th>
-                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Status</th>
-                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Tanggal Pelaksanaan</th>
-                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Lampiran</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-left">Nama Kecamatan</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-left">Status</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-left">Tanggal Pelaksanaan</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-left">Lampiran</th>
                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -31,10 +31,10 @@
                                 @forelse($sosialisasis as $item)
                                 <tr>
                                     <td class="px-6 py-4 text-center">{{ $loop->iteration }}</td>
-                                    <td class="px-6 py-4 text-center">{{ $item->nama_kecamatan }}</td>
-                                    <td class="px-6 py-4 text-center">{{ $item->status }}</td>
-                                    <td class="px-6 py-4 text-center">{{ \Carbon\Carbon::parse($item->tanggal_pelaksanaan)->format('d/m/Y') }}</td>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="px-6 py-4 text-left">{{ $item->nama_kecamatan }}</td>
+                                    <td class="px-6 py-4 text-left">{{ $item->status }}</td>
+                                    <td class="px-6 py-4 text-left">{{ \Carbon\Carbon::parse($item->tanggal_pelaksanaan)->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 text-left">
                                         @if($item->lampiran_berita_acara)
                                         <a href="{{ Storage::url($item->lampiran_berita_acara) }}" target="_blank" class="text-blue-600 hover:underline">Lihat Dokumen</a>
                                         @else
