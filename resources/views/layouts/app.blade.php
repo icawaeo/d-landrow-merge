@@ -33,7 +33,7 @@
 
                 @stack('content-header')
 
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6 md:p-8">
+                <main class="flex-1 overflow-x-hidden overflow-y-auto p-6 md:p-8" style="background-color: #e6edee;">
                     {{ $slot }}
                 </main>
             </div>

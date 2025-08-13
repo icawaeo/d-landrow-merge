@@ -1,6 +1,6 @@
 <aside
     :class="sidebarOpen ? 'w-64' : 'w-0'"
-    class="bg-slate-800 text-gray-200 border-r border-slate-700 flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden"
+    class="bg-gradient-to-b from-slate-800 to-teal-900 text-gray-200 border-r border-slate-700 flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden"
 >
     <div class="flex flex-col h-full w-64">
         <div class="px-4 py-4 border-b border-slate-700">
@@ -34,7 +34,7 @@
                     @endphp
                     <li x-data="{ projectOpen: {{ $isProjectActive ? 'true' : 'false' }} }">
                         <div class="flex items-center justify-between rounded-md hover:bg-slate-700 {{ $isProjectActive ? 'bg-slate-900' : '' }}">
-                            <a @click.prevent="projectOpen = !projectOpen" href="#" class="flex-grow flex items-center justify-between cursor-pointer px-3 py-2 mr-2">
+                            <a @click.prevent="projectOpen = !projectOpen" href="#" title="{{ $proyek->nama_proyek }}" class="flex-grow flex items-center justify-between cursor-pointer pl-3 py-2 pr-2 min-w-0">
                                 <span class="text-sm font-medium truncate">{{ $proyek->nama_proyek }}</span>
                                 {{-- <svg class="h-4 w-4 text-gray-400 transform transition-transform" :class="{ 'rotate-180': projectOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg> --}}
                             </a>
@@ -98,7 +98,7 @@
                     @endphp
                     <li x-data="{ projectOpen: {{ $isRowProjectActive ? 'true' : 'false' }} }">
                         <div class="flex items-center justify-between rounded-md hover:bg-slate-700 {{ $isRowProjectActive ? 'bg-slate-900' : '' }}">
-                            <a @click.prevent="projectOpen = !projectOpen" href="#" class="flex-grow flex items-center justify-between cursor-pointer px-3 py-2 mr-2">
+                            <a @click.prevent="projectOpen = !projectOpen" href="#" title="{{ $proyek->nama_proyek }}" class="flex-grow flex items-center justify-between cursor-pointer pl-3 py-2 pr-2 min-w-0">
                                 <span class="text-sm font-medium truncate">{{ $proyek->nama_proyek }}</span>
                                 {{-- <svg class="h-4 w-4 text-gray-400 transform transition-transform" :class="{ 'rotate-180': projectOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg> --}}
                             </a>
@@ -148,12 +148,12 @@
             </ul>
         </div>
 
-        <div class="px-4 py-4 border-t border-slate-700">
+        <div class="px-4 py-4 border-t border-gray-600">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <a href="{{ route('logout') }}" class="w-full flex items-center justify-center gap-3 px-3 py-2 text-gray-300 rounded-md hover:bg-slate-700 hover:text-white transition" onclick="event.preventDefault(); this.closest('form').submit();">
+                <a href="{{ route('logout') }}" class="w-full flex items-center justify-center gap-3 px-3 py-2 text-gray-300 rounded-md hover:bg-red-900 hover:text-white transition" onclick="event.preventDefault(); this.closest('form').submit();">
                     <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 8V6C14 4.89543 13.1046 4 12 4H8C6.89543 4 6 4.89543 6 6V18C6 19.1046 6.89543 20 8 20H12C13.1046 20 14 19.1046 14 18V16M10 12H20M20 12L17 9M20 12L17 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <span class="font-medium">Logout</span>
+                    <span class="font-medium">Keluar</span>
                 </a>
             </form>
         </div>

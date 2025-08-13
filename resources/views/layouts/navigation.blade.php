@@ -4,15 +4,13 @@
         <div class="text-left py-3">
             @auth('admin')
                 <a href="{{ route('admin.dashboard') }}">
-                    <h1 class="text-white font-bold text-lg tracking-wider uppercase">
-                        Sistem Digital ROW & Pengadaan Lahan
-                    </h1>
+                    <img src="{{ asset('images/logo-pln.png') }}" alt="PLN Logo" class="inline h-8 w-auto me-2 align-middle">
+                    <span class="text-white font-bold text-lg tracking-wider uppercase align-middle">Admin Sistem Digital ROW & Pengadaan Lahan</span>
                 </a>
             @else
                 <a href="{{ route('homepage') }}">
-                    <h1 class="text-white font-bold text-lg tracking-wider uppercase">
-                        Sistem Digital ROW & Pengadaan Lahan
-                    </h1>
+                    <img src="{{ asset('images/logo-pln.png') }}" alt="PLN Logo" class="inline h-8 w-auto me-2 align-middle">
+                    <span class="text-white font-bold text-lg tracking-wider uppercase align-middle">Sistem Digital ROW & Pengadaan Lahan</span>
                 </a>
             @endauth
         </div>
@@ -34,7 +32,7 @@
                     @endauth
                 </div>
 
-                <div class="flex items-center ms-4">
+                <div class="flex items-center">
                     <button
                         @click="sidebarOpen = !sidebarOpen"
                         class="text-gray-300 hover:text-teal-400 focus:outline-none"

@@ -81,9 +81,12 @@
                         </div>
 
                         {{-- Tombol Update --}}
-                        <div class="flex justify-end mt-8">
+                        <div class="flex justify-end mt-8 gap-4">
+                            <a href="{{ route('homepage') }}" class="px-8 py-2 bg-gray-200 text-gray-800 font-bold rounded-md hover:bg-gray-300 shadow-lg">
+                                Batal
+                            </a>
                             <button type="submit" class="px-8 py-2 bg-indigo-600 text-white font-bold rounded-md hover:bg-indigo-700 shadow-lg">
-                                UPDATE PROYEK
+                                Update Proyek
                             </button>
                         </div>
                     </form>

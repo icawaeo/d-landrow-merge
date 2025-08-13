@@ -8,10 +8,18 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
             
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold">Selamat datang, <strong>{{ Auth::user()->name }}</strong>!</h3>
-                    <p class="text-sm text-gray-600 mt-1">Kelola semua proyek Pengadaan Tanah dan ROW di sini.</p>
+            <div class="relative bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg shadow-lg overflow-hidden">
+                <div class="absolute inset-0 bg-black opacity-20"></div>
+                <div class="relative p-8 flex items-center justify-between">
+                    <div class="max-w-xl">
+                        <h3 class="text-2xl font-bold text-white">Selamat Datang, {{ Str::words(Auth::user()->name, 2, '') }}!</h3>
+                        <p class="text-sm text-blue-100 mt-2">
+                            Kelola semua data proyek Pengadaan Tanah dan ROW disini. 
+                        </p>
+                    </div>
+                    <div class="hidden md:block">
+                        <img src="{{ asset('images/icon-tower.png') }}" alt="Tower Icon" class="w-32 h-32 opacity-90" />
+                    </div>
                 </div>
             </div>
 
