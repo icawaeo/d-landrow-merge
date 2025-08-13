@@ -43,6 +43,15 @@
     }
 @endphp
 
+@php
+    // Menambahkan kembali logika read-only untuk tombol
+    $isReadOnly = true; // Defaultnya read-only
+    if ($proyek) {
+        $isReadOnly = !($proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak'));
+    }
+@endphp
+
+
 <div class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div {{ $attributes->merge(['class' => 'py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4']) }}>
@@ -61,14 +70,28 @@
                 @endif
             </div>
 
-            @if($tambahDataUrl)
-                <a href="{{ $tambahDataUrl }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-md hover:bg-blue-700 transition flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Tambah Data
-                </a>
-            @endif
+            {{-- Wadah untuk semua tombol aksi --}}
+            <div class="flex items-center space-x-3 flex-shrink-0">
+                {{-- Tombol Export PDF (hanya muncul di halaman pembayaran) --}}
+                @if($proyek && (Route::currentRouteName() == 'pembayaran.index' || Route::currentRouteName() == 'pembayaran.edit') && !$isReadOnly)
+                    <a href="{{ route('pembayaran.exportPdf', $proyek->id) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold text-sm rounded-md hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Export PDF
+                    </a>
+                @endif
+
+                {{-- Tombol Tambah Data --}}
+                @if($tambahDataUrl)
+                    <a href="{{ $tambahDataUrl }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-md hover:bg-blue-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Tambah Data
+                    </a>
+                @endif
+            </div>
         </div>
     </div>
 </div>

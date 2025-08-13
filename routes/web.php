@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengadaan-tanah/{pengadaanTanah}/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
     Route::get('/pembayaran/{item}/edit', [PembayaranController::class, 'edit'])->name('pembayaran.edit');
     Route::put('/pembayaran/{item}/update', [PembayaranController::class, 'update'])->name('pembayaran.update');
+    Route::get('/pengadaan-tanah/{proyek}/pembayaran/export-pdf', [PembayaranController::class, 'exportPdf'])->name('pembayaran.exportPdf');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/dokumenhasil', [DokumenHasilController::class, 'index'])->name('dokumenhasil.index');    Route::post('/dokumenhasil/upload/{id}', [DokumenHasilController::class, 'upload'])->name('dokumenhasil.upload');
     Route::post('/dokumenhasil/store', [DokumenHasilController::class, 'store'])->name('dokumenhasil.store');

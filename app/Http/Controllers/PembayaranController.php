@@ -5,6 +5,8 @@ use App\Models\PengadaanTanah;
 use App\Models\Musyawarah; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use PDF;
 
 class PembayaranController extends Controller
 {
@@ -50,5 +52,19 @@ class PembayaranController extends Controller
         $item->update($data);
 
         return redirect()->route('pembayaran.index', $item->pengadaan_tanah_id)->with('success', 'Data pembayaran berhasil diperbarui.');
+    }
+
+    public function exportPdf(PengadaanTanah $proyek)
+    {
+        $pembayaranItems = $proyek->musyawarahs()->orderBy('no_tip')->get();
+
+        $pdf = PDF::loadView('pengadaan_tanah.pembayaran.pdf', [
+            'pembayaranItems' => $pembayaranItems,
+            'proyek' => $proyek,
+        ]);
+
+        $fileName = 'laporan-pembayaran-' . Str::slug($proyek->nama_proyek) . '.pdf';
+
+        return $pdf->stream($fileName);
     }
 }
