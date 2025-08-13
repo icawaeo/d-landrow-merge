@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tambah Data Inventarisasi untuk: {{ $proyek->nama_proyek }}</h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <form action="{{ route('inventarisasi.store', $proyek->id) }}" method="POST" enctype="multipart/form-data" class="p-6">

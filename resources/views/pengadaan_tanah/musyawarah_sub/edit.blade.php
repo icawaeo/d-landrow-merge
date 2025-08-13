@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-2">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <form action="{{ route('musyawarah_sub.update', $musyawarah->id) }}" method="POST" enctype="multipart/form-data" class="p-6">

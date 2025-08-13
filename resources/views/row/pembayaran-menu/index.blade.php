@@ -10,13 +10,17 @@
         />
     @endpush
 
-    <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+    <div class="py-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
         
         {{-- Menggunakan Blade Component untuk notifikasi yang konsisten --}}
         @if (session('success'))
             <x-alert type="success">{{ session('success') }}</x-alert>
         @endif
 
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-blue-800 rounded">
+            Hanya data dengan status <strong>SETUJU</strong> dari halaman Penyampaian yang ditampilkan. Silakan isi status <b>Terbayar</b>, <b>Tanggal</b>, dan <b>Upload Bukti Dokumen</b> jika pembayaran telah dilakukan.
+        </div>
+        
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 overflow-x-auto">
                 <table class="min-w-full bg-white">
@@ -166,9 +170,7 @@
                 </table>
             </div>
         </div>
-        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-blue-800 rounded">
-            Hanya data dengan status <strong>SETUJU</strong> dari halaman Penyampaian yang ditampilkan. Silakan isi status <b>Terbayar</b>, <b>Tanggal</b>, dan <b>Upload Bukti Dokumen</b> jika pembayaran telah dilakukan.
-        </div>
+        
     </div>
     <script>
         function confirmDelete(deleteUrl) {

@@ -90,7 +90,7 @@
                         {{-- Tombol Create --}}
                         <div class="flex justify-end mt-8">
                             <button type="submit" class="px-8 py-2 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 shadow-lg">
-                                CREATE
+                                BUAT PROYEK
                             </button>
                         </div>
                     </form>

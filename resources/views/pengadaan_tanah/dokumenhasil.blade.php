@@ -10,7 +10,7 @@
         />
     @endpush
 
-    <div class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+    <div class="py-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
         @if(!$isReadOnly)
             <div class="bg-white p-4 sm:p-6 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-4">Tambah Dokumen Hasil</h3>

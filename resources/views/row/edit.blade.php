@@ -83,7 +83,7 @@
                         {{-- Tombol Update --}}
                         <div class="flex justify-end mt-8">
                             <button type="submit" class="px-8 py-2 bg-indigo-600 text-white font-bold rounded-md hover:bg-indigo-700 shadow-lg">
-                                UPDATE
+                                UPDATE PROYEK
                             </button>
                         </div>
                     </form>

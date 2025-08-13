@@ -7,7 +7,7 @@
         />
     @endpush
 
-    <div class="p-4 sm:p-6 max-w-7xl mx-auto space-y-4">
+    <div class="p-4 sm:p-2 max-w-7xl mx-auto space-y-4">
 
         <!-- Peta BHUMI -->
         <div class="bg-white p-4 sm:p-6 rounded shadow">
