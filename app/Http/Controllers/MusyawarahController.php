@@ -19,14 +19,28 @@ class MusyawarahController extends Controller
 
     public function store(Request $request, PengadaanTanah $pengadaanTanah)
     {
-        $request->validate([
+        // 1. Validasi semua input, termasuk file
+        $data = $request->validate([
             'no_tip' => 'required|string|max:255',
             'nama_pemilik' => 'required|string|max:255',
             'desa' => 'required|string|max:255',
             'nilai' => 'required|numeric',
-            'status' => 'required|string',
+            'status' => 'required|string|in:SETUJU,TIDAK SETUJU,MENOLAK',
+            'bukti_dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png,docx|max:5120',
         ]);
-        $pengadaanTanah->musyawarahs()->create($request->all());
+
+        // 2. Cek apakah ada file yang di-upload
+        if ($request->hasFile('bukti_dokumen')) {
+            // 3. Simpan file ke storage dan dapatkan path-nya
+            $path = $request->file('bukti_dokumen')->store('bukti_musyawarah', 'public');
+            // 4. Tambahkan path file ke data yang akan disimpan
+            // Pastikan nama kolom 'bukti_musyawarah' sesuai dengan di database Anda
+            $data['bukti_musyawarah'] = $path;
+        }
+        
+        // 5. Simpan semua data yang sudah divalidasi dan diproses ke database
+        $pengadaanTanah->musyawarahs()->create($data);
+
         return back()->with('success', 'Data Musyawarah berhasil ditambahkan.');
     }
 

@@ -108,7 +108,7 @@
 
                             {{-- Form untuk menambah data baru --}}
                             @if(!$isReadOnly)
-                                <form action="{{ route('musyawarah.store', $proyek->id) }}" method="POST">
+                                <form action="{{ route('musyawarah.store', $proyek->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <tr class="bg-gray-50">
                                         <td class="px-4 py-2"></td>
@@ -124,7 +124,9 @@
                                                 <option value="MENOLAK">MENOLAK</option>
                                             </select>
                                         </td>
-                                        <td class="px-4 py-2"></td>
+                                        <td class="px-1 py-1">
+                                            <input type="file" name="bukti_dokumen" class="w-full text-xs">
+                                        </td>
                                         <td class="px-4 py-2 text-center">
                                             <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2">Simpan</button>
                                         </td>
