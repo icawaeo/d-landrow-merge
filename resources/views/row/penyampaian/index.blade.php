@@ -140,6 +140,7 @@
                                     <td class="px-6 py-4 align-top text-center">-</td>
                                     <td class="px-6 py-4 align-top text-center">-</td>
                                 @endif
+                            @endif
                             </tr>
                         @empty
                             <tr><td colspan="6" class="text-center px-6 py-4 text-gray-500">Tidak ada data penetapan nilai untuk span ini.</td></tr>

@@ -14,7 +14,7 @@ class DokumenHasilController extends Controller
      */
     public function index(PengadaanTanah $pengadaanTanah)
     {
-        $dokumen = $pengadaanTanah->dokumenHasils()->oldest()->get();
+        $dokumen = $pengadaanTanah->dokumen_hasil()->oldest()->get();
 
         return view('pengadaan_tanah.dokumenhasil', [
             'proyek' => $pengadaanTanah,

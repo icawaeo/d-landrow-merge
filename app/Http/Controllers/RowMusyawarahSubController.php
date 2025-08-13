@@ -14,7 +14,7 @@ class RowMusyawarahSubController extends Controller
      */
     public function index(Row $row)
     {
-        $musyawarahs = $row->musyawarahSubs()->latest()->get();
+        $musyawarahs = $row->row_musyawarah_subs()->latest()->get();
         
         return view('row.musyawarah_sub.index', [
             'proyek' => $row,
@@ -46,7 +46,7 @@ class RowMusyawarahSubController extends Controller
             $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('row_musyawarah_files', 'public');
         }
 
-        $row->musyawarahSubs()->create($data);
+        $row->row_musyawarah_subs()->create($data);
 
         return redirect()->route('row.musyawarah_sub.index', $row->id)->with('success', 'Data musyawarah ROW berhasil ditambahkan!');
     }

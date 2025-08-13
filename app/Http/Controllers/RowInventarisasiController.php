@@ -11,7 +11,7 @@ class RowInventarisasiController extends Controller
 {
     public function index(Row $row)
     {
-        $inventarisasis = $row->rowInventarisasis()->latest()->get();
+        $inventarisasis = $row->row_inventarisasis()->latest()->get();
         return view('row.inventarisasi.index', compact('row', 'inventarisasis'));
     }
 
@@ -34,7 +34,7 @@ class RowInventarisasiController extends Controller
             $path = $request->file('lampiran_berita_acara')->store('row_inventarisasi_files', 'public');
         }
 
-        $row->rowInventarisasis()->create([
+        $row->row_inventarisasis()->create([
             'nama_kecamatan' => $request->nama_kecamatan,
             'status' => $request->status,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,

@@ -11,7 +11,7 @@ class MusyawarahSubController extends Controller
 {
     public function index(PengadaanTanah $pengadaanTanah)
     {
-        $musyawarahs = $pengadaanTanah->musyawarahSubs()->latest()->get();
+        $musyawarahs = $pengadaanTanah->musyawarah_subs()->latest()->get();
         return view('pengadaan_tanah.musyawarah_sub.index', [
             'proyek' => $pengadaanTanah,
             'musyawarahs' => $musyawarahs
@@ -39,7 +39,7 @@ class MusyawarahSubController extends Controller
             $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('musyawarah_files', 'public');
         }
 
-        $pengadaanTanah->musyawarahSubs()->create($data);
+        $pengadaanTanah->musyawarah_subs()->create($data);
         return redirect()->route('musyawarah_sub.index', $pengadaanTanah->id)->with('success', 'Data musyawarah berhasil ditambahkan!');
     }
 

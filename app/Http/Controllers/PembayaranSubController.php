@@ -9,7 +9,7 @@ class PembayaranSubController extends Controller
 {
     public function index(PengadaanTanah $pengadaanTanah)
     {
-        $pembayarans = $pengadaanTanah->pembayaranSubs()->latest()->get();
+        $pembayarans = $pengadaanTanah->pembayaran_subs()->latest()->get();
         return view('pengadaan_tanah.pembayaran_sub.index', [
             'proyek' => $pengadaanTanah,
             'pembayarans' => $pembayarans
@@ -34,7 +34,7 @@ class PembayaranSubController extends Controller
             $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('pembayaran_files', 'public');
         }
 
-        $pengadaanTanah->pembayaranSubs()->create($data);
+        $pengadaanTanah->pembayaran_subs()->create($data);
         return redirect()->route('pembayaran_sub.index', $pengadaanTanah->id)->with('success', 'Data pembayaran berhasil ditambahkan!');
     }
     public function edit(PembayaranSub $pembayaranSub)

@@ -25,28 +25,43 @@ class Row extends Model
         'admin3_reviewed_at',
         'catatan_penolakan',
     ];
-    public function perizinans()
+    public function row_perizinans()
     {
         return $this->hasMany(RowPerizinan::class);
     }
 
-    public function sosialisasis()
+    public function row_sosialisasis()
     {
         return $this->hasMany(RowSosialisasi::class);
     }
     
-    public function rowInventarisasis()
+    public function row_inventarisasis()
     {
         return $this->hasMany(RowInventarisasi::class);
     }
     
-    public function musyawarahSubs()
+    public function row_musyawarah_subs()
     {
         return $this->hasMany(RowMusyawarahSub::class);
     }
 
-    public function pembayarans()
+    public function row_pembayarans()
     {
         return $this->hasMany(RowPembayaran::class);
+    }
+
+    public function penetapan_nilais()
+    {
+        return $this->hasMany(PenetapanNilai::class);
+    }
+
+    public function penyampaians()
+    {
+        return $this->hasMany(Penyampaian::class);
+    }
+
+    public function pembayaran_menus()
+    {
+        return $this->hasOne(Pembayaran::class);
     }
 }

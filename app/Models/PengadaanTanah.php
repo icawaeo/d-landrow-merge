@@ -28,6 +28,11 @@ class PengadaanTanah extends Model
 
     protected $guarded = ['id'];
 
+    public function perizinan()
+    {
+        return $this->hasOne(Perizinan::class);
+    }
+
     public function sosialisasis()
     {
     return $this->hasMany(Sosialisasi::class);
@@ -38,13 +43,12 @@ class PengadaanTanah extends Model
     return $this->hasMany(Inventarisasi::class);
     }
 
-    public function musyawarahSubs()
+    public function musyawarah_subs()
     {
     return $this->hasMany(MusyawarahSub::class);
     }
 
-    // di dalam class PengadaanTanah
-    public function pembayaranSubs()
+    public function pembayaran_subs()
     {
     return $this->hasMany(PembayaranSub::class);
     }
@@ -54,7 +58,12 @@ class PengadaanTanah extends Model
     return $this->hasMany(Musyawarah::class);
     }
 
-    public function dokumenHasils()
+    // public function pembayarans()
+    // {
+    //     return $this->hasOne(PembayaranController::class);
+    // }
+
+    public function dokumen_hasil()
     {
         return $this->hasMany(DokumenHasil::class, 'pengadaan_tanah_id');
     }

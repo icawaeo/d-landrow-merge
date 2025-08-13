@@ -11,7 +11,7 @@ class RowPembayaranController extends Controller
 {
     public function index(Row $row)
     {
-        $pembayarans = $row->pembayarans()->latest()->get();
+        $pembayarans = $row->row_pembayarans()->latest()->get();
         return view('row.pembayaran.index', [
             'row' => $row,
             'pembayarans' => $pembayarans
@@ -36,7 +36,7 @@ class RowPembayaranController extends Controller
             $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('row_pembayaran_files', 'public');
         }
 
-        $row->pembayarans()->create($data);
+        $row->row_pembayarans()->create($data);
         return redirect()->route('row.pembayaran.index', $row->id)->with('success', 'Data pembayaran berhasil ditambahkan!');
     }
 

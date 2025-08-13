@@ -104,10 +104,32 @@ class ApprovalController extends Controller
 
     public function show($type, $id)
     {
+        $project = null;
+
         if ($type === 'pengadaan-tanah') {
-            $project = \App\Models\PengadaanTanah::with('dokumenHasils')->findOrFail($id); // [ BENAR ]
+            $project = \App\Models\PengadaanTanah::with([
+                'perizinan',
+                'sosialisasis',
+                'inventarisasis',
+                'musyawarah_subs',
+                'pembayaran_subs',
+                'musyawarahs',
+                // 'pembayarans',
+                'dokumen_hasil'
+            ])->findOrFail($id);
+
         } elseif ($type === 'row') {
-            $project = \App\Models\Row::with('dokumenROW')->findOrFail($id);
+            $project = \App\Models\Row::with([
+                'row_perizinans', 
+                'row_sosialisasis', 
+                'row_inventarisasis', 
+                'row_musyawarah_subs', 
+                'row_pembayarans',
+                'penetapan_nilais',
+                'penyampaians',
+                'pembayaran_menus'
+            ])->findOrFail($id);
+
         } else {
             abort(404);
         }

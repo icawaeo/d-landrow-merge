@@ -11,7 +11,7 @@ class RowSosialisasiController extends Controller
 {
     public function index(Row $row)
     {
-        $sosialisasis = $row->sosialisasis()->latest()->get();
+        $sosialisasis = $row->row_sosialisasis()->latest()->get();
         return view('row.sosialisasi.index', [
             'proyek' => $row,
             'sosialisasis' => $sosialisasis,
@@ -36,7 +36,7 @@ class RowSosialisasiController extends Controller
             $data['lampiran_berita_acara'] = $request->file('lampiran_berita_acara')->store('row_sosialisasi_files', 'public');
         }
 
-        $row->sosialisasis()->create($data);
+        $row->row_sosialisasis()->create($data);
         return redirect()->route('row.sosialisasi.index', $row->id)->with('success', 'Data sosialisasi ROW berhasil ditambahkan!');
     }
 
