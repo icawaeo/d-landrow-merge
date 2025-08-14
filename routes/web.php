@@ -41,7 +41,7 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController as AdminAuthe
 
 Route::get('/', function () {
     return view('landingpage');
-});
+})->middleware('guest');
 
 Route::get('/homepage', function () {
     $daftarPengadaanTanah = PengadaanTanah::latest()->get();
