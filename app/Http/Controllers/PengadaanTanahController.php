@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PengadaanTanah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PengadaanTanahController extends Controller
 {
@@ -30,7 +31,9 @@ class PengadaanTanahController extends Controller
             'jumlah_tower' => 'nullable|integer',
         ]);
 
-        PengadaanTanah::create($request->all());
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+        PengadaanTanah::create($data);
 
         return redirect()->route('homepage')->with('success', 'Data pengadaan tanah berhasil dibuat!');
     }

@@ -30,26 +30,34 @@
 <body class="relative h-screen overflow-hidden">
 
     <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/bg-landing.png') }}');"></div>
-
-    <img src="{{ asset('images/logo-bumn.png') }}" alt="BUMN" class="absolute top-6 left-6 w-40 md:w-32">
-    <img src="{{ asset('images/logo-pln.png') }}" alt="PLN" class="absolute top-6 right-6 w-20 md:w-16">
-
-    <div class="absolute bottom-6 left-6 flex space-x-4">
-        <img src="{{ asset('images/pln-mobile-logo.png') }}" alt="PLN Mobile" class="w-28 md:w-22">
-        <img src="{{ asset('images/logo-akhlak.png') }}" alt="AKHLAK" class="w-28 md:w-22">
+    <div class="absolute inset-0 bg-black opacity-30 md:hidden"></div>
+    
+    <div class="absolute inset-0 z-10 p-4 sm:p-6 flex justify-between items-start">
+      <div class="flex flex-col justify-between h-full">
+        <img src="{{ asset('images/logo-danantara.png') }}" alt="Danantara" class="w-24 sm:w-40 mb-4">
+        <div class="flex space-x-2 sm:space-x-4">
+          <img src="{{ asset('images/pln-mobile-logo.png') }}" alt="PLN Mobile" class="w-16 sm:w-28">
+          <img src="{{ asset('images/logo-akhlak.png') }}" alt="AKHLAK" class="w-16 sm:w-28">
+        </div>
+      </div>
+      <div class="flex items-start">
+        <img src="{{ asset('images/logo-pln.png') }}" alt="PLN" class="w-10 sm:w-20">
+      </div>
     </div>
 
-    <div class="relative z-10 h-full flex items-center justify-end pr-[10vw] md:pr-[5vw]">
-        <div class="text-right transform -translate-y-20 md:-translate-y-12 mr-16 md:mr-8" style="font-family: 'Montserrat', sans-serif;">
-            <h1 class="text-6xl md:text-5xl font-extrabold italic text-[#0a3a4a] drop-shadow-lg">
+    
+
+    <div class="relative z-10 h-full flex items-center justify-center md:justify-end text-center md:text-right px-4 sm:px-6 md:px-0 md:pr-[10vw]">
+        <div class="transform -translate-y-16 sm:-translate-y-20">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold italic text-white md:text-[#0a3a4a] drop-shadow-lg">
                 D-LANDROW
             </h1>
-            <p class="text-lg md:text-base uppercase tracking-widest text-[#0a3a4a] mt-2">
+            <p class="text-sm sm:text-base lg:text-lg uppercase tracking-widest text-gray-200 md:text-[#0a3a4a] mt-2 font-semibold">
                 SISTEM DIGITALISASI PENGADAAN TANAH & ROW
             </p>
             <button onclick="openLoginModal()"
-               class="inline-block mt-6 px-8 py-3 bg-[#0a3a4a] text-white font-semibold rounded-full shadow-lg border-b-4 border-white hover:bg-[#082f3b] transition">
-                Login
+                class="inline-block mt-6 px-6 py-2 sm:px-8 sm:py-3 bg-white md:bg-[#0a3a4a] text-[#0a3a4a] md:text-white font-semibold rounded-full shadow-lg border-b-4 border-white hover:bg-gray-200 md:hover:bg-[#082f3b] transition">
+                Masuk
             </button>
         </div>
     </div>
@@ -68,13 +76,12 @@
             </div>
 
             <div class="flex justify-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Masuk ke D-LANDROW</h2>
+                <h2 class="text-center text-xl sm:text-2xl font-bold text-gray-800 whitespace-nowrap">Masuk ke D-LANDROW</h2>
             </div>
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login.store') }}">
                 @csrf
 
-                {{-- PERUBAHAN: Mengganti input IAM menjadi Email --}}
                 <div>
                     <label for="email" class="block font-medium text-sm text-gray-700">Email</label>
                     <input id="email" class="block mt-1 w-full border border-teal-700 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-3 py-2 placeholder:font-light placeholder:text-gray-400" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="Masukkan email Anda" />
@@ -106,13 +113,13 @@
                     </label>
                 </div> --}}
                 
-                <div class="flex items-center justify-end mt-4">
+                {{-- <div class="flex items-center justify-end mt-4">
                     @if (Route::has('password.request'))
                         <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
                             Lupa Kata Sandi?
                         </a>
                     @endif
-                </div>
+                </div> --}}
 
                 <div class="flex items-center justify-end mt-4">
                     <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">

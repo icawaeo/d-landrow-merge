@@ -52,4 +52,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function pengadaanTanahs()
+    {
+        return $this->hasMany(PengadaanTanah::class);
+    }
+
+    public function rows()
+    {
+        return $this->hasMany(Row::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Row;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RowController extends Controller
 {
@@ -19,11 +20,15 @@ class RowController extends Controller
             'jumlah_tower' => 'nullable|integer',
         ]);
 
-        Row::create($request->all());
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+
+        Row::create($data);
 
         return redirect()->route('homepage')->with('success', 'Data ROW berhasil dibuat!');
     }
-        /**
+    
+    /**
      * Menampilkan form untuk mengedit data ROW.
      */
     public function edit(Row $row)

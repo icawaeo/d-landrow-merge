@@ -25,6 +25,7 @@ use App\Http\Controllers\PenyampaianController;
 use App\Http\Controllers\PembayaranMenuController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController as AdminAuthenticatedSessionController;
+use App\Http\Controllers\Auth\UnifiedLoginController;
 
 
 
@@ -43,14 +44,20 @@ Route::get('/', function () {
     return view('landingpage');
 })->middleware('guest');
 
+Route::post('/login', [UnifiedLoginController::class, 'store'])->middleware('guest')->name('login.store');
+
 Route::get('/homepage', function () {
-    $daftarPengadaanTanah = PengadaanTanah::latest()->get();
-    $daftarRow = Row::latest()->get();
+    $userId = Auth::id();
+
+    $daftarPengadaanTanah = PengadaanTanah::where('user_id', $userId)->latest()->get();
+
+    $daftarRow = Row::where('user_id', $userId)->latest()->get();
+    
     return view('homepage', [
         'daftarPengadaanTanah' => $daftarPengadaanTanah,
         'daftarRow' => $daftarRow,
     ]);
-})->middleware(['auth', 'verified'])->name('homepage');
+})->middleware(['auth'])->name('homepage');
 
 
 Route::middleware('auth')->group(function () {
@@ -212,12 +219,14 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function() {
+   /* Route login admin sudah digabung ke landing page
     Route::get('/login', [AdminAuthenticatedSessionController::class, 'create'])
         ->middleware('guest:admin')
         ->name('login');
 
     Route::post('/login', [AdminAuthenticatedSessionController::class, 'store'])
         ->middleware('guest:admin');
+    */
 
     Route::post('/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
         ->middleware('auth:admin')

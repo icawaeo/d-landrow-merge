@@ -43,6 +43,20 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
             $view->with('projectsForReview', $projectsForReview);
+
+            if (Auth::guard('web')->check()) {
+                $userId = Auth::id();
+
+                $pengadaanTanahProjects = PengadaanTanah::where('user_id', $userId)->latest()->get();
+
+                $rowProjects = Row::where('user_id', $userId)->latest()->get();
+                
+                $view->with('pengadaanTanahProjects', $pengadaanTanahProjects)
+                     ->with('rowProjects', $rowProjects);
+            } else {
+                $view->with('pengadaanTanahProjects', collect())
+                     ->with('rowProjects', collect());
+            }
         });
     }
 }
