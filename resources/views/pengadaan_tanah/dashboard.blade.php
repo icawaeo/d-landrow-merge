@@ -11,6 +11,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <h3 class="font-semibold text-lg mb-4">Progres Tahapan (Diagram Lingkaran)</h3>
+                        <p class="text-sm text-gray-500 mb-4">Menampilkan jumlah bidang tanah pada setiap tahapan.</p>
                         <canvas id="pieChart"></canvas>
                     </div>
                 </div>
@@ -18,6 +19,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <h3 class="font-semibold text-lg mb-4">Progres Tahapan (Diagram Batang)</h3>
+                        <p class="text-sm text-gray-500 mb-4">Menampilkan jumlah bidang tanah pada setiap tahapan.</p>
                         <canvas id="barChart"></canvas>
                     </div>
                 </div>

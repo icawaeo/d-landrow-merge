@@ -14,6 +14,23 @@
 
         {{-- Daftar Proyek --}}
         <div class="flex-1 overflow-y-auto px-2 py-4">
+            
+            <div class="md:hidden px-2">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-slate-700 {{ request()->routeIs('admin.dashboard') ? 'bg-slate-900' : '' }}">
+                            <span class="font-medium text-sm">Beranda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-slate-700 {{ request()->routeIs('admin.users.*') ? 'bg-slate-900' : '' }}">
+                            <span class="font-medium text-sm">Kelola User</span>
+                        </a>
+                    </li>
+                </ul>
+                <hr class="my-4 border-slate-700">
+            </div>
+
             <p class="px-2 pb-2 text-xs font-semibold text-gray-400 uppercase">Review Proyek</p>
             <ul class="space-y-1">
                 @forelse ($projectsForReview as $project)
