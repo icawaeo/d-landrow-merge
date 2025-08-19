@@ -5,12 +5,12 @@
             @auth('admin')
                 <a href="{{ route('admin.dashboard') }}">
                     <img src="{{ asset('images/logo-pln.png') }}" alt="PLN Logo" class="inline h-8 w-auto me-2 align-middle">
-                    <span class="text-white font-bold text-lg tracking-wider uppercase align-middle">Admin Sistem Digital ROW & Pengadaan Lahan</span>
+                    <span class="text-white font-bold text-xs sm:text-base lg:text-lg tracking-normal sm:tracking-wider uppercase align-middle whitespace-nowrap">Admin Sistem Digital ROW & Pengadaan Lahan</span>
                 </a>
             @else
                 <a href="{{ route('homepage') }}">
                     <img src="{{ asset('images/logo-pln.png') }}" alt="PLN Logo" class="inline h-8 w-auto me-2 align-middle">
-                    <span class="text-white font-bold text-lg tracking-wider uppercase align-middle">Sistem Digital ROW & Pengadaan Lahan</span>
+                    <span class="text-white font-bold text-xs sm:text-base lg:text-lg tracking-normal sm:tracking-wider uppercase align-middle whitespace-nowrap">Sistem Digital ROW & Pengadaan Lahan</span>
                 </a>
             @endauth
         </div>
