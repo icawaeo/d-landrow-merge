@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Row extends Model
 {
@@ -27,6 +28,12 @@ class Row extends Model
         'catatan_penolakan',
         'is_viewed'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
     public function row_perizinans()
     {
         return $this->hasMany(RowPerizinan::class);

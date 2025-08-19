@@ -29,6 +29,10 @@
                                     <dd class="mt-1 text-gray-900">{{ ucwords(str_replace('-', ' ', $type)) }}</dd>
                                 </div>
                                 <div>
+                                    <dt class="font-medium text-gray-500">Diajukan Oleh</dt>
+                                    <dd class="mt-1 text-gray-900">{{ $project->user->name ?? '-' }}</dd>
+                                </div>
+                                <div>
                                     <dt class="font-medium text-gray-500">Status</dt>
                                     <dd class="mt-1">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full @if ($project->status_persetujuan == 'disetujui') bg-green-100 text-green-800 @elseif (Str::startsWith($project->status_persetujuan, 'ditolak')) bg-red-100 text-red-800 @else bg-blue-100 text-blue-800 @endif">

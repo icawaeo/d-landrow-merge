@@ -26,6 +26,7 @@ use App\Http\Controllers\PembayaranMenuController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController as AdminAuthenticatedSessionController;
 use App\Http\Controllers\Auth\UnifiedLoginController;
+use App\Http\Controllers\Admin\UserController;
 
 
 
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
     /*pengadaan tanah*/
     Route::get('/pengadaan-tanah/baru/{kategori}', [PengadaanTanahController::class, 'create'])->name('pengadaan_tanah.create');
     Route::post('/pengadaan-tanah', [PengadaanTanahController::class, 'store'])->name('pengadaan_tanah.store');
+    Route::get('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'show'])->name('pengadaan_tanah.show');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/edit', [PengadaanTanahController::class, 'edit'])->name('pengadaan_tanah.edit');
     Route::put('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'update'])->name('pengadaan_tanah.update');
@@ -136,6 +138,7 @@ Route::middleware('auth')->group(function () {
     /*row*/
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
     Route::post('/row', [RowController::class, 'store'])->name('row.store');
+    Route::get('/row/{row}', [RowController::class, 'show'])->name('row.show');
 
     Route::get('/row/{row}/edit', [RowController::class, 'edit'])->name('row.edit');
     Route::put('/row/{row}', [RowController::class, 'update'])->name('row.update');
@@ -209,10 +212,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [ApprovalController::class, 'index'])->name('admin.dashboard');
-    Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('admin.projects.decide');
-    Route::get('/projects/{type}/{id}', [ApprovalController::class, 'show'])->name('admin.projects.show');
+Route::middleware(['auth:admin', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [ApprovalController::class, 'index'])->name('dashboard');
+    Route::post('/projects/{type}/{id}/decide', [ApprovalController::class, 'decide'])->name('projects.decide');
+    Route::get('/projects/{type}/{id}', [ApprovalController::class, 'show'])->name('projects.show');
+
+    Route::resource('users', UserController::class);
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}', [\App\Http\Controllers\PengadaanTanahController::class, 'show'])->name('pengadaan_tanah.show');
     Route::get('/row/{row}', [\App\Http\Controllers\RowController::class, 'show'])->name('row.show');

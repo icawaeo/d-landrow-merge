@@ -13,6 +13,7 @@
                 <div class="relative p-8 flex items-center justify-between">
                     <div class="max-w-xl">
                         @php
+                            $user = Auth::user();
                             date_default_timezone_set('Asia/Makassar');
                             $hour = date('G');
                             $greeting = '';
@@ -26,9 +27,15 @@
                             } else {
                                 $greeting = 'Selamat Malam';
                             }
+
+                            $roleTitle = '';
+                            if (Str::startsWith($user->role, 'admin')) {
+                                $adminLevel = substr($user->role, 5);
+                                $roleTitle = "Admin " . $adminLevel;
+                            }
                         @endphp
                         
-                        <h3 class="text-2xl font-bold text-white">{{ $greeting }}, {{ Str::words(Auth::user()->name, 2, '') }}!</h3>
+                        <h3 class="text-2xl font-bold text-white">{{ $greeting }}, {{ Str::words($user->name, 2, '') }} ({{ $roleTitle }})!</h3>
                         
                         <p class="text-sm text-blue-100 mt-2">
                             Kelola semua pengajuan data proyek Pengadaan Tanah dan ROW di sini.

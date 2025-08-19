@@ -108,6 +108,7 @@ class ApprovalController extends Controller
 
         if ($type === 'pengadaan-tanah') {
             $project = \App\Models\PengadaanTanah::with([
+                'user',
                 'perizinan',
                 'sosialisasis',
                 'inventarisasis',
@@ -120,6 +121,7 @@ class ApprovalController extends Controller
 
         } elseif ($type === 'row') {
             $project = \App\Models\Row::with([
+                'user',
                 'row_perizinans', 
                 'row_sosialisasis', 
                 'row_inventarisasis', 

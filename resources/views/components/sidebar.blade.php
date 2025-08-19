@@ -1,6 +1,6 @@
 <aside
-    :class="sidebarOpen ? 'w-64' : 'w-0'"
-    class="bg-gradient-to-b from-slate-800 to-teal-900 text-gray-200 border-r border-slate-700 flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden"
+    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    class="fixed inset-y-0 left-0 z-30 w-64 bg-gradient-to-b from-slate-800 to-teal-900 text-gray-200 border-r border-slate-700 transform transition-transform duration-300 ease-in-out"
 >
     <div class="flex flex-col h-full w-64">
         <div class="px-4 py-4 border-b border-slate-700">
@@ -9,7 +9,6 @@
                     <button class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#0a4f5e] text-white rounded-md hover:bg-[#083F4B] transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                         <span>Proyek Baru</span>
-                        {{-- <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg> --}}
                     </button>
                 </x-slot>
                 <x-slot name="content">
@@ -21,6 +20,22 @@
         </div>
 
         <div class="flex-1 overflow-y-auto px-4 py-4">
+
+            <div class="md:hidden">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="{{ route('homepage') }}" class="flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-slate-700 {{ request()->routeIs('homepage') ? 'bg-slate-900' : '' }}">
+                            <span class="font-medium text-sm">Beranda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-slate-700 {{ request()->routeIs('profile.edit') ? 'bg-slate-900' : '' }}">
+                            <span class="font-medium text-sm">Profile</span>
+                        </a>
+                    </li>
+                </ul>
+                <hr class="my-4 border-slate-700">
+            </div>
 
             <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Pengadaan Tanah</h3>
             <ul class="space-y-1">
@@ -36,7 +51,6 @@
                         <div class="flex items-center justify-between rounded-md hover:bg-slate-700 {{ $isProjectActive ? 'bg-slate-900' : '' }}">
                             <a @click.prevent="projectOpen = !projectOpen" href="#" title="{{ $proyek->nama_proyek }}" class="flex-grow flex items-center justify-between cursor-pointer pl-3 py-2 pr-2 min-w-0">
                                 <span class="text-sm font-medium truncate">{{ $proyek->nama_proyek }}</span>
-                                {{-- <svg class="h-4 w-4 text-gray-400 transform transition-transform" :class="{ 'rotate-180': projectOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg> --}}
                             </a>
                             @if($canBeModified)
                             <div class="pr-2">
@@ -90,7 +104,7 @@
             <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">ROW</h3>
             <ul class="space-y-1">
                 @forelse($rowProjects as $proyek)
-                     @php
+                    @php
                         $isRowProjectActive = request()->is('row/'.$proyek->id.'/*') || request()->is('row/'.$proyek->id);
                         $canBeModified = $proyek->status_persetujuan === 'belum_diajukan' || str_starts_with($proyek->status_persetujuan, 'ditolak');
                         $currentRow = request()->route('row');
@@ -101,7 +115,6 @@
                         <div class="flex items-center justify-between rounded-md hover:bg-slate-700 {{ $isRowProjectActive ? 'bg-slate-900' : '' }}">
                             <a @click.prevent="projectOpen = !projectOpen" href="#" title="{{ $proyek->nama_proyek }}" class="flex-grow flex items-center justify-between cursor-pointer pl-3 py-2 pr-2 min-w-0">
                                 <span class="text-sm font-medium truncate">{{ $proyek->nama_proyek }}</span>
-                                {{-- <svg class="h-4 w-4 text-gray-400 transform transition-transform" :class="{ 'rotate-180': projectOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg> --}}
                             </a>
                             @if($canBeModified)
                             <div class="pr-2">

@@ -44,10 +44,19 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @auth('web')
-                    <x-nav-link :href="route('homepage')" :active="request()->routeIs('homepage')">
-                        {{ __('Beranda') }}
-                    </x-nav-link>
+                    @auth('admin')
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Beranda') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                            {{ __('Kelola User') }}
+                        </x-nav-link>
+                        
+                    @else
+                        <x-nav-link :href="route('homepage')" :active="request()->routeIs('homepage')">
+                            {{ __('Beranda') }}
+                        </x-nav-link>
                     @endauth
                 </div>
             </div>

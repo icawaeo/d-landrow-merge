@@ -92,17 +92,14 @@
                                                         d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                                 </svg>
                                             </a>
-                                            <form id="delete-form-{{ $pembayaran->id }}" action="{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}" method="POST" style="display: none;">
-                                                @csrf @method('DELETE')
-                                            </form>
-                                            <button type="button" class="text-gray-600 hover:text-red-700" title="Hapus"
-                                                onclick="confirmDelete('{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}', 'delete-form-{{ $pembayaran->id }}')">
+                                            {{-- <button type="button" class="text-gray-600 hover:text-red-700" title="Hapus"
+                                                onclick="confirmDelete('{{ route('row.pembayaran-menu.destroy', $pembayaran->id) }}')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" />
                                                 </svg>
-                                            </button>
+                                            </button> --}}
                                         @else
                                             <a href="#" onclick="event.preventDefault(); document.getElementById('form-create-{{ $penyampaian->id }}').classList.toggle('hidden')" class="text-blue-600 hover:text-blue-900" title="Input Data">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -174,6 +171,12 @@
         </div>
         
     </div>
+
+    <form id="delete-form" action="" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
     <script>
         function confirmDelete(deleteUrl) {
                 Swal.fire({

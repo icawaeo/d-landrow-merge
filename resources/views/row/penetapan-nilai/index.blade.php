@@ -24,11 +24,12 @@
         @endif
 
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                
                 <form method="GET" action="{{ route('row.penetapan-nilai.index', $row->id) }}">
                     <div class="flex items-center gap-2">
-                        <label for="span_select" class="font-medium text-gray-700">Pilih Span:</label>
-                        <select id="span_select" name="span" class="border-gray-300 rounded-md shadow-sm text-sm" onchange="this.form.submit()">
+                        <label for="span_select" class="font-medium text-gray-700 flex-shrink-0">Pilih Span:</label>
+                        <select id="span_select" name="span" class="border-gray-300 rounded-md shadow-sm text-sm w-full md:w-auto" onchange="this.form.submit()">
                             <option value="">Semua Span</option>
                             @foreach($spans as $span)
                                 <option value="{{ $span }}" @selected($spanFilter == $span)>{{ $span }}</option>
@@ -40,12 +41,33 @@
                 @if(!$isReadOnly)
                     <form method="POST" action="{{ route('row.penetapan-nilai.store-span', $row->id) }}">
                         @csrf
-                        <div class="flex items-center gap-2">
-                            <label for="span_select" class="font-medium text-gray-700">Buat Span:</label>
-                            <input type="number" name="start_tip" placeholder="Tip Awal" class="border-gray-300 rounded-md shadow-sm text-sm" required>
-                            <span>ke</span>
-                            <input type="number" name="end_tip" placeholder="Tip Akhir" class="border-gray-300 rounded-md shadow-sm text-sm" required>
-                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 text-sm">Tambah</button>
+                        <div class="flex items-center justify-start md:justify-end gap-2 w-full">
+                            <label class="font-medium text-gray-700 flex-shrink-0 text-sm md:text-base">Buat Span:</label>
+                            
+                            <input 
+                                type="number" 
+                                name="start_tip" 
+                                placeholder="Awal" 
+                                class="border-gray-300 rounded-md shadow-sm w-full min-w-0 text-sm" 
+                                required
+                            >
+                            
+                            <span class="text-gray-500 text-sm md:text-base">ke</span>
+                            
+                            <input 
+                                type="number" 
+                                name="end_tip" 
+                                placeholder="Akhir" 
+                                class="border-gray-300 rounded-md shadow-sm w-full min-w-0 text-sm" 
+                                required
+                            >
+                            
+                            <button 
+                                type="submit" 
+                                class="bg-green-500 text-white px-3 py-2 rounded-md hover:bg-green-600 flex-shrink-0 text-xs md:text-sm"
+                            >
+                                Tambah
+                            </button>
                         </div>
                     </form>
                 @endif

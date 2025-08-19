@@ -16,11 +16,7 @@
     </head>
     
     <body class="font-sans antialiased">
-        <div
-            x-data="{ sidebarOpen: window.innerWidth > 768 }"
-            @resize.window="sidebarOpen = window.innerWidth > 768"
-            class="flex h-screen bg-gray-100"
-        >
+        <div x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="flex h-screen bg-gray-100">
 
             @auth('admin')
                 <x-admin-sidebar />
@@ -28,7 +24,10 @@
                 <x-sidebar />
             @endauth
 
-            <div class="flex-1 flex flex-col overflow-hidden">
+            <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-20 bg-black opacity-50 transition-opacity md:hidden" x-cloak></div>
+
+            <div class="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out" 
+                :class="sidebarOpen ? 'md:ml-64' : 'md:ml-0'">
                 @include('layouts.navigation')
 
                 @stack('content-header')

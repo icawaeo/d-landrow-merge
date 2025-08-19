@@ -99,13 +99,9 @@
                                                 <button type="button" class="text-gray-600 hover:text-indigo-700 edit-btn" title="Edit">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                 </button>
-                                                <form action="{{ route('row.penyampaian.destroy', $item->penyampaian->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-gray-600 hover:text-red-700" title="Hapus">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
-                                                    </button>
-                                                </form>
+                                                {{-- <button type="button" onclick="confirmDelete('{{ route('row.penyampaian.destroy', $item->penyampaian->id) }}')" class="text-gray-600 hover:text-red-700" title="Hapus">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                                </button> --}}
                                             </div>
 
                                             <form id="edit-form-{{ $item->id }}" action="{{ route('row.penyampaian.update', $item->penyampaian->id) }}" method="POST" enctype="multipart/form-data">
@@ -151,6 +147,11 @@
         </div>
     </div>
 
+    <form id="delete-form" action="" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.edit-btn').forEach(button => {
@@ -167,14 +168,32 @@
                     row.querySelectorAll('.view-mode').forEach(el => el.classList.remove('hidden'));
                     row.querySelectorAll('.edit-mode').forEach(el => el.classList.add('hidden'));
                     
-                    const formId = button.closest('form').id;
+                    const formId = this.closest('td').querySelector('form[id^="edit-form-"]').id;
                     const form = document.getElementById(formId);
                     if (form) {
                         form.reset(); 
-
                     }
                 });
             });
         });
+
+        function confirmDelete(deleteUrl) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang sudah dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const deleteForm = document.getElementById('delete-form');
+                    deleteForm.action = deleteUrl;
+                    deleteForm.submit();
+                }
+            });
+        }
     </script>
 </x-app-layout>
