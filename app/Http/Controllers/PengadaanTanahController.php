@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\PengadaanTanah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Sosialisasi;
+use App\Models\Inventarisasi;
+use App\Models\Musyawarah;
+use App\Models\Pembayaran;
+use App\Models\Sertifikat;
 
 class PengadaanTanahController extends Controller
 {
@@ -121,5 +127,20 @@ class PengadaanTanahController extends Controller
             'isLocked'
         ));
         
+    }
+
+    public function dashboard(PengadaanTanah $pengadaanTanah)
+    {
+        $progressData = [
+            'Sosialisasi' => $pengadaanTanah->sosialisasis()->count(),      
+            'Inventarisasi' => $pengadaanTanah->inventarisasis()->count(),  
+            'Musyawarah' => $pengadaanTanah->musyawarah_subs()->count(), 
+            'Pembayaran' => $pengadaanTanah->pembayaran_subs()->count(), 
+        ];
+
+        return view('pengadaan_tanah.dashboard', [
+            'proyek' => $pengadaanTanah,
+            'progressData' => json_encode($progressData)
+        ]);
     }
 }

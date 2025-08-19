@@ -62,13 +62,16 @@
                                                         title="Edit">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                 </button>
-                                                <form class="form-hapus" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" data-nama="{{ $user->name }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900" title="Hapus">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
-                                                    </button>
-                                                </form>
+
+                                                @if(auth()->id() != $user->id)
+                                                    <form class="form-hapus" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" data-nama="{{ $user->name }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 hover:text-red-900" title="Hapus">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2h10z" /></svg>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -99,29 +102,30 @@
                 <form id="user-form" method="POST" class="space-y-6">
                     @csrf
                     <input type="hidden" name="_method" id="form-method">
+                    <input type="hidden" id="user_id_input" name="user_id">
                     
                     <!-- Nama -->
                     <div>
                         <x-input-label for="name" :value="__('Nama')" />
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" required autocomplete="name" />
+                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full @error('name') @enderror" :value="old('name')" required autocomplete="name" />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
 
                     <!-- Email -->
                     <div>
                         <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="email" />
+                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full @error('email') @enderror" :value="old('email')" required autocomplete="email" />
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
                     </div>
 
                     <!-- Role -->
                     <div>
                         <x-input-label for="role" :value="__('Role')" />
-                        <select id="role" name="role" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                            <option value="user">User</option>
-                            <option value="admin1">Admin 1</option>
-                            <option value="admin2">Admin 2</option>
-                            <option value="admin3">Admin 3</option>
+                        <select id="role" name="role" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('role') @enderror" required>
+                            <option value="user" @if(old('role') == 'user') selected @endif>User</option>
+                            <option value="admin1" @if(old('role') == 'admin1') selected @endif>Admin 1</option>
+                            <option value="admin2" @if(old('role') == 'admin2') selected @endif>Admin 2</option>
+                            <option value="admin3" @if(old('role') == 'admin3') selected @endif>Admin 3</option>
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('role')" />
                     </div>
@@ -183,6 +187,7 @@
                     if(passwordLabel) passwordLabel.textContent = "Password";
                     if(passwordInput) passwordInput.required = true;
                     if(passwordConfirmationInput) passwordConfirmationInput.required = true;
+                    document.getElementById('user_id_input').value = ''; 
                     openModal();
                 });
             }
@@ -202,6 +207,7 @@
                     if(passwordLabel) passwordLabel.textContent = "Password Baru (Opsional)";
                     if(passwordInput) passwordInput.required = false;
                     if(passwordConfirmationInput) passwordConfirmationInput.required = false;
+                    document.getElementById('user_id_input').value = this.dataset.id;
                     openModal();
                 });
             });
@@ -227,6 +233,31 @@
                     });
                 });
             });
+
+            const hasErrors = {{ $errors->any() ? 'true' : 'false' }};
+            const oldUserId = "{{ old('user_id') }}";
+
+            if (hasErrors) {
+                if (oldUserId) {
+                    const userButton = document.querySelector(`.btn-edit-user[data-id='${oldUserId}']`);
+                    let userName = userButton ? userButton.dataset.nama : '';
+
+                    modalTitle.textContent = `Ubah Informasi Akun: ${userName}`;
+                    
+                    let updateUrl = "{{ route('admin.users.update', ':id') }}";
+                    userForm.action = updateUrl.replace(':id', oldUserId);
+                    
+                    formMethod.value = "PUT";
+                    passwordLabel.textContent = "Password Baru (Opsional)";
+                    passwordInput.required = false;
+                    passwordConfirmationInput.required = false;
+
+                    openModal();
+                } 
+                else {
+                    if(btnTambah) btnTambah.click();
+                }
+            }
         });
     </script>
     @endpush

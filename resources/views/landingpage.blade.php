@@ -85,6 +85,10 @@
                 <div>
                     <label for="email" class="block font-medium text-sm text-gray-700">Email</label>
                     <input id="email" class="block mt-1 w-full border border-teal-700 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm px-3 py-2 placeholder:font-light placeholder:text-gray-400" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="Masukkan email Anda" />
+
+                    @error('email')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="mt-4">
@@ -104,6 +108,10 @@
                             </svg>
                         </button>
                     </div>
+
+                    @error('password')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- <div class="block mt-4">
@@ -171,6 +179,12 @@
 
             eyeIcon.classList.toggle('hidden');
             eyeSlashIcon.classList.toggle('hidden');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                openLoginModal();
+            @endif
         });
     </script>
 </body>

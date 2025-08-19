@@ -87,4 +87,34 @@ class RowController extends Controller
         $isReview = Auth::guard('admin')->check();
         return view('row.show', compact('row', 'isReview'));
     }
+
+    public function dashboard(Row $row)
+    {
+        $terbayarCount = $row->penyampaians()
+            ->where('status_persetujuan', 'Setuju')
+            ->whereHas('pembayaranMenu', function ($query) {
+                $query->where('status', 'TERBAYAR');
+            })
+            ->count();
+            
+        $belumTerbayarCount = $row->penyampaians()
+            ->where('status_persetujuan', 'Setuju')
+            ->where(function ($query) {
+                $query->whereDoesntHave('pembayaranMenu')
+                      ->orWhereHas('pembayaranMenu', function ($q) {
+                          $q->where('status', '!=', 'TERBAYAR');
+                      });
+            })
+            ->count();
+
+        $paymentData = [
+            'Terbayar' => $terbayarCount,
+            'Belum Terbayar' => $belumTerbayarCount,
+        ];
+
+        return view('row.dashboard', [
+            'proyek' => $row,
+            'paymentData' => json_encode($paymentData) // Kirim sebagai JSON
+        ]);
+    }
 }

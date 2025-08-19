@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengadaan-tanah/baru/{kategori}', [PengadaanTanahController::class, 'create'])->name('pengadaan_tanah.create');
     Route::post('/pengadaan-tanah', [PengadaanTanahController::class, 'store'])->name('pengadaan_tanah.store');
     Route::get('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'show'])->name('pengadaan_tanah.show');
+    Route::get('/pengadaan-tanah/{pengadaanTanah}/dashboard', [PengadaanTanahController::class, 'dashboard'])->name('pengadaan_tanah.dashboard');
 
     Route::get('/pengadaan-tanah/{pengadaanTanah}/edit', [PengadaanTanahController::class, 'edit'])->name('pengadaan_tanah.edit');
     Route::put('/pengadaan-tanah/{pengadaanTanah}', [PengadaanTanahController::class, 'update'])->name('pengadaan_tanah.update');
@@ -139,6 +140,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/row/baru', [RowController::class, 'create'])->name('row.create');
     Route::post('/row', [RowController::class, 'store'])->name('row.store');
     Route::get('/row/{row}', [RowController::class, 'show'])->name('row.show');
+    Route::get('/row/{row}/dashboard', [RowController::class, 'dashboard'])->name('row.dashboard');
 
     Route::get('/row/{row}/edit', [RowController::class, 'edit'])->name('row.edit');
     Route::put('/row/{row}', [RowController::class, 'update'])->name('row.update');

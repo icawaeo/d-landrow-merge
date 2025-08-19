@@ -73,7 +73,7 @@
                         </div>
                         
                         <ul x-show="projectOpen" x-transition class="pl-4 mt-2 space-y-1 border-l border-slate-600 ml-3">
-                            <li><a href="{{ route('pengadaan_tanah.show', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ request()->routeIs('pengadaan_tanah.show', $proyek->id) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Dashboard</a></li>
+                            <li><a href="{{ route('pengadaan_tanah.dashboard', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ request()->routeIs('pengadaan_tanah.dashboard', $proyek->id) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Dashboard</a></li>
                             <li><a href="{{ route('pengadaan_tanah.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ ($isCurrentProject && request()->routeIs('pengadaan_tanah.perizinan.edit')) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Perizinan</a></li>
 
                             <li x-data="{ tahapanOpen: {{ $isTahapanActive ? 'true' : 'false' }} }">
@@ -137,7 +137,7 @@
                         </div>
                         
                         <ul x-show="projectOpen" x-transition class="pl-4 mt-2 space-y-1 border-l border-slate-600 ml-3">
-                            <li><a href="{{ route('row.show', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ request()->routeIs('row.show', $proyek->id) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Dashboard</a></li>
+                            <li><a href="{{ route('row.dashboard', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ request()->routeIs('row.dashboard', $proyek->id) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Dashboard</a></li>
                             <li><a href="{{ route('row.perizinan.edit', $proyek->id) }}" class="block px-3 py-1 rounded-md hover:bg-slate-700 {{ ($isCurrentRowProject && request()->routeIs('row.perizinan.edit')) ? 'bg-slate-700 text-white font-semibold' : 'text-gray-300' }}">Perizinan</a></li>
                             <li x-data="{ tahapanOpen: {{ $isRowTahapanActive ? 'true' : 'false' }} }">
                                 <a @click.prevent="tahapanOpen = !tahapanOpen" href="#" class="flex items-center justify-between w-full px-3 py-1 rounded-md hover:bg-slate-700 cursor-pointer {{ $isRowTahapanActive ? 'text-white' : 'text-gray-300' }}">
