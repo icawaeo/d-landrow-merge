@@ -40,8 +40,8 @@
                         $isActive = request()->is('admin/projects/' . $type . '/' . $project->id);
                     @endphp
                     <li>
-                        <a href="{{ $route }}" class="flex items-center justify-between gap-3 px-3 py-2 rounded-md transition {{ $isActive ? 'bg-slate-900' : 'hover:bg-slate-700' }}">
-                            <div class="flex items-center gap-3">
+                        <a href="{{ $route }}" title="{{ $project->nama_proyek }}" class="flex items-center justify-between gap-3 px-3 py-2 rounded-md transition {{ $isActive ? 'bg-slate-900' : 'hover:bg-slate-700' }}">
+                            <div class="flex items-center gap-3 min-w-0">
                                 <span class="h-2 w-2 rounded-full flex-shrink-0 {{ $type === 'pengadaan-tanah' ? 'bg-blue-500' : 'bg-green-500' }}"></span>
                                 <span class="font-medium text-sm truncate {{ $isActive ? 'text-white' : 'text-gray-300' }}">{{ $project->nama_proyek }}</span>
                             </div>
